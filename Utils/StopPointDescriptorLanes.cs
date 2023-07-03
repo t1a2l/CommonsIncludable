@@ -1,8 +1,8 @@
 ﻿using ColossalFramework.Math;
-using Klyte.Commons.Utils.StructExtensions;
+using Commons.Utils.StructExtensions;
 using UnityEngine;
 
-namespace Klyte.Commons.Utils
+namespace Commons.Utils
 {
     public struct StopPointDescriptorLanes
     {

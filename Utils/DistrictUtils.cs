@@ -1,7 +1,7 @@
 ﻿using ColossalFramework;
 using System.Collections.Generic;
 
-namespace Klyte.Commons.Utils
+namespace Commons.Utils
 {
     public class DistrictUtils
     {

@@ -4,18 +4,18 @@ using System.IO;
 using System.Reflection;
 using UnityEngine;
 
-namespace Klyte.Commons.Utils
+namespace Commons.Utils
 {
-    public static class KlyteResourceLoader
+    public static class ResourceLoader
     {
-        public static string Prefix { get; } = "Klyte";
+        public static string Prefix { get; } = "TransportLinesManager";
 
         public static string GetDefaultSpriteNameFor<E>(E value, bool noBorder = false) where E : Enum => GetDefaultSpriteNameFor(value.ToString(), noBorder);
         public static string GetDefaultSpriteNameFor(string value, bool noBorder = false) => value.StartsWith("__")
                 ? $"{value.ToString().Substring(2)}{(noBorder ? TextureAtlasUtils.NoBorderSuffix : "")}"
-                : value.StartsWith("K45_")
+                : value.StartsWith("")
                     ? $"{value}{(noBorder ? TextureAtlasUtils.NoBorderSuffix : "")}"
-                    : $"K45_{Prefix}_{value}{(noBorder ? TextureAtlasUtils.NoBorderSuffix : "")}";
+                    : $"{Prefix}_{value}{(noBorder ? TextureAtlasUtils.NoBorderSuffix : "")}";
 
         public static byte[] LoadResourceData(string name)
         {

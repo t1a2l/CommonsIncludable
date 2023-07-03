@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Klyte.Commons.Utils.UtilitiesClasses
+namespace Commons.Utils.UtilitiesClasses
 {
     public class Range<T> where T : IComparable<T>
     {

@@ -1,12 +1,12 @@
 ﻿using ColossalFramework.Globalization;
-using Klyte.Commons.Interfaces;
-using Klyte.Commons.Libraries;
-using Klyte.Commons.Utils;
+using Commons.Interfaces;
+using Commons.Libraries;
+using Commons.Utils;
 using System;
 using System.Collections;
 using UnityEngine;
 
-namespace Klyte.Commons.LiteUI.BaseElements
+namespace Commons.LiteUI.BaseElements
 {
     public class GUIXmlLib<L, T> : GUIXmlLib<L, T, T> where T : class, ILibable where L : LibBaseFile<L, T>, new() { }
     public class GUIXmlLib<L, S, T> where T : S where S : class, ILibable where L : LibBaseFile<L, S>, new()
@@ -16,8 +16,8 @@ namespace Klyte.Commons.LiteUI.BaseElements
         private Wrapper<string[]> librarySearchResults = new Wrapper<string[]>();
         private Coroutine librarySearchCoroutine;
 
-        private Texture ImportTex = GUIKlyteCommons.GetByNameFromDefaultAtlas("K45_Import");
-        private Texture ExportTex = GUIKlyteCommons.GetByNameFromDefaultAtlas("K45_Export");
+        private Texture ImportTex = GUICommons.GetByNameFromDefaultAtlas("Import");
+        private Texture ExportTex = GUICommons.GetByNameFromDefaultAtlas("Export");
 
         public string DeleteQuestionI18n { get; set; } = "";
         public string ImportI18n { get; set; } = "";
@@ -42,7 +42,7 @@ namespace Klyte.Commons.LiteUI.BaseElements
 
         public void DrawImportView(Rect areaRect, Action<T> OnSelect)
         {
-            GUIKlyteCommons.DoInHorizontal(() =>
+            GUICommons.DoInHorizontal(() =>
             {
                 var newFilterVal = GUILayout.TextField(libraryFilter);
                 if (newFilterVal != libraryFilter)
@@ -51,7 +51,7 @@ namespace Klyte.Commons.LiteUI.BaseElements
                     RestartLibraryFilterCoroutine();
                 }
             });
-            GUIKlyteCommons.DoInScroll(ref libraryScroll, () =>
+            GUICommons.DoInScroll(ref libraryScroll, () =>
             {
                 var selectLayout = GUILayout.SelectionGrid(-1, librarySearchResults.Value, 1, GUILayout.Width(areaRect.width - 25));
                 if (selectLayout >= 0)
@@ -67,8 +67,8 @@ namespace Klyte.Commons.LiteUI.BaseElements
         }
 
         public void Draw(Rect area, GUIStyle removeButtonStyle, Action doOnDelete, Func<T> getCurrent, Action<GUIStyle> onNormalDraw = null)
-            => GUIKlyteCommons.DoInArea(area,
-                (x) => GUIKlyteCommons.DoInHorizontal(() =>
+            => GUICommons.DoInArea(area,
+                (x) => GUICommons.DoInHorizontal(() =>
                 {
                     switch (Status)
                     {

@@ -1,14 +1,14 @@
 ﻿using ColossalFramework;
 using ICities;
-using Klyte.Commons.Utils;
-using Klyte.Commons.Utils.UtilitiesClasses;
+using Commons.Utils;
+using Commons.Utils.UtilitiesClasses;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace Klyte.Commons.Interfaces.Warehouse
+namespace Commons.Interfaces.Warehouse
 {
     [XmlRoot("ConfigWarehouse")]
     public abstract class ConfigWarehouseBase<T, I> where T : Enum, IConvertible where I : ConfigWarehouseBase<T, I>, new()

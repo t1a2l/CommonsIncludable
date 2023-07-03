@@ -1,14 +1,14 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Threading;
 using ICities;
-using Klyte.Commons.Utils;
+using Commons.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace Klyte.Commons.Interfaces.Warehouse
+namespace Commons.Interfaces.Warehouse
 {
     public sealed class DataContainer : SingletonLite<DataContainer>, ISerializableDataExtension
     {
@@ -132,7 +132,7 @@ namespace Klyte.Commons.Interfaces.Warehouse
                     }
                     string content = System.Text.Encoding.UTF8.GetString(targetArr);
                     LogUtils.DoErrorLog($"{type} CORRUPTED DATA! => \nException: {e.Message}\n{e.StackTrace}\nData  {storage.Length} Z={zipped} b:\n{content}");
-                    K45DialogControl.ShowModalError($"Error loading '{type}' data", $"An error occurred while loading the data from <color yellow>{CommonProperties.ModName}</color>.{(CommonProperties.GitHubRepoPath.IsNullOrWhiteSpace() ? "" : "\nPlease open a issue in GitHub along with the game log attached and a printscreen of this window to get this checked by the mod developer. See the <color cyan>Report-a-bug Helper</color> button in the mod options menu to see details about how to get the game log.")}\nRaw data:\n{content}", true);
+                    DialogControl.ShowModalError($"Error loading '{type}' data", $"An error occurred while loading the data from <color yellow>{CommonProperties.ModName}</color>.{(CommonProperties.GitHubRepoPath.IsNullOrWhiteSpace() ? "" : "\nPlease open a issue in GitHub along with the game log attached and a printscreen of this window to get this checked by the mod developer. See the <color cyan>Report-a-bug Helper</color> button in the mod options menu to see details about how to get the game log.")}\nRaw data:\n{content}", true);
                     instance.Instances[type] = basicInstance;
                 }
             }

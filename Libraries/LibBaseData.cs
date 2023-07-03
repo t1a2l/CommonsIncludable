@@ -1,11 +1,11 @@
 ﻿using ICities;
-using Klyte.Commons.Interfaces;
-using Klyte.Commons.Interfaces.Warehouse;
-using Klyte.Commons.Utils;
+using Commons.Interfaces;
+using Commons.Interfaces.Warehouse;
+using Commons.Utils;
 using System;
 using System.Text;
 
-namespace Klyte.Commons.Libraries
+namespace Commons.Libraries
 {
     public abstract class LibBaseData<LIB, DESC> : BasicLib<LIB, DESC>, IDataExtension
         where LIB : LibBaseData<LIB, DESC>, new()

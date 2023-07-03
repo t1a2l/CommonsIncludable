@@ -1,11 +1,11 @@
 ﻿using HarmonyLib;
-using Klyte.Commons.Utils.UtilitiesClasses;
+using Commons.Utils.UtilitiesClasses;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 using UnityEngine;
 
-namespace Klyte.Commons.Utils
+namespace Commons.Utils
 {
     public class LogUtils
     {

@@ -1,11 +1,11 @@
-﻿using Klyte.Commons.Interfaces;
+﻿using Commons.Interfaces;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
 
-namespace Klyte.Commons.Utils.UtilitiesClasses
+namespace Commons.Utils.UtilitiesClasses
 {
     [XmlRoot("TimeableList")]
 

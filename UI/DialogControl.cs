@@ -1,12 +1,10 @@
 ﻿using ColossalFramework;
 using ColossalFramework.DataBinding;
-using ColossalFramework.Globalization;
 using ColossalFramework.Threading;
 using ColossalFramework.UI;
-using Klyte.Commons.Extensions;
-using Klyte.Commons.Extensions.UI;
-using Klyte.Commons.UI.i18n;
-using Klyte.Commons.Redirectors;
+using Commons.Extensions;
+using Commons.Extensions.UI;
+using Commons.Redirectors;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,13 +12,15 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
-using Klyte.Commons.Utils.UtilitiesClasses;
+using Commons.Utils.UtilitiesClasses;
+using ColossalFramework.Globalization;
+using Commons.UI.i18n;
 
-namespace Klyte.Commons.Utils
+namespace Commons.Utils
 {
-    internal class K45DialogControl : UICustomControl
+    internal class DialogControl : UICustomControl
     {
-        public const string PANEL_ID = "K45Dialog";
+        public const string PANEL_ID = "Dialog";
         public const string VERSION = "20211216";
         private const string TEXT_INPUT_ID = "TextInput";
         private const string DD_INPUT_ID = "DropDownInput";
@@ -30,7 +30,7 @@ namespace Klyte.Commons.Utils
         public static UIDynamicPanels.DynamicPanelInfo CreatePanelInfo(UIView view)
         {
 
-            KlyteMonoUtils.CreateUIElement(out UIPanel mainPanel, null, PANEL_ID);
+            MonoUtils.CreateUIElement(out UIPanel mainPanel, null, PANEL_ID);
             mainPanel.enabled = false;
             mainPanel.maximumSize = new Vector2(0, view.fixedHeight);
             mainPanel.minimumSize = new Vector2(800, 70);
@@ -45,12 +45,12 @@ namespace Klyte.Commons.Utils
 
 
             #region Title
-            KlyteMonoUtils.CreateUIElement(out UIPanel titleContainer, mainPanel.transform, "TitleContainer");
+            MonoUtils.CreateUIElement(out UIPanel titleContainer, mainPanel.transform, "TitleContainer");
             titleContainer.size = new Vector2(mainPanel.width, 40);
 
 
-            KlyteMonoUtils.CreateUIElement(out UILabel title, titleContainer.transform, "Title");
-            title.text = "Klyte45";
+            MonoUtils.CreateUIElement(out UILabel title, titleContainer.transform, "Title");
+            title.text = "45";
             title.anchor = UIAnchorStyle.CenterHorizontal | UIAnchorStyle.CenterVertical;
             title.minimumSize = new Vector3(titleContainer.width - 100, 0);
             title.textScale = 2;
@@ -58,10 +58,10 @@ namespace Klyte.Commons.Utils
 
 
 
-            KlyteMonoUtils.CreateUIElement(out UISprite modIcon, titleContainer.transform, "ModIcon", new Vector4(5, 5, 32, 32));
+            MonoUtils.CreateUIElement(out UISprite modIcon, titleContainer.transform, "ModIcon", new Vector4(5, 5, 32, 32));
             modIcon.tooltip = $"v{VERSION}{CommonProperties.Acronym}";
 
-            KlyteMonoUtils.CreateUIElement(out UIButton closeButton, titleContainer.transform, "CloseButton");
+            MonoUtils.CreateUIElement(out UIButton closeButton, titleContainer.transform, "CloseButton");
             closeButton.area = new Vector4(mainPanel.width - 37, 3, 32, 32);
             closeButton.normalBgSprite = "buttonclose";
             closeButton.hoveredBgSprite = "buttonclosehover";
@@ -71,11 +71,11 @@ namespace Klyte.Commons.Utils
             #endregion
 
             #region Texture area
-            KlyteMonoUtils.CreateUIElement(out UIPanel textureContainer, mainPanel.transform, "TextureSupContainer");
+            MonoUtils.CreateUIElement(out UIPanel textureContainer, mainPanel.transform, "TextureSupContainer");
             textureContainer.size = new Vector2(800, 0);
             textureContainer.autoFitChildrenVertically = true;
 
-            KlyteMonoUtils.CreateUIElement(out UIPanel textureSubContainer, textureContainer.transform, "TextureContainer");
+            MonoUtils.CreateUIElement(out UIPanel textureSubContainer, textureContainer.transform, "TextureContainer");
             textureSubContainer.anchor = UIAnchorStyle.CenterHorizontal | UIAnchorStyle.Top;
             textureSubContainer.pivot = UIPivotPoint.TopCenter;
             textureSubContainer.autoFitChildrenVertically = true;
@@ -83,12 +83,12 @@ namespace Klyte.Commons.Utils
             textureSubContainer.autoLayout = true;
             textureSubContainer.relativePosition = new Vector3(0, 0);
 
-            KlyteMonoUtils.CreateUIElement(out UITextureSprite textureSprite, textureSubContainer.transform, "TextureSprite");
+            MonoUtils.CreateUIElement(out UITextureSprite textureSprite, textureSubContainer.transform, "TextureSprite");
             textureSprite.size = default;
             #endregion
 
             #region Text area
-            KlyteMonoUtils.CreateUIElement(out UILabel boxText, mainPanel.transform, "BoxText");
+            MonoUtils.CreateUIElement(out UILabel boxText, mainPanel.transform, "BoxText");
             boxText.minimumSize = new Vector2(800, 60);
             boxText.maximumSize = new Vector2(0, view.fixedHeight * 0.8f);
             boxText.clipChildren = true;
@@ -106,11 +106,11 @@ namespace Klyte.Commons.Utils
             #endregion
 
             #region Action Buttons
-            KlyteMonoUtils.CreateUIElement(out UIPanel buttonContainer, mainPanel.transform, "ButtonSupContainer");
+            MonoUtils.CreateUIElement(out UIPanel buttonContainer, mainPanel.transform, "ButtonSupContainer");
             buttonContainer.size = new Vector2(800, 70);
             buttonContainer.autoFitChildrenVertically = true;
 
-            KlyteMonoUtils.CreateUIElement(out UIPanel buttonSubContainer, buttonContainer.transform, "ButtonContainer");
+            MonoUtils.CreateUIElement(out UIPanel buttonSubContainer, buttonContainer.transform, "ButtonContainer");
             buttonSubContainer.anchor = UIAnchorStyle.CenterHorizontal | UIAnchorStyle.Top;
             buttonSubContainer.pivot = UIPivotPoint.TopCenter;
             buttonSubContainer.autoFitChildrenVertically = true;
@@ -119,40 +119,40 @@ namespace Klyte.Commons.Utils
             buttonSubContainer.autoLayoutPadding = new RectOffset(5, 5, 0, 0);
             buttonSubContainer.relativePosition = new Vector3(0, 0);
 
-            KlyteMonoUtils.CreateUIElement(out UIButton button1, buttonSubContainer.transform, "ButtonAction1");
+            MonoUtils.CreateUIElement(out UIButton button1, buttonSubContainer.transform, "ButtonAction1");
             button1.anchor = UIAnchorStyle.CenterHorizontal | UIAnchorStyle.Top;
             button1.size = new Vector2(150, 60);
             button1.text = "AAAAA";
             button1.wordWrap = true;
-            KlyteMonoUtils.InitButtonFull(button1, false, "ButtonMenu");
-            KlyteMonoUtils.CreateUIElement(out UIButton button2, buttonSubContainer.transform, "ButtonAction2");
+            MonoUtils.InitButtonFull(button1, false, "ButtonMenu");
+            MonoUtils.CreateUIElement(out UIButton button2, buttonSubContainer.transform, "ButtonAction2");
             button2.anchor = UIAnchorStyle.CenterHorizontal | UIAnchorStyle.Top;
             button2.size = new Vector2(150, 60);
             button2.text = "BBBBB";
             button2.wordWrap = true;
-            KlyteMonoUtils.InitButtonFull(button2, false, "ButtonMenu");
-            KlyteMonoUtils.CreateUIElement(out UIButton button3, buttonSubContainer.transform, "ButtonAction3");
+            MonoUtils.InitButtonFull(button2, false, "ButtonMenu");
+            MonoUtils.CreateUIElement(out UIButton button3, buttonSubContainer.transform, "ButtonAction3");
             button3.anchor = UIAnchorStyle.CenterHorizontal | UIAnchorStyle.Top;
             button3.size = new Vector2(150, 60);
             button3.text = "CCCCC";
             button3.wordWrap = true;
-            KlyteMonoUtils.InitButtonFull(button3, false, "ButtonMenu");
-            KlyteMonoUtils.CreateUIElement(out UIButton button4, buttonSubContainer.transform, "ButtonAction4");
+            MonoUtils.InitButtonFull(button3, false, "ButtonMenu");
+            MonoUtils.CreateUIElement(out UIButton button4, buttonSubContainer.transform, "ButtonAction4");
             button4.anchor = UIAnchorStyle.CenterHorizontal | UIAnchorStyle.Top;
             button4.size = new Vector2(150, 60);
             button4.text = "DDDDD";
             button4.wordWrap = true;
-            KlyteMonoUtils.InitButtonFull(button4, false, "ButtonMenu");
-            KlyteMonoUtils.CreateUIElement(out UIButton button5, buttonSubContainer.transform, "ButtonAction5");
+            MonoUtils.InitButtonFull(button4, false, "ButtonMenu");
+            MonoUtils.CreateUIElement(out UIButton button5, buttonSubContainer.transform, "ButtonAction5");
             button5.anchor = UIAnchorStyle.CenterHorizontal | UIAnchorStyle.Top;
             button5.size = new Vector2(150, 60);
             button5.text = "EEEEE";
             button5.wordWrap = true;
-            KlyteMonoUtils.InitButtonFull(button5, false, "ButtonMenu");
+            MonoUtils.InitButtonFull(button5, false, "ButtonMenu");
             #endregion
 
             #region Bindings creation
-            mainPanel.gameObject.AddComponent<K45DialogControl>();
+            mainPanel.gameObject.AddComponent<DialogControl>();
             BindPropertyByKey bindByKey = mainPanel.gameObject.AddComponent<BindPropertyByKey>();
             bindByKey.m_Bindings.AddRange(new List<BindPropertyByKey.BindingInfo>(){
                 CreateBind("title"          ,title, "text"),
@@ -185,14 +185,14 @@ namespace Klyte.Commons.Utils
 
         private static void CreateInputs(UIPanel mainPanel, UILabel boxText)
         {
-            KlyteMonoUtils.CreateUIElement(out UITextField textField, mainPanel.transform, TEXT_INPUT_ID);
+            MonoUtils.CreateUIElement(out UITextField textField, mainPanel.transform, TEXT_INPUT_ID);
             textField.minimumSize = new Vector2(boxText.minimumSize.x - 10, 25);
             textField.autoSize = false;
             textField.processMarkup = true;
             textField.padding = new RectOffset(10, 10, 5, 5);
             textField.verticalAlignment = UIVerticalAlignment.Middle;
             textField.horizontalAlignment = UIHorizontalAlignment.Left;
-            KlyteMonoUtils.UiTextFieldDefaultsForm(textField);
+            MonoUtils.UiTextFieldDefaultsForm(textField);
         }
 
         private static BindPropertyByKey.BindingInfo CreateBind(string key, UIComponent component, string property) => new BindPropertyByKey.BindingInfo()
@@ -231,7 +231,7 @@ namespace Klyte.Commons.Utils
             #region Events bindings
             BindEvents();
 
-            KlyteMonoUtils.LimitWidthAndBox(m_title, out UIPanel boxContainerTitle);
+            MonoUtils.LimitWidthAndBox(m_title, out UIPanel boxContainerTitle);
             boxContainerTitle.anchor = UIAnchorStyle.CenterHorizontal | UIAnchorStyle.Top;
             boxContainerTitle.relativePosition = new Vector3(0, 2);
 
@@ -313,7 +313,7 @@ namespace Klyte.Commons.Utils
 
         public void Update()
         {
-            if (UIView.GetModalComponent()?.GetComponent<K45DialogControl>() != null)
+            if (UIView.GetModalComponent()?.GetComponent<DialogControl>() != null)
             {
                 m_mainPanel.zOrder = UIView.GetModalComponent().zOrder + 1;
             }
@@ -377,9 +377,9 @@ namespace Klyte.Commons.Utils
                 }
 
                 string fullText;
-                if (File.Exists($"{propertiesToSet.help_fullPathName}{Path.DirectorySeparatorChar}texts_{KlyteLocaleManager.CurrentLanguageId}.txt"))
+                if (File.Exists($"{propertiesToSet.help_fullPathName}{Path.DirectorySeparatorChar}texts_{TLMLocaleManager.CurrentLanguageId}.txt"))
                 {
-                    fullText = File.ReadAllText($"{propertiesToSet.help_fullPathName}{Path.DirectorySeparatorChar}texts_{KlyteLocaleManager.CurrentLanguageId}.txt");
+                    fullText = File.ReadAllText($"{propertiesToSet.help_fullPathName}{Path.DirectorySeparatorChar}texts_{TLMLocaleManager.CurrentLanguageId}.txt");
                 }
                 else if (File.Exists($"{propertiesToSet.help_fullPathName}{Path.DirectorySeparatorChar}texts.txt"))
                 {
@@ -404,17 +404,17 @@ namespace Klyte.Commons.Utils
                 propertiesToSet = new BindProperties
                 {
                     icon = propertiesToSet.icon,
-                    title = string.Format(Locale.Get("K45_CMNS_HELP_FORMAT"), propertiesToSet.help_featureName, currentPage + 1, lastPage + 1),
+                    title = string.Format(Locale.Get("CMNS_HELP_FORMAT"), propertiesToSet.help_featureName, currentPage + 1, lastPage + 1),
                     message = string.Format(tutorialEntries[currentPage], formatEntries),
                     imageTexturePath = textureImagePath,
 
                     showClose = true,
                     showButton1 = currentPage != 0,
-                    textButton1 = "<<<\n" + Locale.Get("K45_CMNS_PREV"),
+                    textButton1 = "<<<\n" + Locale.Get("CMNS_PREV"),
                     showButton2 = true,
                     textButton2 = Locale.Get("EXCEPTION_OK"),
                     showButton3 = currentPage != lastPage,
-                    textButton3 = ">>>\n" + Locale.Get("K45_CMNS_NEXT"),
+                    textButton3 = ">>>\n" + Locale.Get("CMNS_NEXT"),
                 };
                 callback = (x) =>
                 {
@@ -455,7 +455,7 @@ namespace Klyte.Commons.Utils
 
             if (m_dropDown is null)
             {
-                KlyteMonoUtils.CreateUIElement(out UIPanel DDpanel, m_mainPanel.transform);
+                MonoUtils.CreateUIElement(out UIPanel DDpanel, m_mainPanel.transform);
                 DDpanel.maximumSize = new Vector2(m_boxText.minimumSize.x - 10, 40);
                 DDpanel.anchor = UIAnchorStyle.CenterHorizontal;
                 DDpanel.zOrder = m_textField.zOrder + 1;
@@ -867,7 +867,7 @@ namespace Klyte.Commons.Utils
 
         public void OnDestroy()
         {
-            LogUtils.DoWarnLog($"K45 PANEL REMOVED @ {Environment.StackTrace}");
+            LogUtils.DoWarnLog($" PANEL REMOVED @ {Environment.StackTrace}");
             UIDynamicPanelsRedirector.RemovePanel();
         }
     }

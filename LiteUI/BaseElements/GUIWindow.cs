@@ -1,12 +1,12 @@
 ﻿using ColossalFramework.UI;
-using Klyte.Commons.Utils;
-using Klyte.Commons.Utils.StructExtensions;
+using Commons.Utils;
+using Commons.Utils.StructExtensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Klyte.Commons.LiteUI.BaseElements
+namespace Commons.LiteUI.BaseElements
 {
     public abstract class GUIWindow : MonoBehaviour, IDestroyableObject, IUIObject
     {
@@ -228,7 +228,7 @@ namespace Klyte.Commons.LiteUI.BaseElements
             }
         }
 
-        internal static Texture2D LoadHighlightTexture() => highlightTexture = KlyteResourceLoader.LoadTexture("commons.UI.Images.highlight.png");
+        internal static Texture2D LoadHighlightTexture() => highlightTexture = ResourceLoader.LoadTexture("commons.UI.Images.highlight.png");
 
         public void MoveResize(Rect newWindowRect) => windowRect = newWindowRect;
 

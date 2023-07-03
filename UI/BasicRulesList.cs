@@ -1,16 +1,16 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Globalization;
 using ColossalFramework.UI;
-using Klyte.Commons.Interfaces;
-using Klyte.Commons.Libraries;
-using Klyte.Commons.UI.SpriteNames;
-using Klyte.Commons.Utils;
+using Commons.Interfaces;
+using Commons.Libraries;
+using Commons.UI.SpriteNames;
+using Commons.Utils;
 using System;
 using System.Linq;
 using UnityEngine;
-using static Klyte.Commons.UI.DefaultEditorUILib;
+using static Commons.UI.DefaultEditorUILib;
 
-namespace Klyte.Commons.UI
+namespace Commons.UI
 {
     public abstract class BasicRulesList<D, L, I> : UICustomControl where D : ILibable, new() where L : LibBaseFile<L, I>, new() where I : ILibableAsContainer<D>, new()
     {
@@ -35,10 +35,10 @@ namespace Klyte.Commons.UI
         protected abstract string LocaleImport { get; }
         protected abstract string LocaleExport { get; }
 
-        protected virtual string LocaleAddItem => "K45_CMNS_ADDRULE";
-        protected virtual string LocaleRemoveItem => "K45_CMNS_REMOVERULE";
-        protected virtual string LocaleUp => "K45_CMNS_MOVERULEUP";
-        protected virtual string LocaleDown => "K45_CMNS_MOVERULEDOWN";
+        protected virtual string LocaleAddItem => "CMNS_ADDRULE";
+        protected virtual string LocaleRemoveItem => "CMNS_REMOVERULE";
+        protected virtual string LocaleUp => "CMNS_MOVERULEUP";
+        protected virtual string LocaleDown => "CMNS_MOVERULEDOWN";
 
         protected virtual string LocaleExportTitle => $"{LocaleExport}_TITLE";
         protected virtual string LocaleExportMessage => $"{LocaleExport}_MESSAGE";
@@ -69,31 +69,31 @@ namespace Klyte.Commons.UI
             MainContainer.autoLayoutPadding = new RectOffset(0, 0, 4, 4);
 
 
-            KlyteMonoUtils.CreateUIElement(out UIPanel m_topPanel, MainContainer.transform, "topListPanel", new UnityEngine.Vector4(0, 0, MainContainer.width, 111));
+            MonoUtils.CreateUIElement(out UIPanel m_topPanel, MainContainer.transform, "topListPanel", new UnityEngine.Vector4(0, 0, MainContainer.width, 111));
             m_topPanel.autoLayout = true;
             m_topPanel.autoLayoutDirection = LayoutDirection.Horizontal;
             m_topPanel.wrapLayout = true;
             m_topPanel.autoLayoutPadding = new RectOffset(8, 8, 5, 5);
 
-            KlyteMonoUtils.CreateUIElement(out UILabel m_topPanelTitle, m_topPanel.transform, "topListPanelTitle", new UnityEngine.Vector4(0, 0, m_topPanel.width - 16, 15));
-            KlyteMonoUtils.LimitWidthAndBox(m_topPanelTitle, m_topPanel.width - 16, true);
+            MonoUtils.CreateUIElement(out UILabel m_topPanelTitle, m_topPanel.transform, "topListPanelTitle", new UnityEngine.Vector4(0, 0, m_topPanel.width - 16, 15));
+            MonoUtils.LimitWidthAndBox(m_topPanelTitle, m_topPanel.width - 16, true);
             m_topPanelTitle.text = Locale.Get(LocaleRuleListTitle);
             m_topPanelTitle.textAlignment = UIHorizontalAlignment.Center;
 
             int btnSize = 36;
-            KlyteMonoUtils.CreateUIElement<UILabel>(out UILabel spacing, m_topPanel.transform, "_", new Vector4(0, 0, btnSize / 2, btnSize));
+            MonoUtils.CreateUIElement<UILabel>(out UILabel spacing, m_topPanel.transform, "_", new Vector4(0, 0, btnSize / 2, btnSize));
             spacing.textScale = 0;
             spacing.width = btnSize / 4;
-            KlyteMonoUtils.InitCircledButton(m_topPanel, out m_import, CommonsSpriteNames.K45_Import, OnImportData, LocaleImport, btnSize);
-            KlyteMonoUtils.InitCircledButton(m_topPanel, out m_export, CommonsSpriteNames.K45_Export, (x, y) => OnExportData(), LocaleExport, btnSize);
-            KlyteMonoUtils.InitCircledButton(m_topPanel, out m_help, CommonsSpriteNames.K45_QuestionMark, (x, y) => Help_RulesList(), "K45_CMNS_HELP", btnSize);
-            KlyteMonoUtils.InitCircledButton(m_topPanel, out m_new, CommonsSpriteNames.K45_New, OnAddItemOnList, LocaleAddItem, btnSize);
-            KlyteMonoUtils.InitCircledButton(m_topPanel, out m_up, CommonsSpriteNames.K45_Up, OnMoveItemUpOnList, LocaleUp, btnSize);
-            KlyteMonoUtils.InitCircledButton(m_topPanel, out m_down, CommonsSpriteNames.K45_Down, OnMoveItemDownOnList, LocaleDown, btnSize);
-            KlyteMonoUtils.InitCircledButton(m_topPanel, out m_remove, CommonsSpriteNames.K45_X, OnRemoveItem, LocaleRemoveItem, btnSize);
+            MonoUtils.InitCircledButton(m_topPanel, out m_import, CommonsSpriteNames.Import, OnImportData, LocaleImport, btnSize);
+            MonoUtils.InitCircledButton(m_topPanel, out m_export, CommonsSpriteNames.Export, (x, y) => OnExportData(), LocaleExport, btnSize);
+            MonoUtils.InitCircledButton(m_topPanel, out m_help, CommonsSpriteNames.QuestionMark, (x, y) => Help_RulesList(), "CMNS_HELP", btnSize);
+            MonoUtils.InitCircledButton(m_topPanel, out m_new, CommonsSpriteNames.New, OnAddItemOnList, LocaleAddItem, btnSize);
+            MonoUtils.InitCircledButton(m_topPanel, out m_up, CommonsSpriteNames.Up, OnMoveItemUpOnList, LocaleUp, btnSize);
+            MonoUtils.InitCircledButton(m_topPanel, out m_down, CommonsSpriteNames.Down, OnMoveItemDownOnList, LocaleDown, btnSize);
+            MonoUtils.InitCircledButton(m_topPanel, out m_remove, CommonsSpriteNames.X, OnRemoveItem, LocaleRemoveItem, btnSize);
 
-            KlyteMonoUtils.CreateUIElement(out UIPanel m_listContainer, MainContainer.transform, "previewPanel", new Vector4(0, 0, MainContainer.width, MainContainer.height - 126));
-            KlyteMonoUtils.CreateScrollPanel(m_listContainer, out m_orderedRulesList, out _, m_listContainer.width - 20, m_listContainer.height);
+            MonoUtils.CreateUIElement(out UIPanel m_listContainer, MainContainer.transform, "previewPanel", new Vector4(0, 0, MainContainer.width, MainContainer.height - 126));
+            MonoUtils.CreateScrollPanel(m_listContainer, out m_orderedRulesList, out _, m_listContainer.width - 20, m_listContainer.height);
             m_orderedRulesList.backgroundSprite = "OptionsScrollbarTrack";
             m_orderedRulesList.autoLayout = true;
             m_orderedRulesList.autoLayoutDirection = LayoutDirection.Vertical;
@@ -102,7 +102,7 @@ namespace Klyte.Commons.UI
 
         private void OnExportData(string defaultText = null)
         {
-            K45DialogControl.ShowModalPromptText(new K45DialogControl.BindProperties
+            DialogControl.ShowModalPromptText(new DialogControl.BindProperties
             {
                 defaultTextFieldContent = defaultText,
                 title = Locale.Get(LocaleExportTitle),
@@ -117,7 +117,7 @@ namespace Klyte.Commons.UI
                  {
                      if (text.IsNullOrWhiteSpace())
                      {
-                         K45DialogControl.UpdateCurrentMessage($"<color #FFFF00>{Locale.Get($"{LocaleExportMessage}_INVALIDNAME")}</color>\n\n{Locale.Get(LocaleExportMessage)}");
+                         DialogControl.UpdateCurrentMessage($"<color #FFFF00>{Locale.Get($"{LocaleExportMessage}_INVALIDNAME")}</color>\n\n{Locale.Get(LocaleExportMessage)}");
                          return false;
                      }
                      LibBaseFile<L, I>.Reload();
@@ -128,7 +128,7 @@ namespace Klyte.Commons.UI
                      }
                      else
                      {
-                         K45DialogControl.ShowModal(new K45DialogControl.BindProperties
+                         DialogControl.ShowModal(new DialogControl.BindProperties
                          {
                              title = Locale.Get(LocaleExportTitle),
                              message = string.Format(Locale.Get(LocaleExportConfirmOverwrite), text),
@@ -164,14 +164,14 @@ namespace Klyte.Commons.UI
                 m_dataArray = ReferenceData
             };
             LibBaseFile<L, I>.Instance.Add(text,  newItem);
-            K45DialogControl.ShowModal(new K45DialogControl.BindProperties
+            DialogControl.ShowModal(new DialogControl.BindProperties
             {
                 title = Locale.Get(LocaleExportTitle),
                 message = string.Format(Locale.Get(LocaleExportSuccessSave), LibBaseFile<L, I>.Instance.DefaultXmlFileBaseFullPath),
                 showButton1 = true,
                 textButton1 = Locale.Get("EXCEPTION_OK"),
                 showButton2 = true,
-                textButton2 = Locale.Get("K45_CMNS_GOTO_FILELOC"),
+                textButton2 = Locale.Get("CMNS_GOTO_FILELOC"),
             }, (x) =>
             {
                 if (x == 2)
@@ -195,7 +195,7 @@ namespace Klyte.Commons.UI
 
             if (optionList.Length > 0)
             {
-                K45DialogControl.ShowModalPromptDropDown(new K45DialogControl.BindProperties
+                DialogControl.ShowModalPromptDropDown(new DialogControl.BindProperties
                 {
                     title = Locale.Get(LocaleImportTitle),
                     message = Locale.Get(LocaleImportMessage),
@@ -217,14 +217,14 @@ namespace Klyte.Commons.UI
             }
             else
             {
-                K45DialogControl.ShowModal(new K45DialogControl.BindProperties
+                DialogControl.ShowModal(new DialogControl.BindProperties
                 {
                     title = Locale.Get(LocaleImportTitle),
                     message = string.Format(Locale.Get(LocaleImportNoEntryFound), LibBaseFile<L, I>.Instance.DefaultXmlFileBaseFullPath),
                     showButton1 = true,
                     textButton1 = Locale.Get("EXCEPTION_OK"),
                     showButton2 = true,
-                    textButton2 = Locale.Get("K45_CMNS_GOTO_FILELOC"),
+                    textButton2 = Locale.Get("CMNS_GOTO_FILELOC"),
                 }, (x) =>
                 {
                     if (x == 2)

@@ -1,8 +1,8 @@
-﻿using Klyte.Commons.Utils.UtilitiesClasses;
+﻿using Commons.Utils.UtilitiesClasses;
 using System;
 using System.Xml.Serialization;
 
-namespace Klyte.Commons.Interfaces.Warehouse
+namespace Commons.Interfaces.Warehouse
 {
     public abstract class ExtensionInterface2LevelIntImpl<U, D> : DataExtensionBase<U> where U : ExtensionInterface2LevelIntImpl<U, D>, new()
     {

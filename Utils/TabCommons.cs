@@ -3,7 +3,7 @@ using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using UnityEngine;
 
-namespace Klyte.Commons.Utils
+namespace Commons.Utils
 {
 
     public static class TabCommons
@@ -11,19 +11,19 @@ namespace Klyte.Commons.Utils
 
         public static UIButton CreateTabTemplate(out UISprite logo, Vector2 size, UITextureAtlas textureAtlas = null)
         {
-            KlyteMonoUtils.CreateUIElement(out UIButton tabTemplate, null, "UVMTabTemplate");
-            KlyteMonoUtils.InitButton(tabTemplate, false, "GenericTab");
+            MonoUtils.CreateUIElement(out UIButton tabTemplate, null, "UVMTabTemplate");
+            MonoUtils.InitButton(tabTemplate, false, "GenericTab");
             tabTemplate.autoSize = false;
             tabTemplate.size = size;
-            KlyteMonoUtils.CreateUIElement(out logo, tabTemplate.transform, "TabIcon", new Vector4(0, 0, size.x, size.y));
+            MonoUtils.CreateUIElement(out logo, tabTemplate.transform, "TabIcon", new Vector4(0, 0, size.x, size.y));
             logo.atlas = textureAtlas ?? tabTemplate.atlas;
 
             return tabTemplate;
         }
         public static UIButton CreateTextTabTemplate(Vector2 size)
         {
-            KlyteMonoUtils.CreateUIElement(out UIButton tabTemplate, null, "UVMTabTemplate");
-            KlyteMonoUtils.InitButton(tabTemplate, false, "GenericTab");
+            MonoUtils.CreateUIElement(out UIButton tabTemplate, null, "UVMTabTemplate");
+            MonoUtils.InitButton(tabTemplate, false, "GenericTab");
             tabTemplate.autoSize = false;
             tabTemplate.size = size;
 
@@ -45,14 +45,14 @@ namespace Klyte.Commons.Utils
             Vector2 size = nullableSize ?? (isHorizontal ? new Vector2(sprite.IsNullOrWhiteSpace() ? 100 : stripMain.height, stripMain.height) : new Vector2(stripMain.width, 40));
             UIButton tab = CreateTabButton(sprite, text, textureAtlas, size);
 
-            KlyteMonoUtils.CreateUIElement(out UIPanel contentContainer, null);
+            MonoUtils.CreateUIElement(out UIPanel contentContainer, null);
             contentContainer.name = "Container";
             contentContainer.size = new Vector4(stripMain.tabContainer.width, stripMain.tabContainer.height);
             stripMain.AddTab(objectName, tab.gameObject, contentContainer.gameObject);
             GameObject go;
             if (scroll)
             {
-                go = KlyteMonoUtils.CreateScrollPanel(contentContainer, out UIScrollablePanel scrollablePanel, out _, contentContainer.width - 20, contentContainer.height - 5, new Vector3()).Self.gameObject;
+                go = MonoUtils.CreateScrollPanel(contentContainer, out UIScrollablePanel scrollablePanel, out _, contentContainer.width - 20, contentContainer.height - 5, new Vector3()).Self.gameObject;
                 scrollablePanel.scrollPadding = new RectOffset(10, 10, 10, 10);
             }
             else

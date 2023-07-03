@@ -1,7 +1,7 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Math;
 
-namespace Klyte.Commons.Utils.StructExtensions
+namespace Commons.Utils.StructExtensions
 {
     public static class NetSegmentExtensions
     {

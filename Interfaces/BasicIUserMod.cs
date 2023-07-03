@@ -1,11 +1,11 @@
 ﻿using ColossalFramework;
 using ICities;
-using Klyte.Commons.Extensions.UI;
-using Klyte.Commons.Utils;
+using Commons.Extensions.UI;
+using Commons.Utils;
 using System;
 using System.Collections;
 
-namespace Klyte.Commons.Interfaces
+namespace Commons.Interfaces
 {
     public abstract class BasicIUserMod<U, C, T> : BasicIUserModSimplified<U, C>
         where U : BasicIUserMod<U, C, T>, new()
@@ -48,8 +48,8 @@ namespace Klyte.Commons.Interfaces
         protected override void CreateGroup9(UIHelperExtension helper)
         {
             base.CreateGroup9(helper);
-            var chk_lowSat = helper.AddCheckboxLocale("K45_CMNS_USE_LOW_BRIGHT_BUTTON", UseLowSaturationButton);
-            var chk_uui = helper.AddCheckboxLocale("K45_CMNS_USE_UUI_IF_AVAILABLE", UseUuiIfAvailable);
+            var chk_lowSat = helper.AddCheckboxLocale("CMNS_USE_LOW_BRIGHT_BUTTON", UseLowSaturationButton);
+            var chk_uui = helper.AddCheckboxLocale("CMNS_USE_UUI_IF_AVAILABLE", UseUuiIfAvailable);
             helper.Self.eventVisibilityChanged += (x, y) =>
             {
                 if (y)
@@ -91,9 +91,9 @@ namespace Klyte.Commons.Interfaces
         internal bool IsUui() => Controller.BridgeUUI.IsUuiAvailable;
         public void UnselectTab() => Controller.BridgeUUI.UnselectTab();
 
-        public static SavedFloat ButtonPosX { get; } = new SavedFloat("K45_ButtonPosX_v2", Settings.gameSettingsFile, 5, true);
-        public static SavedFloat ButtonPosY { get; } = new SavedFloat("K45_ButtonPosY_v2", Settings.gameSettingsFile, 60, true);
-        public static SavedBool UseLowSaturationButton { get; } = new SavedBool("K45_UseLowSaturationButton", Settings.gameSettingsFile, true, true);
+        public static SavedFloat ButtonPosX { get; } = new SavedFloat("ButtonPosX_v2", Settings.gameSettingsFile, 5, true);
+        public static SavedFloat ButtonPosY { get; } = new SavedFloat("ButtonPosY_v2", Settings.gameSettingsFile, 60, true);
+        public static SavedBool UseLowSaturationButton { get; } = new SavedBool("UseLowSaturationButton", Settings.gameSettingsFile, true, true);
 
         protected override void ExtraUnloadBinds()
         {

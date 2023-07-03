@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Klyte.Commons.Utils.UtilitiesClasses
+namespace Commons.Utils.UtilitiesClasses
 {
     public class NetAIWrapper : IEquatable<NetAIWrapper>
     {

@@ -1,9 +1,9 @@
 ﻿using ColossalFramework.Globalization;
-using Klyte.Commons.UI.i18n;
+using Commons.UI.i18n;
 using System;
 using UnityEngine;
 
-namespace Klyte.Commons.Utils
+namespace Commons.Utils
 {
     public class GeneralUtils
     {
@@ -12,7 +12,7 @@ namespace Klyte.Commons.Utils
             string localeDump = "LOCALE DUMP:\r\n";
             try
             {
-                var locale = KlyteLocaleManager.m_localeStringsDictionary(KlyteLocaleManager.m_localeManagerLocale(LocaleManager.instance));
+                var locale = TLMLocaleManager.m_localeStringsDictionary(TLMLocaleManager.m_localeManagerLocale(LocaleManager.instance));
                 foreach (Locale.Key k in locale.Keys)
                 {
                     localeDump += string.Format("{0}  =>  {1}\n", k.ToString(), locale[k]);

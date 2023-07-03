@@ -1,9 +1,9 @@
 ﻿using ColossalFramework.Math;
 using UnityEngine;
 
-namespace Klyte.Commons.Utils
+namespace Commons.Utils
 {
-    public class KlyteMathUtils
+    public class TLMMathUtils
     {
         #region Math Utils
 

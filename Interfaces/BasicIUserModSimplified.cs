@@ -5,10 +5,10 @@ using ColossalFramework.PlatformServices;
 using ColossalFramework.Plugins;
 using ColossalFramework.UI;
 using ICities;
-using Klyte.Commons.Extensions.UI;
-using Klyte.Commons.Extensions;
-using Klyte.Commons.UI.i18n;
-using Klyte.Commons.Utils;
+using Commons.Extensions.UI;
+using Commons.Extensions;
+using Commons.UI.i18n;
+using Commons.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,10 +17,10 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using static ColossalFramework.UI.UITextureAtlas;
-using static Klyte.Commons.Utils.K45DialogControl;
-using Klyte.Commons.Utils.UtilitiesClasses;
+using static Commons.Utils.DialogControl;
+using Commons.Utils.UtilitiesClasses;
 
-namespace Klyte.Commons.Interfaces
+namespace Commons.Interfaces
 {
 
     public abstract class BasicIUserModSimplified<U, C> : IUserMod, ILoadingExtension, IViewStartActions
@@ -28,7 +28,7 @@ namespace Klyte.Commons.Interfaces
         where C : BaseController<U, C>
     {
         public abstract string SimpleName { get; }
-        public virtual string IconName { get; } = $"K45_{CommonProperties.Acronym}_Icon";
+        public virtual string IconName { get; } = $"_{CommonProperties.Acronym}_Icon";
         public virtual bool UseGroup9 => true;
         public virtual void DoLog(string fmt, params object[] args) => LogUtils.DoLog(fmt, args);
         public virtual void DoErrorLog(string fmt, params object[] args) => LogUtils.DoErrorLog(fmt, args);
@@ -214,34 +214,34 @@ namespace Klyte.Commons.Interfaces
 
             m_onSettingsUiComponent = new UIHelperExtension((UIHelper)helperDefault).Self ?? m_onSettingsUiComponent;
 
-            if (Locale.Get(KlyteLocaleManager.m_defaultModControllingKey) == CommonProperties.ModName)
+            if (Locale.Get(TLMLocaleManager.m_defaultModControllingKey) == CommonProperties.ModName)
             {
-                if (GameObject.FindObjectOfType<KlyteLocaleManager>() is null)
+                if (GameObject.FindObjectOfType<TLMLocaleManager>() is null)
                 {
-                    KlyteMonoUtils.CreateElement<KlyteLocaleManager>(new GameObject(typeof(U).Name).transform);
-                    if (Locale.GetUnchecked(KlyteLocaleManager.m_defaultTestKey) != KlyteLocaleManager.m_defaultTestValue)
+                    MonoUtils.CreateElement<TLMLocaleManager>(new GameObject(typeof(U).Name).transform);
+                    if (Locale.GetUnchecked(TLMLocaleManager.m_defaultTestKey) != TLMLocaleManager.m_defaultTestValue)
                     {
                         LogUtils.DoErrorLog("CAN'T LOAD LOCALE!!!!!");
                     }
-                    LocaleManager.eventLocaleChanged += KlyteLocaleManager.ReloadLanguage;
+                    LocaleManager.eventLocaleChanged += TLMLocaleManager.ReloadLanguage;
                 }
             }
-            foreach (string lang in KlyteLocaleManager.locales)
+            foreach (string lang in TLMLocaleManager.locales)
             {
-                string content = KlyteResourceLoader.LoadResourceString($"UI.i18n.{lang}.properties");
-                FileUtils.EnsureFolderCreation($"{KlyteLocaleManager.m_translateFilesPath}{lang}");
+                string content = ResourceLoader.LoadResourceString($"UI.i18n.{lang}.properties");
+                FileUtils.EnsureFolderCreation($"{TLMLocaleManager.m_translateFilesPath}{lang}");
                 if (content != null)
                 {
-                    File.WriteAllText($"{KlyteLocaleManager.m_translateFilesPath}{lang}{Path.DirectorySeparatorChar}1_{Assembly.GetExecutingAssembly().GetName().Name}.txt", content);
+                    File.WriteAllText($"{TLMLocaleManager.m_translateFilesPath}{lang}{Path.DirectorySeparatorChar}1_{Assembly.GetExecutingAssembly().GetName().Name}.txt", content);
                 }
-                content = KlyteResourceLoader.LoadResourceString($"commons.UI.i18n.{lang}.properties");
+                content = ResourceLoader.LoadResourceString($"Commons.UI.i18n.{lang}.properties");
                 if (content != null)
                 {
-                    File.WriteAllText($"{KlyteLocaleManager.m_translateFilesPath}{lang}{Path.DirectorySeparatorChar}0_common_{K45DialogControl.VERSION}.txt", content);
+                    File.WriteAllText($"{TLMLocaleManager.m_translateFilesPath}{lang}{Path.DirectorySeparatorChar}0_common_{DialogControl.VERSION}.txt", content);
                 }
 
             }
-            KlyteLocaleManager.ReloadLanguage(true);
+            TLMLocaleManager.ReloadLanguage(true);
             DoWithSettingsUI(new UIHelperExtension(m_onSettingsUiComponent));
         }
 
@@ -272,17 +272,17 @@ namespace Klyte.Commons.Interfaces
 
         protected virtual void CreateGroup9(UIHelperExtension helper)
         {
-            UIHelperExtension group9 = helper.AddGroupExtended(Locale.Get("K45_BETAS_EXTRA_INFO"));
+            UIHelperExtension group9 = helper.AddGroupExtended(Locale.Get("_BETAS_EXTRA_INFO"));
             Group9SettingsUI(group9);
 
-            group9.AddCheckbox(Locale.Get("K45_DEBUG_MODE"), DebugMode.value, delegate (bool val)
+            group9.AddCheckbox(Locale.Get("_DEBUG_MODE"), DebugMode.value, delegate (bool val)
             { DebugMode.value = val; });
-            group9.AddLabel(string.Format(Locale.Get("K45_VERSION_SHOW"), FullVersion));
-            group9.AddButton(Locale.Get("K45_RELEASE_NOTES"), delegate ()
+            group9.AddLabel(string.Format(Locale.Get("_VERSION_SHOW"), FullVersion));
+            group9.AddButton(Locale.Get("_RELEASE_NOTES"), delegate ()
             {
                 ShowVersionInfoPopup(true);
             });
-            group9.AddButton("Report-a-bug helper", () => K45DialogControl.ShowModal(new K45DialogControl.BindProperties()
+            group9.AddButton("Report-a-bug helper", () => DialogControl.ShowModal(new DialogControl.BindProperties()
             {
                 icon = IconName,
                 title = "Report-a-bug helper",
@@ -309,19 +309,19 @@ namespace Klyte.Commons.Interfaces
                 return true;
             }));
 
-            if (!(GameObject.FindObjectOfType<KlyteLocaleManager>() is null))
+            if (!(GameObject.FindObjectOfType<TLMLocaleManager>() is null))
             {
                 UIDropDown dd = null;
-                dd = group9.AddDropdownLocalized("K45_MOD_LANG", (new string[] { "K45_GAME_DEFAULT_LANGUAGE" }.Concat(KlyteLocaleManager.locales.Select(x => $"K45_LANG_{x}")).Select(x => Locale.Get(x))).ToArray(), KlyteLocaleManager.GetLoadedLanguage(), delegate (int idx)
+                dd = group9.AddDropdownLocalized("_MOD_LANG", (new string[] { "_GAME_DEFAULT_LANGUAGE" }.Concat(TLMLocaleManager.locales.Select(x => $"_LANG_{x}")).Select(x => Locale.Get(x))).ToArray(), TLMLocaleManager.GetLoadedLanguage(), delegate (int idx)
                 {
-                    KlyteLocaleManager.SaveLoadedLanguage(idx);
-                    KlyteLocaleManager.ReloadLanguage();
-                    KlyteLocaleManager.RedrawUIComponents();
+                    TLMLocaleManager.SaveLoadedLanguage(idx);
+                    TLMLocaleManager.ReloadLanguage();
+                    TLMLocaleManager.RedrawUIComponents();
                 });
             }
             else
             {
-                group9.AddLabel(string.Format(Locale.Get("K45_LANG_CTRL_MOD_INFO"), Locale.Get("K45_MOD_CONTROLLING_LOCALE")));
+                group9.AddLabel(string.Format(Locale.Get("_LANG_CTRL_MOD_INFO"), Locale.Get("_MOD_CONTROLLING_LOCALE")));
             }
 
         }
@@ -343,13 +343,13 @@ namespace Klyte.Commons.Interfaces
                 try
                 {
                     string title = $"{SimpleName} v{Version}";
-                    string notes = KlyteResourceLoader.LoadResourceString("UI.VersionNotes.txt");
+                    string notes = ResourceLoader.LoadResourceString("UI.VersionNotes.txt");
                     var fullWidth = notes.StartsWith("<extended>");
                     if (fullWidth)
                     {
                         notes = notes.Substring("<extended>".Length);
                     }
-                    string text = $"{SimpleName} was updated! Release notes:\n\n{notes}\n\n<sprite K45_K45Button> Current Version: <color #FFFF00>{FullVersion}</color>";
+                    string text = $"{SimpleName} was updated! Release notes:\n\n{notes}\n\n<sprite _Button> Current Version: <color #FFFF00>{FullVersion}</color>";
                     var targetUrl = GetButtonLink();
                     ShowModal(new BindProperties()
                     {
@@ -362,9 +362,9 @@ namespace Klyte.Commons.Interfaces
                         showButton3 = !(targetUrl is null),
                         textButton3 = targetUrl?.First ?? "",
                         showButton4 = true,
-                        textButton4 = "Follow Klyte45 on Twitter!",
+                        textButton4 = "Follow  on Twitter!",
                         showButton5 = true,
-                        textButton5 = "Subscribe to Klyte45 channel on YouTube!",
+                        textButton5 = "Subscribe to  channel on YouTube!",
                         messageAlign = UIHorizontalAlignment.Left,
                         useFullWindowWidth = fullWidth,
                         title = title,
@@ -388,10 +388,10 @@ namespace Klyte.Commons.Interfaces
                                 }
                                 break;
                             case 4:
-                                ColossalFramework.Utils.OpenUrlThreaded("https://twitter.com/klyte45");
+                                ColossalFramework.Utils.OpenUrlThreaded("https://twitter.com/");
                                 break;
                             case 5:
-                                ColossalFramework.Utils.OpenUrlThreaded("https://youtube.com/klyte45");
+                                ColossalFramework.Utils.OpenUrlThreaded("https://youtube.com/");
                                 break;
 
                         }
@@ -470,7 +470,7 @@ namespace Klyte.Commons.Interfaces
         public IEnumerable<KeyValuePair<ulong, string>> IncompatibleModListAll => IncompatibleModListCommons.Union(IncompatibleModList);
         public IEnumerable<string> IncompatibleDllModListAll => IncompatibleDllModListCommons.Union(IncompatibleDllModList);
 
-        public static SavedBool UseUuiIfAvailable { get; } = new SavedBool("K45_UseUuiIfAvailable", Settings.gameSettingsFile, true, true);
+        public static SavedBool UseUuiIfAvailable { get; } = new SavedBool("_UseUuiIfAvailable", Settings.gameSettingsFile, true, true);
     }
 
 }

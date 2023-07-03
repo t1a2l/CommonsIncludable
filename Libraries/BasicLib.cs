@@ -1,16 +1,16 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Globalization;
-using Klyte.Commons.Interfaces;
-using Klyte.Commons.Utils;
+using Commons.Interfaces;
+using Commons.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Xml.Serialization;
-using static Klyte.Commons.Utils.XmlUtils;
+using static Commons.Utils.XmlUtils;
 
-namespace Klyte.Commons.Libraries
+namespace Commons.Libraries
 {
     public abstract class BasicLib<LIB, DESC>
         where LIB : BasicLib<LIB, DESC>, new()

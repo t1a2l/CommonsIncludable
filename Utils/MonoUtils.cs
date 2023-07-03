@@ -1,15 +1,15 @@
 ﻿using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using ICities;
-using Klyte.Commons.Extensions.UI;
-using Klyte.Commons.UI;
-using Klyte.Commons.UI.SpriteNames;
+using Commons.Extensions.UI;
+using Commons.UI;
+using Commons.UI.SpriteNames;
 using System;
 using UnityEngine;
 
-namespace Klyte.Commons.Utils
+namespace Commons.Utils
 {
-    public class KlyteMonoUtils
+    public class MonoUtils
     {
         #region UI utils
         public static T CreateElement<T>(Transform parent, string name = null) where T : MonoBehaviour
@@ -170,12 +170,12 @@ namespace Klyte.Commons.Utils
             button.pressedFgSprite = isCheck ? sprite + "Pressed" : spriteHov;
             button.textColor = new Color32(255, 255, 255, 255);
         }
-        public static void InitCircledButton(UIComponent parent, out UIButton button, CommonsSpriteNames sprite, MouseEventHandler onClicked, string tooltipLocale, float size = 40) => InitCircledButton(parent, out button, KlyteResourceLoader.GetDefaultSpriteNameFor(sprite), onClicked, tooltipLocale == null ? null : Locale.Get(tooltipLocale), size);
+        public static void InitCircledButton(UIComponent parent, out UIButton button, CommonsSpriteNames sprite, MouseEventHandler onClicked, string tooltipLocale, float size = 40) => InitCircledButton(parent, out button, ResourceLoader.GetDefaultSpriteNameFor(sprite), onClicked, tooltipLocale == null ? null : Locale.Get(tooltipLocale), size);
 
         public static void InitCircledButton(UIComponent parent, out UIButton button, string sprite, MouseEventHandler onClicked, string name, float size = 40)
         {
-            KlyteMonoUtils.CreateUIElement(out button, parent.transform, name, new UnityEngine.Vector4(0, 0, size, size));
-            KlyteMonoUtils.InitButtonFull(button, false, "OptionBase");
+            CreateUIElement(out button, parent.transform, name, new UnityEngine.Vector4(0, 0, size, size));
+            InitButtonFull(button, false, "OptionBase");
             button.focusedBgSprite = "";
             button.normalFgSprite = sprite;
             button.scaleFactor = 0.6f;
@@ -184,8 +184,8 @@ namespace Klyte.Commons.Utils
         }
         public static void InitCircledButtonText(UIComponent parent, out UIButton button, string text, MouseEventHandler onClicked, string tooltip, float size = 40)
         {
-            KlyteMonoUtils.CreateUIElement(out button, parent.transform, tooltip, new UnityEngine.Vector4(0, 0, size, size));
-            KlyteMonoUtils.InitButtonFull(button, false, "OptionBase");
+            CreateUIElement(out button, parent.transform, tooltip, new UnityEngine.Vector4(0, 0, size, size));
+            InitButtonFull(button, false, "OptionBase");
             button.focusedBgSprite = "";
             button.text = text;
             button.eventClicked += onClicked;
@@ -204,7 +204,7 @@ namespace Klyte.Commons.Utils
                 label.width -= 15;
                 field.width -= 15;
             }
-            InitCircledButton(label.parent, out UIButton result, CommonsSpriteNames.K45_QuestionMark, (x, y) => onClicked(), "K45_CMNS_HELP", 30);
+            InitCircledButton(label.parent, out UIButton result, CommonsSpriteNames.QuestionMark, (x, y) => onClicked(), "CMNS_HELP", 30);
             result.scaleFactor = 1;
             return result;
         }
@@ -462,9 +462,9 @@ namespace Klyte.Commons.Utils
         public static void CreateTabsComponent(out UITabstrip tabstrip, out UITabContainer tabContainer, Transform parent, string namePrefix, Vector4 areaTabstrip, Vector4 areaContainer) => CreateTabsComponent(out tabstrip, out tabContainer, parent, parent, namePrefix, areaTabstrip, areaContainer);
         public static void CreateTabsComponent(out UITabstrip tabstrip, out UITabContainer tabContainer, Transform parentStrip, Transform parentContainer, string namePrefix, Vector4 areaTabstrip, Vector4 areaContainer)
         {
-            KlyteMonoUtils.CreateUIElement(out tabstrip, parentStrip, $"{namePrefix}_Tabstrip", areaTabstrip);
+            CreateUIElement(out tabstrip, parentStrip, $"{namePrefix}_Tabstrip", areaTabstrip);
 
-            KlyteMonoUtils.CreateUIElement(out tabContainer, parentContainer, $"{namePrefix}_TabContainer", areaContainer);
+            CreateUIElement(out tabContainer, parentContainer, $"{namePrefix}_TabContainer", areaContainer);
             tabstrip.tabPages = tabContainer;
             tabstrip.selectedIndex = 0;
             tabstrip.selectedIndex = -1;

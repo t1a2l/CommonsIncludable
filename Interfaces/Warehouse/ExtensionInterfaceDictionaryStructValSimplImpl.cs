@@ -1,8 +1,8 @@
-﻿using Klyte.Commons.Utils.UtilitiesClasses;
+﻿using Commons.Utils.UtilitiesClasses;
 using System;
 using System.Xml.Serialization;
 
-namespace Klyte.Commons.Interfaces.Warehouse
+namespace Commons.Interfaces.Warehouse
 {
     public abstract class ExtensionInterfaceDictionaryStructValSimplImpl<U, T, D> : DataExtensionBase<U>
         where U : ExtensionInterfaceDictionaryStructValSimplImpl<U, T, D>, new()

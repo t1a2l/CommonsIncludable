@@ -1,11 +1,11 @@
-﻿using Klyte.Commons.Utils.StructExtensions;
+﻿using Commons.Utils.StructExtensions;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using UnityEngine;
 
-namespace Klyte.Commons.Utils.UtilitiesClasses
+namespace Commons.Utils.UtilitiesClasses
 {
     [XmlRoot("ColorList")]
 

@@ -1,7 +1,7 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Math;
 using ColossalFramework.UI;
-using Klyte.Commons.Utils.StructExtensions;
+using Commons.Utils.StructExtensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-namespace Klyte.Commons.Utils
+namespace Commons.Utils
 {
     public class TextureRenderUtils
     {
@@ -188,7 +188,7 @@ namespace Klyte.Commons.Utils
             textRealSize = new Vector2(result.width, result.height);
             return RescalePowerOf2(result);
         }
-        public const string TAG_LINE = "k45Symbol";
+        public const string TAG_LINE = "Symbol";
         private static bool Matches(UIMarkupToken token, string text)
         {
             int length = token.length;

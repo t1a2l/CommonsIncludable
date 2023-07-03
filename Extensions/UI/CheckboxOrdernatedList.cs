@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Klyte.Commons.Extensions.UI
+namespace Commons.Extensions.UI
 {
     public class CheckboxOrdernatedList<T> : UICustomControl where T : class, ICheckable
     {

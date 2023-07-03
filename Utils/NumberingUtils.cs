@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Klyte.Commons.Utils
+namespace Commons.Utils
 {
     public class NumberingUtils
     {

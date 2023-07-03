@@ -1,8 +1,8 @@
 ﻿using ColossalFramework.UI;
-using Klyte.Commons.Utils;
+using Commons.Utils;
 using UnityEngine;
 
-namespace Klyte.Commons.Interfaces
+namespace Commons.Interfaces
 {
     public abstract class BasicKPanel<U, C, T> : UICustomControl
         where U : BasicIUserMod<U, C, T>, new()
@@ -27,7 +27,7 @@ namespace Klyte.Commons.Interfaces
             m_controlContainer.isInteractive = false;
             m_controlContainer.name = $"{CommonProperties.Acronym}PanelParent";
 
-            KlyteMonoUtils.CreateUIElement(out UIPanel _mainPanel, m_controlContainer.transform, $"{CommonProperties.Acronym}Panel", new Vector4(0, 0, PanelWidth, PanelHeight));
+            MonoUtils.CreateUIElement(out UIPanel _mainPanel, m_controlContainer.transform, $"{CommonProperties.Acronym}Panel", new Vector4(0, 0, PanelWidth, PanelHeight));
             MainPanel = _mainPanel;
             if (PanelWidth + PanelHeight > 0)
             {
@@ -43,22 +43,22 @@ namespace Klyte.Commons.Interfaces
 
         private void CreateTitleBar()
         {
-            KlyteMonoUtils.CreateUIElement(out UILabel titlebar, MainPanel.transform, $"{CommonProperties.Acronym}Title", new Vector4(0, 0, MainPanel.width - 150, 20));
+            MonoUtils.CreateUIElement(out UILabel titlebar, MainPanel.transform, $"{CommonProperties.Acronym}Title", new Vector4(0, 0, MainPanel.width - 150, 20));
             titlebar.position = default;
             titlebar.autoSize = false;
             titlebar.text = $"{BasicIUserMod<U, C, T>.Instance.SimpleName} v{BasicIUserMod<U, C, T>.FullVersion}";
             titlebar.textAlignment = UIHorizontalAlignment.Center;
             titlebar.relativePosition = new Vector3(75, 13);
 
-            KlyteMonoUtils.CreateUIElement(out UIButton closeButton, MainPanel.transform, "CloseButton", new Vector4(MainPanel.width - 37, 5, 32, 32));
-            KlyteMonoUtils.InitButton(closeButton, false, "buttonclose", true);
+            MonoUtils.CreateUIElement(out UIButton closeButton, MainPanel.transform, "CloseButton", new Vector4(MainPanel.width - 37, 5, 32, 32));
+            MonoUtils.InitButton(closeButton, false, "buttonclose", true);
             closeButton.hoveredBgSprite = "buttonclosehover";
             closeButton.eventClick += (x, y) =>
             {
                 BasicIUserMod<U, C, T>.Instance.ClosePanel();
             };
 
-            KlyteMonoUtils.CreateUIElement(out UISprite logo, MainPanel.transform, $"{CommonProperties.Acronym}Logo", new Vector4(22, 5f, 32, 32));
+            MonoUtils.CreateUIElement(out UISprite logo, MainPanel.transform, $"{CommonProperties.Acronym}Logo", new Vector4(22, 5f, 32, 32));
             logo.spriteName = BasicIUserMod<U, C, T>.Instance.IconName;
 
             if (BasicIUserMod<U, C, T>.Instance.IsUui())

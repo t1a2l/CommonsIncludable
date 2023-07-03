@@ -1,13 +1,13 @@
 ﻿using ColossalFramework.Globalization;
 using ColossalFramework.UI;
-using Klyte.Commons.Utils.UtilitiesClasses;
+using Commons.Utils.UtilitiesClasses;
 using System;
 using System.Linq;
 using UnityEngine;
 
-namespace Klyte.Commons.LiteUI.BaseElements
+namespace Commons.LiteUI.BaseElements
 {
-    public static class GUIKlyteCommons
+    public static class GUICommons
     {
         public const string v_null = "<color=#FF00FF>--NULL--</color>";
         public const string v_empty = "<color=#888888>--EMPTY--</color>";
@@ -16,7 +16,7 @@ namespace Klyte.Commons.LiteUI.BaseElements
         public static readonly Texture2D darkRedTexture;
         public static readonly Texture2D redTexture;
 
-        static GUIKlyteCommons()
+        static GUICommons()
         {
             darkGreenTexture = CreateTextureOfColor(Color.Lerp(Color.green, Color.gray, 0.5f));
             greenTexture = CreateTextureOfColor(Color.green);

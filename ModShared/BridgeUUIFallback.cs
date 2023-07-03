@@ -1,10 +1,10 @@
 ﻿using ColossalFramework.UI;
-using Klyte.Commons.Interfaces;
-using Klyte.Commons.UI.SpriteNames;
-using Klyte.Commons.Utils;
+using Commons.Interfaces;
+using Commons.UI.SpriteNames;
+using Commons.Utils;
 using UnityEngine;
 
-namespace Klyte.Commons.ModShared
+namespace Commons.ModShared
 {
     internal class BridgeUUIFallback : IBridgeUUI
     {
@@ -46,12 +46,12 @@ namespace Klyte.Commons.ModShared
           where T : BasicKPanel<U, C, T>
         {
 
-            m_modsPanel = UIView.Find<UIPanel>("K45_ModsPanel");
+            m_modsPanel = UIView.Find<UIPanel>("ModsPanel");
             if (m_modsPanel is null)
             {
                 UIComponent uicomponent = UIView.Find("TSBar");
                 m_bg = uicomponent.AddUIComponent<UIPanel>();
-                m_bg.name = "K45_MB";
+                m_bg.name = "MB";
                 m_bg.absolutePosition = new Vector2(BasicIUserMod<U, C, T>.ButtonPosX.value, BasicIUserMod<U, C, T>.ButtonPosY.value);
                 m_bg.width = 40f;
                 m_bg.height = 40f;
@@ -66,7 +66,7 @@ namespace Klyte.Commons.ModShared
                 doneButton.Hide();
                 doneButton.zOrder = 99;
                 UIDragHandle handle = m_bg.AddUIComponent<UIDragHandle>();
-                handle.name = "K45_DragHandle";
+                handle.name = "DragHandle";
                 handle.relativePosition = Vector2.zero;
                 handle.width = m_bg.width - 5f;
                 handle.height = m_bg.height - 5f;
@@ -89,10 +89,10 @@ namespace Klyte.Commons.ModShared
                 m_bg.color = new Color32(96, 96, 96, byte.MaxValue);
                 m_modPanelButton = m_bg.AddUIComponent<UIButton>();
                 m_modPanelButton.disabledTextColor = new Color32(128, 128, 128, byte.MaxValue);
-                KlyteMonoUtils.InitButton(m_modPanelButton, false, KlyteResourceLoader.GetDefaultSpriteNameFor(CommonsSpriteNames.K45_K45Button), false);
+                MonoUtils.InitButton(m_modPanelButton, false, ResourceLoader.GetDefaultSpriteNameFor(CommonsSpriteNames.Button), false);
                 m_modPanelButton.relativePosition = new Vector3(10, 4f);
                 m_modPanelButton.size = new Vector2(32, 32);
-                m_modPanelButton.name = "K45_ModsButton";
+                m_modPanelButton.name = "ModsButton";
                 m_modPanelButton.zOrder = 11;
                 m_modPanelButton.textScale = 1.3f;
                 m_modPanelButton.textVerticalAlignment = UIVerticalAlignment.Middle;
@@ -113,21 +113,21 @@ namespace Klyte.Commons.ModShared
                 };
 
                 m_modsPanel = m_bg.AddUIComponent<UIPanel>();
-                m_modsPanel.name = "K45_ModsPanel";
+                m_modsPanel.name = "ModsPanel";
                 m_modsPanel.size = new Vector2(875, 550);
                 m_modsPanel.relativePosition = new Vector3(0f, 7f);
                 m_modsPanel.isInteractive = false;
                 m_modsPanel.Hide();
 
 
-                KlyteMonoUtils.CreateTabsComponent(out m_modsTabstrip, out UITabContainer container, m_modsPanel.transform, "K45", new Vector4(52, -8, m_modsPanel.width - 52, 40), new Vector4(0, 32, m_modsPanel.width, m_modsPanel.height));
+                MonoUtils.CreateTabsComponent(out m_modsTabstrip, out UITabContainer container, m_modsPanel.transform, "", new Vector4(52, -8, m_modsPanel.width - 52, 40), new Vector4(0, 32, m_modsPanel.width, m_modsPanel.height));
                 m_modsTabstrip.isInteractive = false;
                 container.isInteractive = false;
             }
             else
             {
-                m_modPanelButton = UIView.Find<UIButton>("K45_ModsButton");
-                m_modsTabstrip = UIView.Find<UITabstrip>("K45_Tabstrip");
+                m_modPanelButton = UIView.Find<UIButton>("ModsButton");
+                m_modsTabstrip = UIView.Find<UITabstrip>("Tabstrip");
                 m_modsTabstrip.isInteractive = false;
                 m_modsTabstrip.tabContainer.isInteractive = false;
             }

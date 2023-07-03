@@ -7,12 +7,12 @@ using System.Linq;
 using System.Reflection;
 using static ColossalFramework.Packaging.Package;
 
-namespace Klyte.Commons.Utils
+namespace Commons.Utils
 {
     public class FileUtils
     {
         #region File & Prefab Utils
-        public static readonly string BASE_FOLDER_PATH = DataLocation.localApplicationData + Path.DirectorySeparatorChar + "Klyte45Mods" + Path.DirectorySeparatorChar;
+        public static readonly string BASE_FOLDER_PATH = DataLocation.localApplicationData + Path.DirectorySeparatorChar + "45Mods" + Path.DirectorySeparatorChar;
 
         public static FileInfo EnsureFolderCreation(string folderName)
         {
@@ -184,7 +184,7 @@ namespace Klyte.Commons.Utils
         {
 
             var executingAssembly = Assembly.GetExecutingAssembly();
-            string folderName = $"Klyte.{packageDirectory}";
+            string folderName = $"{packageDirectory}";
             return executingAssembly
                 .GetManifestResourceNames()
                 .Where(r => r.StartsWith(folderName) && r.EndsWith(extension))

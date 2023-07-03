@@ -1,4 +1,4 @@
-﻿namespace Klyte.Commons.Interfaces.Warehouse
+﻿namespace Commons.Interfaces.Warehouse
 {
     public interface IDataExtensionLegacy
     {

@@ -1,7 +1,7 @@
 ﻿using ColossalFramework.UI;
 using UnityEngine;
 
-namespace Klyte.Commons.LiteUI.BaseElements
+namespace Commons.LiteUI.BaseElements
 {
     public static class UIScaler
     {

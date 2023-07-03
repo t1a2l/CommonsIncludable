@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Klyte.Commons.Utils
+namespace Commons.Utils
 {
     public class SortingUtils
     {

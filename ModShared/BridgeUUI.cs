@@ -1,11 +1,11 @@
 ﻿using ColossalFramework.UI;
-using Klyte.Commons.Interfaces;
-using Klyte.Commons.Utils;
+using Commons.Interfaces;
+using Commons.Utils;
 using System;
 using UnityEngine;
 using UnifiedUI.Helpers;
 
-namespace Klyte.Commons.ModShared
+namespace Commons.ModShared
 {
     internal class BridgeUUI : IBridgeUUI
     {
@@ -31,10 +31,10 @@ namespace Klyte.Commons.ModShared
 
             m_modButton = UUIHelpers.RegisterCustomButton(
              name: modInstance.SimpleName,
-             groupName: "Klyte45",
+             groupName: "45",
              tooltip: modInstance.Name,
              onToggle: (value) => { if (value) { Open(); } else { Close(); } },
-             icon: KlyteResourceLoader.LoadTexture($"UI.Images.%{modInstance.IconName}.png")
+             icon: ResourceLoader.LoadTexture($"UI.Images.%{modInstance.IconName}.png")
              );
 
             m_container = UIView.Find("TSBar").AttachUIComponent(CreateContainer(modInstance, 875, 550).gameObject) as UIPanel;

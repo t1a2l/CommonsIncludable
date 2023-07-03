@@ -1,8 +1,8 @@
-﻿using Klyte.Commons.Utils;
-using Klyte.Commons.Utils.StructExtensions;
+﻿using Commons.Utils;
+using Commons.Utils.StructExtensions;
 using System;
 
-namespace Klyte.Commons.LiteUI
+namespace Commons.LiteUI
 {
     public static class EnumUtil
     {

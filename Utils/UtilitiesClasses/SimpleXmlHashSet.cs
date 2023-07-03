@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 
 
-namespace Klyte.Commons.Utils.UtilitiesClasses
+namespace Commons.Utils.UtilitiesClasses
 {
     [XmlRoot("SimpleHashSet")]
 

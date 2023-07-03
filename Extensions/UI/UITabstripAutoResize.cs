@@ -8,9 +8,9 @@ using ColossalFramework.Plugins;
 using System.Threading;
 using System;
 using System.Linq;
-using Klyte.Commons.Utils;
+using Commons.Utils;
 
-namespace Klyte.Commons.Extensions.UI
+namespace Commons.Extensions.UI
 {
     public class UITabstripAutoResize : UITabstrip
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Klyte.Commons.Utils
+namespace Commons.Utils
 {
     public static class ReflectionUtils
     {

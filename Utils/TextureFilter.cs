@@ -6,7 +6,7 @@ using UnityEngine;
 /// See this link to improve this code : https://code.google.com/p/aforge/
 /// </summary>
 
-namespace Klyte.Commons.Utils
+namespace Commons.Utils
 {
     public static class TextureFilter
     {

@@ -1,12 +1,12 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Math;
 using ColossalFramework.UI;
-using Klyte.Commons.Utils;
+using Commons.Utils;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 
-namespace Klyte.Commons.Tools
+namespace Commons.Tools
 {
 
     public abstract class BaseBuildingTool<T> : BuildingTool where T : BaseBuildingTool<T>

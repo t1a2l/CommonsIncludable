@@ -1,10 +1,10 @@
 ﻿using System;
 using ColossalFramework.UI;
-using Klyte.Commons.Interfaces;
-using Klyte.Commons.Utils;
+using Commons.Interfaces;
+using Commons.Utils;
 using UnityEngine;
 
-namespace Klyte.Commons.ModShared
+namespace Commons.ModShared
 {
     internal abstract class IBridgeUUI : MonoBehaviour
     {
@@ -21,7 +21,7 @@ namespace Klyte.Commons.ModShared
             where C : BaseController<U, C>
             where T : BasicKPanel<U, C, T>
         {
-            KlyteMonoUtils.CreateUIElement(out UIPanel content, null);
+            MonoUtils.CreateUIElement(out UIPanel content, null);
             content.name = "Container";
             content.size = new Vector4(modInstance.TabWidth ?? width, height);
             content.eventVisibilityChanged += (x, y) => { if (y) { modInstance.ShowVersionInfoPopup(); } };
@@ -30,8 +30,8 @@ namespace Klyte.Commons.ModShared
 
         protected static UIButton CreateTabTemplate()
         {
-            KlyteMonoUtils.CreateUIElement(out UIButton tabTemplate, null, "KCTabTemplate");
-            KlyteMonoUtils.InitButton(tabTemplate, false, "GenericTab");
+            MonoUtils.CreateUIElement(out UIButton tabTemplate, null, "KCTabTemplate");
+            MonoUtils.InitButton(tabTemplate, false, "GenericTab");
             tabTemplate.autoSize = false;
             tabTemplate.width = 40;
             tabTemplate.height = 40;

@@ -1,12 +1,12 @@
 ﻿using ColossalFramework.Globalization;
 using ColossalFramework.UI;
-using Klyte.Commons.Utils.UtilitiesClasses;
+using Commons.Utils.UtilitiesClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 
-namespace Klyte.Commons.UI
+namespace Commons.UI
 {
     public static class ColossalUIExtensions
     {

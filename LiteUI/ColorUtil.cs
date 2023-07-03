@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Klyte.Commons.LiteUI
+namespace Commons.LiteUI
 {
     internal static class ColorUtil
     {

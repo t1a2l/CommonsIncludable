@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Klyte.Commons.Interfaces
+namespace Commons.Interfaces
 {
     public interface ITimeable<T> where T : ITimeable<T>
     {

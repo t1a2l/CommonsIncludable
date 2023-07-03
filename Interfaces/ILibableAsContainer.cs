@@ -1,9 +1,9 @@
-﻿using Klyte.Commons.Utils.UtilitiesClasses;
+﻿using Commons.Utils.UtilitiesClasses;
 using System.Linq;
 using System.Xml.Serialization;
-using static Klyte.Commons.Utils.XmlUtils;
+using static Commons.Utils.XmlUtils;
 
-namespace Klyte.Commons.Interfaces
+namespace Commons.Interfaces
 {
     public class ILibableAsContainer<D> : ILibable
     {

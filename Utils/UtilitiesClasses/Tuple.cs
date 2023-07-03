@@ -1,4 +1,4 @@
-﻿namespace Klyte.Commons.Utils.UtilitiesClasses
+﻿namespace Commons.Utils.UtilitiesClasses
 {
 
     public class Tuple<T1, T2, T3, T4, T5> : Tuple<T1, T2, T3, T4>

@@ -1,9 +1,9 @@
 ﻿using ColossalFramework.Globalization;
-using Klyte.Commons.Utils.StructExtensions;
+using Commons.Utils.StructExtensions;
 using System;
 using UnityEngine;
 
-namespace Klyte.Commons.Utils.UtilitiesClasses 
+namespace Commons.Utils.UtilitiesClasses 
 {
 	public struct CardinalPoint
     {
@@ -44,7 +44,7 @@ namespace Klyte.Commons.Utils.UtilitiesClasses
             }
             return m_cardinal16[0];
         }
-        public static string GetCardinalPoint16LocalizedShort(float angle) => Locale.Get("K45_CMNS_CARDINALPOINT_SHORT", GetCardinalPoint16_internal(angle));
+        public static string GetCardinalPoint16LocalizedShort(float angle) => Locale.Get("CMNS_CARDINALPOINT_SHORT", GetCardinalPoint16_internal(angle));
 
 
 
@@ -412,7 +412,7 @@ namespace Klyte.Commons.Utils.UtilitiesClasses
 
 
         public override string ToString() => InternalValue.ToString();
-        public string ToStringLocalized8() => Locale.Get("K45_CMNS_CARDINALPOINT_SHORT", InternalValue.ToString());
+        public string ToStringLocalized8() => Locale.Get("CMNS_CARDINALPOINT_SHORT", InternalValue.ToString());
 
         public static CardinalPoint GetCardinal2D(Vector2 p1, Vector2 p2)
         {

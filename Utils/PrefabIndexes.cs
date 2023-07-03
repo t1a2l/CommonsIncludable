@@ -2,14 +2,14 @@ using ColossalFramework;
 using ColossalFramework.Globalization;
 using ColossalFramework.Packaging;
 using ColossalFramework.PlatformServices;
-using Klyte.Commons.Utils.UtilitiesClasses;
+using Commons.Utils.UtilitiesClasses;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-namespace Klyte.Commons.Utils
+namespace Commons.Utils
 {
     public interface IPrefabIndexes
     {

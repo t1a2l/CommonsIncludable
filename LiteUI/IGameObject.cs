@@ -1,4 +1,4 @@
-﻿namespace Klyte.Commons.LiteUI
+﻿namespace Commons.LiteUI
 {
     public interface IGameObject
     {

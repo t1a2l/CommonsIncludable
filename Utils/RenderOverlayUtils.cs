@@ -2,7 +2,7 @@
 using ColossalFramework.Math;
 using UnityEngine;
 
-namespace Klyte.Commons.Utils
+namespace Commons.Utils
 {
     public static class RenderOverlayUtils
     {

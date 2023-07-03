@@ -5,7 +5,7 @@ using System;
 using System.Diagnostics;
 using UnityEngine;
 
-namespace Klyte.Commons.Tools
+namespace Commons.Tools
 {
 
     public abstract class BaseTransportTool<T> : TransportTool where T : BaseTransportTool<T>

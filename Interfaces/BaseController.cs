@@ -1,8 +1,8 @@
-﻿using Klyte.Commons.ModShared;
-using Klyte.Commons.Utils;
+﻿using Commons.ModShared;
+using Commons.Utils;
 using UnityEngine;
 
-namespace Klyte.Commons.Interfaces
+namespace Commons.Interfaces
 {
     public class BaseController<U, C> : MonoBehaviour
         where U : BasicIUserModSimplified<U, C>, new()
@@ -10,7 +10,7 @@ namespace Klyte.Commons.Interfaces
     {
         public void Start() => StartActions();
 
-        protected virtual string ClassBridgeUUI { get; } = "Klyte.Commons.ModShared.BridgeUUI";
+        protected virtual string ClassBridgeUUI { get; } = "Commons.ModShared.BridgeUUI";
 
         private IBridgeUUI m_bridgeUUI;
         internal IBridgeUUI BridgeUUI

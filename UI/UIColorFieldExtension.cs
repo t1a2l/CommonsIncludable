@@ -1,10 +1,10 @@
 ﻿using ColossalFramework.UI;
-using Klyte.Commons.Extensions;
-using Klyte.Commons.Utils;
-using Klyte.Commons.Utils.StructExtensions;
+using Commons.Extensions;
+using Commons.Utils;
+using Commons.Utils.StructExtensions;
 using UnityEngine;
 
-namespace Klyte.Commons.UI
+namespace Commons.UI
 {
     public class UIColorFieldExtension : UICustomControl
     {
@@ -87,11 +87,11 @@ namespace Klyte.Commons.UI
         {
             UIPanel panel = popup.GetComponent<UIPanel>();
             panel.height = 250;
-            KlyteMonoUtils.CreateUIElement(out UITextField textField, panel.transform, "ColorText", new Vector4(15, 225, 200, 20));
-            KlyteMonoUtils.UiTextFieldDefaults(textField);
+            MonoUtils.CreateUIElement(out UITextField textField, panel.transform, "ColorText", new Vector4(15, 225, 200, 20));
+            MonoUtils.UiTextFieldDefaults(textField);
             textField.normalBgSprite = "TextFieldPanel";
             textField.maxLength = 6;
-            KlyteMonoUtils.InitCircledButton(panel, out UIButton clearButton, "Niet", (x, y) =>
+            MonoUtils.InitCircledButton(panel, out UIButton clearButton, "Niet", (x, y) =>
             {
                 colorField.selectedColor = Color.clear;
                 textField.text = "";

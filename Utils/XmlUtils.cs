@@ -4,7 +4,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Klyte.Commons.Utils
+namespace Commons.Utils
 {
     public static class XmlUtils
     {

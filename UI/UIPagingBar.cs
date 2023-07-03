@@ -1,12 +1,12 @@
 ﻿using ColossalFramework.Globalization;
 using ColossalFramework.UI;
-using Klyte.Commons.Extensions.UI;
-using Klyte.Commons.Utils;
+using Commons.Extensions.UI;
+using Commons.Utils;
 using System;
 using System.Linq;
 using UnityEngine;
 
-namespace Klyte.Commons.UI
+namespace Commons.UI
 {
     public class UIPagingBar : UICustomControl
     {
@@ -47,17 +47,17 @@ namespace Klyte.Commons.UI
             m_pagePanel.clipChildren = true;
             float height = m_pagePanel.height;
 
-            KlyteMonoUtils.CreateUIElement(out m_infoLabel, m_pagePanel.transform, "infoLabel", new UnityEngine.Vector4(0, 0, m_pagePanel.width * .4f, height));
+            MonoUtils.CreateUIElement(out m_infoLabel, m_pagePanel.transform, "infoLabel", new UnityEngine.Vector4(0, 0, m_pagePanel.width * .4f, height));
             m_infoLabel.verticalAlignment = UIVerticalAlignment.Middle;
             m_infoLabel.minimumSize = new Vector2(m_pagePanel.width * .4f, height);
-            KlyteMonoUtils.LimitWidthAndBox(m_infoLabel, m_pagePanel.width * .4f);
+            MonoUtils.LimitWidthAndBox(m_infoLabel, m_pagePanel.width * .4f);
 
-            KlyteMonoUtils.CreateUIElement(out UILabel itemsPerPageLbl, m_pagePanel.transform, "itemsPerPageLbl", new UnityEngine.Vector4(0, 0, m_pagePanel.width * .2f, height));
+            MonoUtils.CreateUIElement(out UILabel itemsPerPageLbl, m_pagePanel.transform, "itemsPerPageLbl", new UnityEngine.Vector4(0, 0, m_pagePanel.width * .2f, height));
             itemsPerPageLbl.verticalAlignment = UIVerticalAlignment.Middle;
-            itemsPerPageLbl.text = Locale.Get("K45_CMNS_ITEMSPERPAGE");
+            itemsPerPageLbl.text = Locale.Get("CMNS_ITEMSPERPAGE");
             itemsPerPageLbl.minimumSize = new Vector2(m_pagePanel.width * .2f, height);
             itemsPerPageLbl.textAlignment = UIHorizontalAlignment.Right;
-            KlyteMonoUtils.LimitWidthAndBox(itemsPerPageLbl, m_pagePanel.width * .2f);
+            MonoUtils.LimitWidthAndBox(itemsPerPageLbl, m_pagePanel.width * .2f);
 
             m_itemsPerPageDD = UIHelperExtension.CloneBasicDropDownNoLabel(
                 m_allowedItemCount.Select(x => x.ToString("0")).ToArray(),
@@ -72,17 +72,17 @@ namespace Klyte.Commons.UI
             m_itemsPerPageDD.area = new Vector4(0, 0, m_pagePanel.width * .1f, height);
 
 
-            KlyteMonoUtils.CreateUIElement(out m_firstPage, m_pagePanel.transform, "firstPage", new UnityEngine.Vector4(0, 0, m_pagePanel.width * .05f, height));
-            KlyteMonoUtils.InitButton(m_firstPage, false, "ButtonMenu");
+            MonoUtils.CreateUIElement(out m_firstPage, m_pagePanel.transform, "firstPage", new UnityEngine.Vector4(0, 0, m_pagePanel.width * .05f, height));
+            MonoUtils.InitButton(m_firstPage, false, "ButtonMenu");
             m_firstPage.text = "<<";
             m_firstPage.eventClicked += (x, y) => GoToPage(1);
-            KlyteMonoUtils.CreateUIElement(out m_backPage, m_pagePanel.transform, "backPage", new UnityEngine.Vector4(0, 0, m_pagePanel.width * .05f, height));
-            KlyteMonoUtils.InitButton(m_backPage, false, "ButtonMenu");
+            MonoUtils.CreateUIElement(out m_backPage, m_pagePanel.transform, "backPage", new UnityEngine.Vector4(0, 0, m_pagePanel.width * .05f, height));
+            MonoUtils.InitButton(m_backPage, false, "ButtonMenu");
             m_backPage.text = "<";
             m_backPage.eventClicked += (x, y) => GoToPage(m_currentPage - 1);
 
-            KlyteMonoUtils.CreateUIElement(out m_pageInput, m_pagePanel.transform, "firstPage", new UnityEngine.Vector4(0, 0, m_pagePanel.width * .05f, height));
-            KlyteMonoUtils.UiTextFieldDefaults(m_pageInput);
+            MonoUtils.CreateUIElement(out m_pageInput, m_pagePanel.transform, "firstPage", new UnityEngine.Vector4(0, 0, m_pagePanel.width * .05f, height));
+            MonoUtils.UiTextFieldDefaults(m_pageInput);
             m_pageInput.horizontalAlignment = UIHorizontalAlignment.Right;
             m_pageInput.numericalOnly = true;
             m_pageInput.allowNegative = false;
@@ -103,18 +103,18 @@ namespace Klyte.Commons.UI
             };
 
 
-            KlyteMonoUtils.CreateUIElement(out m_totalPage, m_pagePanel.transform, "firstPage", new UnityEngine.Vector4(0, 0, m_pagePanel.width * .05f, height));
+            MonoUtils.CreateUIElement(out m_totalPage, m_pagePanel.transform, "firstPage", new UnityEngine.Vector4(0, 0, m_pagePanel.width * .05f, height));
             m_totalPage.prefix = "/";
             m_totalPage.verticalAlignment = UIVerticalAlignment.Middle;
             m_totalPage.minimumSize = new Vector2(m_pagePanel.width * .05f, height);
-            KlyteMonoUtils.LimitWidthAndBox(m_totalPage, m_pagePanel.width * .05f);
+            MonoUtils.LimitWidthAndBox(m_totalPage, m_pagePanel.width * .05f);
 
-            KlyteMonoUtils.CreateUIElement(out m_nextPage, m_pagePanel.transform, "nextPage", new UnityEngine.Vector4(0, 0, m_pagePanel.width * .05f, height));
-            KlyteMonoUtils.InitButton(m_nextPage, false, "ButtonMenu");
+            MonoUtils.CreateUIElement(out m_nextPage, m_pagePanel.transform, "nextPage", new UnityEngine.Vector4(0, 0, m_pagePanel.width * .05f, height));
+            MonoUtils.InitButton(m_nextPage, false, "ButtonMenu");
             m_nextPage.text = ">";
             m_nextPage.eventClicked += (x, y) => GoToPage(m_currentPage + 1);
-            KlyteMonoUtils.CreateUIElement(out m_lastPage, m_pagePanel.transform, "lastPage", new UnityEngine.Vector4(0, 0, m_pagePanel.width * .05f, height));
-            KlyteMonoUtils.InitButton(m_lastPage, false, "ButtonMenu");
+            MonoUtils.CreateUIElement(out m_lastPage, m_pagePanel.transform, "lastPage", new UnityEngine.Vector4(0, 0, m_pagePanel.width * .05f, height));
+            MonoUtils.InitButton(m_lastPage, false, "ButtonMenu");
             m_lastPage.text = ">>";
             m_lastPage.eventClicked += (x, y) => GoToPage(TotalPages);
 
@@ -192,7 +192,7 @@ namespace Klyte.Commons.UI
             }
 
             m_pageInput.text = m_currentPage.ToString("0");
-            m_infoLabel.text = string.Format(Locale.Get("K45_CMNS_PAGING_SHOWINGMESSAGE_FMT"), 1 + ((m_currentPage - 1) * m_itemsPerPage), Mathf.Min(m_totalItems, m_currentPage * m_itemsPerPage), m_totalItems);
+            m_infoLabel.text = string.Format(Locale.Get("CMNS_PAGING_SHOWINGMESSAGE_FMT"), 1 + ((m_currentPage - 1) * m_itemsPerPage), Mathf.Min(m_totalItems, m_currentPage * m_itemsPerPage), m_totalItems);
             OnGoToPage?.Invoke(m_currentPage);
         }
 

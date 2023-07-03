@@ -1,15 +1,15 @@
 ﻿using HarmonyLib;
-using Klyte.Commons.Utils;
+using Commons.Utils;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-namespace Klyte.Commons.Extensions
+namespace Commons.Extensions
 {
 	public class Patcher : MonoBehaviour
     {
-        private const string HarmonyId = "com.klyte.redirectors.TLM";
+        private const string HarmonyId = "com.redirectors.TLM";
 
         private static bool patched = false;
 
@@ -23,10 +23,10 @@ namespace Klyte.Commons.Extensions
         {
             if (patched) return;
 
-            Debug.Log("com.klyte.redirectors.TLM: Patching...");
+            Debug.Log("com.redirectors.TLM: Patching...");
 
             patched = true;
-            GameObject m_topObj = GameObject.Find("k45_Patches") ?? new GameObject("k45_Patches");
+            GameObject m_topObj = GameObject.Find("Patches") ?? new GameObject("Patches");
             Type typeTarg = typeof(IPatcher);
             List<Type> instances = ReflectionUtils.GetInterfaceImplementations(typeTarg, typeTarg);
             try
@@ -44,7 +44,7 @@ namespace Klyte.Commons.Extensions
             }
             // Apply your patches here!
             // Harmony.DEBUG = true;
-            var harmony = new Harmony("com.klyte.redirectors.TLM");
+            var harmony = new Harmony("com.redirectors.TLM");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
 
@@ -57,7 +57,7 @@ namespace Klyte.Commons.Extensions
 
             patched = false;
 
-            UnityEngine.Debug.Log("com.klyte.redirectors.TLM: Reverted...");
+            UnityEngine.Debug.Log("com.redirectors.TLM: Reverted...");
         }
     }
 }

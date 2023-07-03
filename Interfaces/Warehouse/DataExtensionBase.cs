@@ -1,10 +1,10 @@
 ﻿using ICities;
-using Klyte.Commons.Utils;
+using Commons.Utils;
 using System;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace Klyte.Commons.Interfaces.Warehouse
+namespace Commons.Interfaces.Warehouse
 {
 
     [XmlRoot("DataExtension")]

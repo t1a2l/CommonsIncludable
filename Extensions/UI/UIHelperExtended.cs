@@ -3,13 +3,13 @@ using ColossalFramework.Globalization;
 using ColossalFramework.Plugins;
 using ColossalFramework.UI;
 using ICities;
-using Klyte.Commons.Utils;
+using Commons.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Klyte.Commons.Extensions.UI
+namespace Commons.Extensions.UI
 {
     public class UIHelperExtension : UIHelperBase
     {
@@ -188,7 +188,7 @@ namespace Klyte.Commons.Extensions.UI
                 uIPanel.transform.localScale = Vector3.one;
                 label = uIPanel.Find<UILabel>("Label");
                 if (limitLabelByPanelWidth)
-                { KlyteMonoUtils.LimitWidthAndBox(label, (uint)uIPanel.width); }
+                { MonoUtils.LimitWidthAndBox(label, (uint)uIPanel.width); }
                 label.text = text;
                 UIDropDown uIDropDown = uIPanel.Find<UIDropDown>("Dropdown");
                 uIDropDown.items = options;
@@ -223,7 +223,7 @@ namespace Klyte.Commons.Extensions.UI
                 label.isLocalized = true;
                 if (limitLabelByPanelWidth)
                 {
-                    KlyteMonoUtils.LimitWidthAndBox(label, (uint)container.width);
+                    MonoUtils.LimitWidthAndBox(label, (uint)container.width);
                 }
                 UIDropDown uIDropDown = container.Find<UIDropDown>("Dropdown");
                 uIDropDown.items = options;
@@ -652,8 +652,8 @@ namespace Klyte.Commons.Extensions.UI
         public UILabel AddLabel(string name, float width = 700, bool fixedMinSize = false) => AddLabel(m_root, name, width, out _, fixedMinSize);
         public static UILabel AddLabel(UIComponent parent, string name, float width, out UIPanel container, bool fixedMinSize = false)
         {
-            KlyteMonoUtils.CreateUIElement(out UILabel label, parent.transform, name, new Vector4(0, 0, width, 40));
-            KlyteMonoUtils.LimitWidthAndBox(label, width, out container, fixedMinSize);
+            MonoUtils.CreateUIElement(out UILabel label, parent.transform, name, new Vector4(0, 0, width, 40));
+            MonoUtils.LimitWidthAndBox(label, width, out container, fixedMinSize);
             label.text = name;
             return label;
         }
@@ -690,7 +690,7 @@ namespace Klyte.Commons.Extensions.UI
                 container.wrapLayout = false;
                 container.autoFitChildrenVertically = true;
                 GameObject.Destroy(container.Find<UIDropDown>("Dropdown").gameObject);
-                UIColorField colorField = KlyteMonoUtils.CreateColorField(container);
+                UIColorField colorField = MonoUtils.CreateColorField(container);
                 colorField.selectedColor = defaultValue;
 
                 colorField.eventSelectedColorChanged += (cp, value) => eventCallback(value);
@@ -707,7 +707,7 @@ namespace Klyte.Commons.Extensions.UI
         {
             if (!string.IsNullOrEmpty(name))
             {
-                UIColorField colorField = KlyteMonoUtils.CreateColorField(m_root);
+                UIColorField colorField = MonoUtils.CreateColorField(m_root);
 
                 if (eventCallback != null)
                 {
@@ -792,7 +792,7 @@ namespace Klyte.Commons.Extensions.UI
                 uIPanel.Find<UILabel>("Label").text = name;
             }
             GameObject.Destroy(uIPanel.Find<UIDropDown>("Dropdown").gameObject);
-            result = KlyteMonoUtils.CreateElement<T>(uIPanel.transform);
+            result = MonoUtils.CreateElement<T>(uIPanel.transform);
             if (eventCallback != null)
             {
                 result.EventOnValueChanged += eventCallback;
@@ -900,7 +900,7 @@ namespace Klyte.Commons.Extensions.UI
             uipanel.padding = new RectOffset(10, 10, 10, 10);
             uipanel.size = new Vector2(newGroup.Self.size.x, 0f);
 
-            KlyteMonoUtils.LimitWidthAndBox(toggleLabel, uipanel.width, true);
+            MonoUtils.LimitWidthAndBox(toggleLabel, uipanel.width, true);
 
             parentPanel.autoLayoutPadding = new RectOffset(0, 0, 0, 0);
 

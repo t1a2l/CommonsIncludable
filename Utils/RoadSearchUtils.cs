@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-namespace Klyte.Commons.Utils
+namespace Commons.Utils
 {
     public class RoadSearchUtils
     {

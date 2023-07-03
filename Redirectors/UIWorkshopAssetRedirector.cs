@@ -1,12 +1,12 @@
 ﻿using ColossalFramework.Packaging;
 using HarmonyLib;
-using Klyte.Commons.Extensions;
-using Klyte.Commons.Utils;
+using Commons.Extensions;
+using Commons.Utils;
 using System.IO;
 using System.Linq;
-using static Klyte.Commons.Extensions.Patcher;
+using static Commons.Extensions.Patcher;
 
-namespace Klyte.Commons.Redirectors
+namespace Commons.Redirectors
 {
     public class UIWorkshopAssetRedirector : Patcher, IPatcher
     {
@@ -50,7 +50,7 @@ namespace Klyte.Commons.Redirectors
                 if (bundledAnyFile)
                 {
                     var tagsField = __instance.GetType().GetField("m_Tags", Patcher.allFlags);
-                    tagsField.SetValue(__instance, (tagsField.GetValue(__instance) as string[]).Concat(new string[] { CommonProperties.ModName, $"K45 {CommonProperties.Acronym}" }).Distinct().ToArray());
+                    tagsField.SetValue(__instance, (tagsField.GetValue(__instance) as string[]).Concat(new string[] { CommonProperties.ModName, $" {CommonProperties.Acronym}" }).Distinct().ToArray());
                 }
 			}
         }

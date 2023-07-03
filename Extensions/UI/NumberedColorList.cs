@@ -3,7 +3,7 @@ using ICities;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Klyte.Commons.Extensions.UI
+namespace Commons.Extensions.UI
 {
     public class NumberedColorList
     {

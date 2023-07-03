@@ -1,5 +1,5 @@
 ﻿using ColossalFramework.UI;
-using Klyte.Commons.Utils.UtilitiesClasses;
+using Commons.Utils.UtilitiesClasses;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +7,7 @@ using System.Linq;
 using UnityEngine;
 using static ColossalFramework.UI.UITextureAtlas;
 
-namespace Klyte.Commons.Utils
+namespace Commons.Utils
 {
     public static class TextureAtlasUtils
     {
@@ -56,7 +56,7 @@ namespace Klyte.Commons.Utils
             }
             else
             {
-                generatedSpriteName = KlyteResourceLoader.GetDefaultSpriteNameFor(textureName);
+                generatedSpriteName = ResourceLoader.GetDefaultSpriteNameFor(textureName);
             }
             borderDescriptors.TryGetValue(generatedSpriteName, out Tuple<RectOffset, bool> border);
             var res = new SpriteInfo
@@ -88,10 +88,10 @@ namespace Klyte.Commons.Utils
         public static void LoadImagesFromResources(string path, ref List<SpriteInfo> newSprites)
         {
             string[] imagesFiles = FileUtils.GetAllFilesEmbeddedAtFolder(path, ".png");
-            TextureAtlasUtils.ParseBorderDescriptors(KlyteResourceLoader.LoadResourceStringLines($"{path}.{BORDER_FILENAME}"), out Dictionary<string, Tuple<RectOffset, bool>> borderDescriptor);
+            TextureAtlasUtils.ParseBorderDescriptors(ResourceLoader.LoadResourceStringLines($"{path}.{BORDER_FILENAME}"), out Dictionary<string, Tuple<RectOffset, bool>> borderDescriptor);
             foreach (string file in imagesFiles)
             {
-                Texture2D tex = KlyteResourceLoader.LoadTexture($"{path}.{file}");
+                Texture2D tex = ResourceLoader.LoadTexture($"{path}.{file}");
                 if (tex != null)
                 {
                     newSprites.AddRange(TextureAtlasUtils.CreateSpriteInfo(borderDescriptor, file, tex));
@@ -146,7 +146,7 @@ namespace Klyte.Commons.Utils
         public static void ParseImageIntoDefaultTextureAtlas(Type enumType, string resourceName, int width, int height, ref List<SpriteInfo> sprites)
         {
             Array spriteValues = Enum.GetValues(enumType);
-            Texture2D image = KlyteResourceLoader.LoadTexture(resourceName);
+            Texture2D image = ResourceLoader.LoadTexture(resourceName);
             for (int i = 0; i < spriteValues.Length && i * width < image.width; i++)
             {
                 var textureQuad = new Texture2D(width, height, TextureFormat.RGBA32, false);
@@ -154,7 +154,7 @@ namespace Klyte.Commons.Utils
                 sprites.Add(new SpriteInfo()
                 {
                     texture = textureQuad,
-                    name = KlyteResourceLoader.GetDefaultSpriteNameFor(spriteValues.GetValue(i) as Enum)
+                    name = ResourceLoader.GetDefaultSpriteNameFor(spriteValues.GetValue(i) as Enum)
                 });
             }
         }

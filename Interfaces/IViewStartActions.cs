@@ -1,4 +1,4 @@
-﻿namespace Klyte.Commons.Interfaces
+﻿namespace Commons.Interfaces
 {
     public interface IViewStartActions
     {

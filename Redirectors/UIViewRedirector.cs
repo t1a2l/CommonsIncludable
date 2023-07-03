@@ -1,12 +1,12 @@
 ﻿using ColossalFramework.UI;
 using HarmonyLib;
-using Klyte.Commons.Extensions;
-using Klyte.Commons.Interfaces;
-using Klyte.Commons.Utils;
+using Commons.Extensions;
+using Commons.Interfaces;
+using Commons.Utils;
 using System;
-using static Klyte.Commons.Extensions.Patcher;
+using static Commons.Extensions.Patcher;
 
-namespace Klyte.Commons.Redirectors
+namespace Commons.Redirectors
 {
     public class UIViewRedirector : Patcher, IPatcher
     {

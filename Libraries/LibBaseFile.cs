@@ -1,10 +1,10 @@
 ﻿using ColossalFramework.Globalization;
-using Klyte.Commons.Interfaces;
-using Klyte.Commons.Utils;
+using Commons.Interfaces;
+using Commons.Utils;
 using System.Collections;
 using System.IO;
 
-namespace Klyte.Commons.Libraries
+namespace Commons.Libraries
 {
     public abstract class LibBaseFile<LIB, DESC> : BasicLib<LIB, DESC>
     where LIB : LibBaseFile<LIB, DESC>, new()
@@ -35,14 +35,14 @@ namespace Klyte.Commons.Libraries
             return File.Exists(newVal.DefaultXmlFileBaseFullPath)
                 ? XmlUtils.DefaultXmlDeserialize<LIB>(File.ReadAllText(newVal.DefaultXmlFileBaseFullPath), (x, y) =>
                 {
-                    K45DialogControl.ShowModal(new K45DialogControl.BindProperties
+                    DialogControl.ShowModal(new DialogControl.BindProperties
                     {
-                        title = Locale.Get("K45_CMNS_LIB_ANERROROCURREDWHILELOADING_TITLE"),
-                        message = string.Format(Locale.Get("K45_CMNS_LIB_ANERROROCURREDWHILELOADING_MESSAGE"), newVal.XmlName, y?.Message ?? "InvalidSyntax"),
+                        title = Locale.Get("CMNS_LIB_ANERROROCURREDWHILELOADING_TITLE"),
+                        message = string.Format(Locale.Get("CMNS_LIB_ANERROROCURREDWHILELOADING_MESSAGE"), newVal.XmlName, y?.Message ?? "InvalidSyntax"),
                         showButton1 = true,
-                        textButton1 = Locale.Get("K45_CMNS_LIB_ANERROROCURREDWHILELOADING_OPT_DELETEFILE"),
+                        textButton1 = Locale.Get("CMNS_LIB_ANERROROCURREDWHILELOADING_OPT_DELETEFILE"),
                         showButton2 = true,
-                        textButton2 = Locale.Get("K45_CMNS_LIB_ANERROROCURREDWHILELOADING_OPT_GOTOFILE"),
+                        textButton2 = Locale.Get("CMNS_LIB_ANERROROCURREDWHILELOADING_OPT_GOTOFILE"),
                         showButton3 = true,
                         textButton3 = Locale.Get("EXCEPTION_OK"),
                     }, (z) =>

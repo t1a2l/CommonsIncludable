@@ -1,8 +1,8 @@
-﻿using Klyte.Commons.Extensions;
+﻿using Commons.Extensions;
 using System;
 using System.Collections.Generic;
 
-namespace Klyte.Commons.Tools
+namespace Commons.Tools
 {
     public static class ToolControllerUtil
     {

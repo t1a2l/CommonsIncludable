@@ -1,7 +1,7 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Globalization;
-using Klyte.Commons.Extensions;
-using Klyte.Commons.Utils;
+using Commons.Extensions;
+using Commons.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,18 +9,18 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
-namespace Klyte.Commons.UI.i18n
+namespace Commons.UI.i18n
 {
-    public class KlyteLocaleManager : MonoBehaviour
+    public class TLMLocaleManager : MonoBehaviour
     {
         internal static readonly string m_translateFilesPath = $"{FileUtils.BASE_FOLDER_PATH}__translations{Path.DirectorySeparatorChar}";
 
         public static readonly string[] locales = new string[] { "en", "pt", "ko", "de", "cn", "pl", "nl", "fr", "es", "ru", "zh", "ja" };
 
-        public const string m_defaultPrefixInGame = "K45_";
-        public const string m_defaultTestKey = "K45_TEST_UP";
+        public const string m_defaultPrefixInGame = "";
+        public const string m_defaultTestKey = "TEST_UP";
         public const string m_defaultTestValue = "OK_V2";
-        public const string m_defaultModControllingKey = "K45_MOD_CONTROLLING_LOCALE";
+        public const string m_defaultModControllingKey = "MOD_CONTROLLING_LOCALE";
 
         private const string m_lineSeparator = "\r\n";
         private const string m_kvSeparator = "=";
@@ -31,7 +31,7 @@ namespace Klyte.Commons.UI.i18n
         internal static readonly Func<LocaleManager, Locale> m_localeManagerLocale = ReflectionUtils.GetGetFieldDelegate<LocaleManager, Locale>(typeof(LocaleManager).GetField("m_Locale", Patcher.allFlags));
         internal static readonly Func<Locale, Dictionary<Locale.Key, string>> m_localeStringsDictionary = ReflectionUtils.GetGetFieldDelegate<Locale, Dictionary<Locale.Key, string>>(typeof(Locale).GetField("m_LocalizedStrings", Patcher.allFlags));
 
-        internal static SavedString CurrentLanguageId => new SavedString("K45_LoadedLanguage", Settings.gameSettingsFile, "en", true);
+        internal static SavedString CurrentLanguageId => new SavedString("LoadedLanguage", Settings.gameSettingsFile, "en", true);
 
         private static string m_language = "";
 
@@ -81,7 +81,7 @@ namespace Klyte.Commons.UI.i18n
         public static void ReloadLanguage() => ReloadLanguage(false);
         public static void ReloadLanguage(bool skipUI)
         {
-            if (FindObjectOfType<KlyteLocaleManager>() != null)
+            if (FindObjectOfType<TLMLocaleManager>() != null)
             {
                 m_localeStringsDictionary(m_localeManagerLocale(LocaleManager.instance))[new Locale.Key() { m_Identifier = m_defaultTestKey }] = m_defaultTestValue;
                 m_localeStringsDictionary(m_localeManagerLocale(LocaleManager.instance))[new Locale.Key() { m_Identifier = m_defaultModControllingKey }] = CommonProperties.ModName;

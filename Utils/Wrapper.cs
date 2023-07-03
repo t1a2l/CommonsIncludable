@@ -1,4 +1,4 @@
-﻿namespace Klyte.Commons.Utils
+﻿namespace Commons.Utils
 {
     public class Wrapper<T>
     {

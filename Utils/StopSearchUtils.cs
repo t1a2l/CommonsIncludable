@@ -1,12 +1,12 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Math;
-using Klyte.Commons.Utils.UtilitiesClasses;
+using Commons.Utils.UtilitiesClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Klyte.Commons.Utils
+namespace Commons.Utils
 {
     public class StopSearchUtils
     {

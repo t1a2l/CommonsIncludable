@@ -1,7 +1,7 @@
 ﻿using ColossalFramework;
 using UnityEngine;
 
-namespace Klyte.Commons.UI
+namespace Commons.UI
 {
     public class AVOPreviewRenderer : MonoBehaviour
     {
