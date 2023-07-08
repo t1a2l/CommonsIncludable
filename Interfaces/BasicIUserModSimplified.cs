@@ -253,7 +253,7 @@ namespace Commons.Interfaces
             }
 
             var newSprites = new List<SpriteInfo>();
-            TextureAtlasUtils.LoadImagesFromResources("commons.UI.Images", ref newSprites);
+            TextureAtlasUtils.LoadImagesFromResources("Commons.UI.Images", ref newSprites);
             TextureAtlasUtils.LoadImagesFromResources("UI.Images", ref newSprites);
             LogUtils.DoLog($"ADDING {newSprites.Count} sprites!");
             TextureAtlasUtils.RegenerateDefaultTextureAtlas(newSprites);
@@ -272,13 +272,13 @@ namespace Commons.Interfaces
 
         protected virtual void CreateGroup9(UIHelperExtension helper)
         {
-            UIHelperExtension group9 = helper.AddGroupExtended(Locale.Get("_BETAS_EXTRA_INFO"));
+            UIHelperExtension group9 = helper.AddGroupExtended(Locale.Get("BETAS_EXTRA_INFO"));
             Group9SettingsUI(group9);
 
-            group9.AddCheckbox(Locale.Get("_DEBUG_MODE"), DebugMode.value, delegate (bool val)
+            group9.AddCheckbox(Locale.Get("DEBUG_MODE"), DebugMode.value, delegate (bool val)
             { DebugMode.value = val; });
-            group9.AddLabel(string.Format(Locale.Get("_VERSION_SHOW"), FullVersion));
-            group9.AddButton(Locale.Get("_RELEASE_NOTES"), delegate ()
+            group9.AddLabel(string.Format(Locale.Get("VERSION_SHOW"), FullVersion));
+            group9.AddButton(Locale.Get("RELEASE_NOTES"), delegate ()
             {
                 ShowVersionInfoPopup(true);
             });
@@ -312,7 +312,7 @@ namespace Commons.Interfaces
             if (!(GameObject.FindObjectOfType<TLMLocaleManager>() is null))
             {
                 UIDropDown dd = null;
-                dd = group9.AddDropdownLocalized("_MOD_LANG", (new string[] { "_GAME_DEFAULT_LANGUAGE" }.Concat(TLMLocaleManager.locales.Select(x => $"_LANG_{x}")).Select(x => Locale.Get(x))).ToArray(), TLMLocaleManager.GetLoadedLanguage(), delegate (int idx)
+                dd = group9.AddDropdownLocalized("MOD_LANG", (new string[] { "GAME_DEFAULT_LANGUAGE" }.Concat(TLMLocaleManager.locales.Select(x => $"LANG_{x}")).Select(x => Locale.Get(x))).ToArray(), TLMLocaleManager.GetLoadedLanguage(), delegate (int idx)
                 {
                     TLMLocaleManager.SaveLoadedLanguage(idx);
                     TLMLocaleManager.ReloadLanguage();
@@ -321,7 +321,7 @@ namespace Commons.Interfaces
             }
             else
             {
-                group9.AddLabel(string.Format(Locale.Get("_LANG_CTRL_MOD_INFO"), Locale.Get("_MOD_CONTROLLING_LOCALE")));
+                group9.AddLabel(string.Format(Locale.Get("LANG_CTRL_MOD_INFO"), Locale.Get("MOD_CONTROLLING_LOCALE")));
             }
 
         }

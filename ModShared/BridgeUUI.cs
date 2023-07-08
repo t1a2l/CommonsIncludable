@@ -34,7 +34,7 @@ namespace Commons.ModShared
              groupName: "45",
              tooltip: modInstance.Name,
              onToggle: (value) => { if (value) { Open(); } else { Close(); } },
-             icon: ResourceLoader.LoadTexture($"UI.Images.%{modInstance.IconName}.png")
+             icon: ResourceLoader.LoadTexture($"UI.Images.{modInstance.IconName}.png")
              );
 
             m_container = UIView.Find("TSBar").AttachUIComponent(CreateContainer(modInstance, 875, 550).gameObject) as UIPanel;

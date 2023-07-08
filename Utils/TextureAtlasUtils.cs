@@ -87,7 +87,7 @@ namespace Commons.Utils
 
         public static void LoadImagesFromResources(string path, ref List<SpriteInfo> newSprites)
         {
-            string[] imagesFiles = FileUtils.GetAllFilesEmbeddedAtFolder(path, ".png");
+            string[] imagesFiles = FileUtils.GetAllFilesEmbeddedAtFolder("TransportLinesManager." + path, ".png");
             TextureAtlasUtils.ParseBorderDescriptors(ResourceLoader.LoadResourceStringLines($"{path}.{BORDER_FILENAME}"), out Dictionary<string, Tuple<RectOffset, bool>> borderDescriptor);
             foreach (string file in imagesFiles)
             {

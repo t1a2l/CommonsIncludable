@@ -228,7 +228,7 @@ namespace Commons.LiteUI.BaseElements
             }
         }
 
-        internal static Texture2D LoadHighlightTexture() => highlightTexture = ResourceLoader.LoadTexture("commons.UI.Images.highlight.png");
+        internal static Texture2D LoadHighlightTexture() => highlightTexture = ResourceLoader.LoadTexture("Commons.UI.Images.highlight.png");
 
         public void MoveResize(Rect newWindowRect) => windowRect = newWindowRect;
 
