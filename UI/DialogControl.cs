@@ -136,6 +136,7 @@ namespace Commons.Utils
             button3.size = new Vector2(150, 60);
             button3.text = "CCCCC";
             button3.wordWrap = true;
+            MonoUtils.InitButtonFull(button3, false, "ButtonMenu");
             #endregion
 
             #region Bindings creation
@@ -263,12 +264,10 @@ namespace Commons.Utils
         private void BindEvents()
         {
             m_mainPanel.enabled = false;
-
+            
             m_button1.eventClicked += (x, y) => OnButton1();
             m_button2.eventClicked += (x, y) => OnButton2();
             m_button3.eventClicked += (x, y) => OnButton3();
-            m_button4.eventClicked += (x, y) => OnButton4();
-            m_button5.eventClicked += (x, y) => OnButton5();
         }
 
         private void BindControls()
@@ -285,8 +284,6 @@ namespace Commons.Utils
             m_button1 = m_mainPanel.Find<UIButton>("ButtonAction1");
             m_button2 = m_mainPanel.Find<UIButton>("ButtonAction2");
             m_button3 = m_mainPanel.Find<UIButton>("ButtonAction3");
-            m_button4 = m_mainPanel.Find<UIButton>("ButtonAction4");
-            m_button5 = m_mainPanel.Find<UIButton>("ButtonAction5");
 
             m_textField = m_mainPanel.Find<UITextField>(TEXT_INPUT_ID);
 
@@ -307,9 +304,6 @@ namespace Commons.Utils
         private void OnButton2() => Close(2);
 
         private void OnButton3() => Close(3);
-
-        private void OnButton4() => Close(4);
-        private void OnButton5() => Close(5);
 
         private IEnumerator Enqueue(BindProperties properties, Func<int, bool> callback)
         {
@@ -526,8 +520,6 @@ namespace Commons.Utils
         private UIButton m_button1;
         private UIButton m_button2;
         private UIButton m_button3;
-        private UIButton m_button4;
-        private UIButton m_button5;
         private UITextField m_textField;
         private UIDropDown m_dropDown;
         private UITextureSprite m_textureSprite;

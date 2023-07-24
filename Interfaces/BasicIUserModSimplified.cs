@@ -303,7 +303,7 @@ namespace Commons.Interfaces
                 }
                 if (x == 3)
                 {
-                    ColossalFramework.Utils.OpenUrlThreaded("https://steamcommunity.com/sharedfiles/filedetails/?id=" + ModId);
+                    ColossalFramework.Utils.OpenUrlThreaded("https://steamcommunity.com/sharedfiles/filedetails/?id=3007903394");
                     return false;
                 }
                 return true;
@@ -375,10 +375,10 @@ namespace Commons.Interfaces
                                 CurrentSaveVersion.value = FullVersion;
                                 break;
                             case 2:
-                                ColossalFramework.Utils.OpenUrlThreaded("https://steamcommunity.com/sharedfiles/filedetails/?id=" + ModId);
+                                ColossalFramework.Utils.OpenUrlThreaded("https://steamcommunity.com/sharedfiles/filedetails/?id=3007903394");
                                 break;
                             case 3:
-                                if (!(targetUrl is null))
+                                if (targetUrl is not null)
                                 {
                                     ColossalFramework.Utils.OpenUrlThreaded(targetUrl.Second);
                                 }
