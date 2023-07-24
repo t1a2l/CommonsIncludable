@@ -358,13 +358,9 @@ namespace Commons.Interfaces
                         showButton1 = true,
                         textButton1 = "Okay!",
                         showButton2 = true,
-                        textButton2 = "See the news on the mod page at Workshop!",
+                        textButton2 = "Workshop Page",
                         showButton3 = !(targetUrl is null),
                         textButton3 = targetUrl?.First ?? "",
-                        showButton4 = true,
-                        textButton4 = "Follow  on Twitter!",
-                        showButton5 = true,
-                        textButton5 = "Subscribe to  channel on YouTube!",
                         messageAlign = UIHorizontalAlignment.Left,
                         useFullWindowWidth = fullWidth,
                         title = title,
@@ -387,13 +383,6 @@ namespace Commons.Interfaces
                                     ColossalFramework.Utils.OpenUrlThreaded(targetUrl.Second);
                                 }
                                 break;
-                            case 4:
-                                ColossalFramework.Utils.OpenUrlThreaded("https://twitter.com/");
-                                break;
-                            case 5:
-                                ColossalFramework.Utils.OpenUrlThreaded("https://youtube.com/");
-                                break;
-
                         }
                         return x <= 1;
                     });

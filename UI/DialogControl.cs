@@ -136,19 +136,6 @@ namespace Commons.Utils
             button3.size = new Vector2(150, 60);
             button3.text = "CCCCC";
             button3.wordWrap = true;
-            MonoUtils.InitButtonFull(button3, false, "ButtonMenu");
-            MonoUtils.CreateUIElement(out UIButton button4, buttonSubContainer.transform, "ButtonAction4");
-            button4.anchor = UIAnchorStyle.CenterHorizontal | UIAnchorStyle.Top;
-            button4.size = new Vector2(150, 60);
-            button4.text = "DDDDD";
-            button4.wordWrap = true;
-            MonoUtils.InitButtonFull(button4, false, "ButtonMenu");
-            MonoUtils.CreateUIElement(out UIButton button5, buttonSubContainer.transform, "ButtonAction5");
-            button5.anchor = UIAnchorStyle.CenterHorizontal | UIAnchorStyle.Top;
-            button5.size = new Vector2(150, 60);
-            button5.text = "EEEEE";
-            button5.wordWrap = true;
-            MonoUtils.InitButtonFull(button5, false, "ButtonMenu");
             #endregion
 
             #region Bindings creation
@@ -163,13 +150,9 @@ namespace Commons.Utils
                 CreateBind("showButton1"        ,button1,"isVisible"),
                 CreateBind("showButton2"        ,button2,"isVisible"),
                 CreateBind("showButton3"        ,button3,"isVisible"),
-                CreateBind("showButton4"        ,button4,"isVisible"),
-                CreateBind("showButton5"        ,button5,"isVisible"),
                 CreateBind("textButton1"        ,button1,"text"),
                 CreateBind("textButton2"        ,button2,"text"),
                 CreateBind("textButton3"        ,button3,"text"),
-                CreateBind("textButton4"        ,button4,"text"),
-                CreateBind("textButton5"        ,button5,"text"),
             });
             #endregion
 
@@ -435,19 +418,15 @@ namespace Commons.Utils
 
             m_properties.FindBinding("title").property.value = propertiesToSet.title;
             m_properties.FindBinding("icon").property.value = propertiesToSet.icon ?? CommonProperties.ModIcon;
-            m_properties.FindBinding("showClose").property.value = propertiesToSet.showClose || !(propertiesToSet.showButton1 || propertiesToSet.showButton2 || propertiesToSet.showButton3 || propertiesToSet.showButton4);
+            m_properties.FindBinding("showClose").property.value = propertiesToSet.showClose || !(propertiesToSet.showButton1 || propertiesToSet.showButton2 || propertiesToSet.showButton3);
             m_properties.FindBinding("message").property.value = propertiesToSet.message;
             m_properties.FindBinding("messageAlign").property.value = propertiesToSet.messageAlign;
             m_properties.FindBinding("showButton1").property.value = propertiesToSet.showButton1;
             m_properties.FindBinding("showButton2").property.value = propertiesToSet.showButton2;
             m_properties.FindBinding("showButton3").property.value = propertiesToSet.showButton3;
-            m_properties.FindBinding("showButton4").property.value = propertiesToSet.showButton4;
-            m_properties.FindBinding("showButton5").property.value = propertiesToSet.showButton5;
             m_properties.FindBinding("textButton1").property.value = propertiesToSet.textButton1 ?? "";
             m_properties.FindBinding("textButton2").property.value = propertiesToSet.textButton2 ?? "";
             m_properties.FindBinding("textButton3").property.value = propertiesToSet.textButton3 ?? "";
-            m_properties.FindBinding("textButton4").property.value = propertiesToSet.textButton4 ?? "";
-            m_properties.FindBinding("textButton5").property.value = propertiesToSet.textButton5 ?? "";
 
             m_boxText.textScale = propertiesToSet.smallFont ? 0.75f : 1;
             m_textField.isVisible = propertiesToSet.showTextField;
@@ -761,13 +740,9 @@ namespace Commons.Utils
             public bool showButton1;
             public bool showButton2;
             public bool showButton3;
-            public bool showButton4;
-            public bool showButton5;
             public string textButton1;
             public string textButton2;
             public string textButton3;
-            public string textButton4;
-            public string textButton5;
             public bool useFullWindowWidth;
             public bool showTextField;
             public bool showDropDown;
@@ -800,13 +775,9 @@ namespace Commons.Utils
                         case "showButton1": result.showButton1 = (bool)kv.Value; break;
                         case "showButton2": result.showButton2 = (bool)kv.Value; break;
                         case "showButton3": result.showButton3 = (bool)kv.Value; break;
-                        case "showButton4": result.showButton4 = (bool)kv.Value; break;
-                        case "showButton5": result.showButton5 = (bool)kv.Value; break;
                         case "textButton1": result.textButton1 = (string)kv.Value; break;
                         case "textButton2": result.textButton2 = (string)kv.Value; break;
                         case "textButton3": result.textButton3 = (string)kv.Value; break;
-                        case "textButton4": result.textButton4 = (string)kv.Value; break;
-                        case "textButton5": result.textButton5 = (string)kv.Value; break;
                         case "useFullWindowWidth": result.useFullWindowWidth = (bool)kv.Value; break;
                         case "showTextField": result.showTextField = (bool)kv.Value; break;
                         case "showDropDown": result.showDropDown = (bool)kv.Value; break;
@@ -837,13 +808,9 @@ namespace Commons.Utils
                 ["showButton1"] = showButton1,
                 ["showButton2"] = showButton2,
                 ["showButton3"] = showButton3,
-                ["showButton4"] = showButton4,
-                ["showButton5"] = showButton5,
                 ["textButton1"] = textButton1,
                 ["textButton2"] = textButton2,
                 ["textButton3"] = textButton3,
-                ["textButton4"] = textButton4,
-                ["textButton5"] = textButton5,
                 ["useFullWindowWidth"] = useFullWindowWidth,
                 ["showTextField"] = showTextField,
                 ["showDropDown"] = showDropDown,

@@ -45,7 +45,7 @@ namespace Commons.Utils
                 int capacity = ReflectionUtils.GetGetFieldDelegate<AI, int>(fieldInfo)(ai);
                 try
                 {
-                    if (!noLoop && !(info.m_trailers is null))
+                    if (!noLoop && info.m_trailers is not null)
                     {
                         foreach (VehicleInfo.VehicleTrailer trailer in info.m_trailers)
                         {
@@ -127,7 +127,7 @@ namespace Commons.Utils
             {
                 try
                 {
-                    if (!(info.m_trailers is null))
+                    if (info.m_trailers is not null)
                     {
                         foreach (VehicleInfo.VehicleTrailer trailer in info.m_trailers)
                         {
@@ -150,7 +150,14 @@ namespace Commons.Utils
             }
         }
 
-        public static bool IsTrailer(VehicleInfo prefab) => prefab.GetAI() is CarTrailerAI;
+        public static bool IsTrailer(VehicleInfo prefab) 
+        { 
+            if(prefab.GetAI() is CarTrailerAI || prefab.GetAI() is TrolleybusTrailerAI)
+            {
+                return true;
+            }
+            return prefab.m_placementStyle != ItemClass.Placement.Automatic;
+        }   
  
         public static void ReplaceVehicleModel(ushort idx, VehicleInfo newInfo)
         {
