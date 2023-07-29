@@ -12,7 +12,7 @@ namespace Commons.Utils
     public class FileUtils
     {
         #region File & Prefab Utils
-        public static readonly string BASE_FOLDER_PATH = DataLocation.localApplicationData + Path.DirectorySeparatorChar + "45Mods" + Path.DirectorySeparatorChar;
+        public static readonly string BASE_FOLDER_PATH = DataLocation.localApplicationData + Path.DirectorySeparatorChar + "Klyte45Mods" + Path.DirectorySeparatorChar;
 
         public static FileInfo EnsureFolderCreation(string folderName)
         {

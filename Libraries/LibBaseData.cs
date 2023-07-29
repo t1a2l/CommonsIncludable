@@ -12,6 +12,7 @@ namespace Commons.Libraries
         where DESC : class,ILibable
     {
         public abstract string SaveId { get; }
+
         public static LIB Instance
         {
             get {

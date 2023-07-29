@@ -11,6 +11,7 @@
         public abstract string SaveId { get; }
 
         public abstract X Deserialize(byte[] data);
+
         IDataExtension IDataExtensionLegacy.Deserialize(byte[] data) => Deserialize(data);
     }
 }

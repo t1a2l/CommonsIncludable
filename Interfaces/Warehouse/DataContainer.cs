@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using ColossalFramework.UI;
 
 namespace Commons.Interfaces.Warehouse
 {
@@ -74,15 +75,19 @@ namespace Commons.Interfaces.Warehouse
         private void ProcessExtension(Dictionary<Type, Type> instancesLegacies, Type type)
         {
             var basicInstance = (IDataExtension)Activator.CreateInstance(type);
-            if (!SerializableDataManager.EnumerateData().Contains(basicInstance.SaveId))
+			var legacyId = "K45_" + basicInstance.SaveId;
+            var isNewSave = SerializableDataManager.EnumerateData().Contains(basicInstance.SaveId);
+            var isLegacySave = SerializableDataManager.EnumerateData().Contains(legacyId);
+
+            if (!isNewSave && !isLegacySave)
             {
                 LogUtils.DoLog($"SEARCHING FOR LEGACY {type}");
                 if (instancesLegacies.ContainsKey(type))
                 {
                     var basicInstanceLegacy = (IDataExtensionLegacy)instancesLegacies[type].GetConstructor(new Type[0]).Invoke(new Type[0]);
-                    if (!SerializableDataManager.EnumerateData().Contains(basicInstanceLegacy.SaveId))
+                    if (!SerializableDataManager.EnumerateData().Contains(legacyId))
                     {
-                        byte[] storage2 = MemoryStreamToArray(basicInstanceLegacy.SaveId);
+                        byte[] storage2 = MemoryStreamToArray(legacyId);
                         try
                         {
                             instance.Instances[type] = basicInstanceLegacy.Deserialize(storage2) ?? basicInstance;
@@ -105,37 +110,50 @@ namespace Commons.Interfaces.Warehouse
                 basicInstance.LoadDefaults(SerializableDataManager);
                 return;
             }
-            using (var memoryStream = new MemoryStream(SerializableDataManager.LoadData(basicInstance.SaveId)))
+            var memoryStream = new MemoryStream();
+            if(isNewSave)
             {
-                byte[] storage = memoryStream.ToArray();
-                try
+                memoryStream = new MemoryStream(SerializableDataManager.LoadData(basicInstance.SaveId));
+            }
+            else if(isLegacySave)
+            {
+                memoryStream = new MemoryStream(SerializableDataManager.LoadData(legacyId));
+            }
+            if(isNewSave || isLegacySave)
+            {
+                using (memoryStream)
                 {
-                    instance.Instances[type] = basicInstance.Deserialize(type, storage) ?? basicInstance;
-                    if (CommonProperties.DebugMode)
-                    {
-                        string content = System.Text.Encoding.UTF8.GetString(storage);
-                        LogUtils.DoLog($"{type} DATA {storage.Length}b => {content}");
-                    }
-                }
-                catch (Exception e)
-                {
-                    byte[] targetArr;
-                    bool zipped = false;
+                    byte[] storage = memoryStream.ToArray();
                     try
                     {
-                        targetArr = ZipUtils.UnzipBytes(storage);
-                        zipped = true;
+                        instance.Instances[type] = basicInstance.Deserialize(type, storage) ?? basicInstance;
+                        if (CommonProperties.DebugMode)
+                        {
+                            string content = System.Text.Encoding.UTF8.GetString(storage);
+                            LogUtils.DoLog($"{type} DATA {storage.Length}b => {content}");
+                        }
                     }
-                    catch
+                    catch (Exception e)
                     {
-                        targetArr = storage;
+                        byte[] targetArr;
+                        bool zipped = false;
+                        try
+                        {
+                            targetArr = ZipUtils.UnzipBytes(storage);
+                            zipped = true;
+                        }
+                        catch
+                        {
+                            targetArr = storage;
+                        }
+                        string content = System.Text.Encoding.UTF8.GetString(targetArr);
+                        LogUtils.DoErrorLog($"{type} CORRUPTED DATA! => \nException: {e.Message}\n{e.StackTrace}\nData  {storage.Length} Z={zipped} b:\n{content}");
+                        DialogControl.ShowModalError($"Error loading '{type}' data", $"An error occurred while loading the data from <color yellow>{CommonProperties.ModName}</color>.{(CommonProperties.GitHubRepoPath.IsNullOrWhiteSpace() ? "" : "\nPlease open a issue in GitHub along with the game log attached and a printscreen of this window to get this checked by the mod developer. See the <color cyan>Report-a-bug Helper</color> button in the mod options menu to see details about how to get the game log.")}\nRaw data:\n{content}", true);
+                        instance.Instances[type] = basicInstance;
                     }
-                    string content = System.Text.Encoding.UTF8.GetString(targetArr);
-                    LogUtils.DoErrorLog($"{type} CORRUPTED DATA! => \nException: {e.Message}\n{e.StackTrace}\nData  {storage.Length} Z={zipped} b:\n{content}");
-                    DialogControl.ShowModalError($"Error loading '{type}' data", $"An error occurred while loading the data from <color yellow>{CommonProperties.ModName}</color>.{(CommonProperties.GitHubRepoPath.IsNullOrWhiteSpace() ? "" : "\nPlease open a issue in GitHub along with the game log attached and a printscreen of this window to get this checked by the mod developer. See the <color cyan>Report-a-bug Helper</color> button in the mod options menu to see details about how to get the game log.")}\nRaw data:\n{content}", true);
-                    instance.Instances[type] = basicInstance;
                 }
             }
+            
         }
 
         private byte[] MemoryStreamToArray(string saveId)
