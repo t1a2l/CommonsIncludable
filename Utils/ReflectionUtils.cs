@@ -377,16 +377,16 @@ namespace Commons.Utils
                 { return x?.GetTypes(); }
                 catch (ReflectionTypeLoadException r)
                 {
-                    return r.Types.Where(k => !(k is null));
+                    return r.Types.Where(k => k is not null);
                 }
             })
-                                         let y = t.BaseType
-                                         where t.IsClass && y != null && ((!typeTarg.IsGenericType && y == typeTarg) || (y.IsGenericType && y.GetGenericTypeDefinition() == typeTarg))
-                                         select t);
+            let y = t.BaseType
+            where t.IsClass && y != null && ((!typeTarg.IsGenericType && y == typeTarg) || (y.IsGenericType && y.GetGenericTypeDefinition() == typeTarg))
+            select t);
             var result = new List<Type>();
             if (CommonProperties.DebugMode)
             {
-                LogUtils.DoLog($"classes:\r\n\t {string.Join("\r\n\t", classes.Select(x => x.ToString()).ToArray())} ");
+                LogUtils.DoLog($"classes:\r\n\t {string.Join("\r\n\t", [.. classes.Select(x => x.ToString())])} ");
             }
 
             foreach (Type t in classes)
@@ -400,7 +400,7 @@ namespace Commons.Utils
                     result.Add(t);
                 }
             }
-            return result.Distinct().ToList();
+            return [.. result.Distinct()];
         }
 
         public static List<Type> GetInterfaceImplementations(Type interfaceType, Type refType)
@@ -416,20 +416,20 @@ namespace Commons.Utils
                 { return x?.GetTypes(); }
                 catch (ReflectionTypeLoadException r)
                 {
-                    return r.Types.Where(k => !(k is null));
+                    return r.Types.Where(k => k is not null);
                 }
             })
-                                         let y = t.GetInterfaces()
-                                         where t.IsClass && y.Contains(interfaceType) && !t.IsAbstract
-                                         select t);
+            let y = t.GetInterfaces()
+            where t.IsClass && y.Contains(interfaceType) && !t.IsAbstract
+            select t);
 
             var result = new List<Type>();
             if (CommonProperties.DebugMode)
             {
-                LogUtils.DoLog($"classes:\r\n\t {string.Join("\r\n\t", classes.Select(x => x.ToString()).ToArray())} ");
+                LogUtils.DoLog($"classes:\r\n\t {string.Join("\r\n\t", [.. classes.Select(x => x.ToString())])} ");
             }
 
-            return classes.ToList();
+            return [.. classes];
         }
         public static Type GetImplementationForGenericType(Type typeOr, params Type[] typeArgs)
         {
@@ -441,7 +441,7 @@ namespace Commons.Utils
             }
             catch (ReflectionTypeLoadException r)
             {
-                allTypes = r.Types.Where(k => !(k is null));
+                allTypes = r.Types.Where(k => k is not null);
             }
 
 
@@ -450,7 +450,7 @@ namespace Commons.Utils
                                            select t);
             if (instances.Count() != 1)
             {
-                throw new Exception($"Defininções inválidas para [{string.Join(", ", typeArgs.Select(x => x.ToString()).ToArray())}] no tipo genérico {typeOr}");
+                throw new Exception($"Defininções inválidas para [{string.Join(", ", [.. typeArgs.Select(x => x.ToString())])}] no tipo genérico {typeOr}");
             }
 
             Type targetType = instances.First();

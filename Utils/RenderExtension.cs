@@ -1,5 +1,4 @@
 ﻿using ColossalFramework.Math;
-using Commons.Utils;
 using Commons.Utils.StructExtensions;
 using UnityEngine;
 
@@ -51,17 +50,17 @@ namespace Commons.Utils
         }
         private static Mesh CreateBoxMesh()
         {
-            Vector3[] array = new Vector3[]
-            {
-                new Vector3(-0.5f, -0.5f, -0.5f),
-                new Vector3(0.5f, -0.5f, -0.5f),
-                new Vector3(-0.5f, 0.5f, -0.5f),
-                new Vector3(0.5f, 0.5f, -0.5f),
-                new Vector3(-0.5f, -0.5f, 0.5f),
-                new Vector3(0.5f, -0.5f, 0.5f),
-                new Vector3(-0.5f, 0.5f, 0.5f),
-                new Vector3(0.5f, 0.5f, 0.5f)
-            };
+            Vector3[] array =
+            [
+                new(-0.5f, -0.5f, -0.5f),
+                new(0.5f, -0.5f, -0.5f),
+                new(-0.5f, 0.5f, -0.5f),
+                new(0.5f, 0.5f, -0.5f),
+                new(-0.5f, -0.5f, 0.5f),
+                new(0.5f, -0.5f, 0.5f),
+                new(-0.5f, 0.5f, 0.5f),
+                new(0.5f, 0.5f, 0.5f)
+            ];
             int[] triangles = new int[36];
             int index = 0;
 
@@ -222,14 +221,14 @@ namespace Commons.Utils
         private static void DrawCircle(RenderManager.CameraInfo cameraInfo, Color color, Vector3 center, float size, float minY, float maxY, bool renderLimits, bool alphaBlend)
         {
             float num = Vector2.Distance(cameraInfo.m_position, center) * 0.001f + 1f;
-            Vector4 value = new Vector4(center.x, center.z, size * -0.5f, size * 0.5f);
+            Vector4 value = new(center.x, center.z, size * -0.5f, size * 0.5f);
             Vector4 value2 = ((!renderLimits) ? new Vector4(-100000f, minY, maxY, 100000f) : new Vector4(minY, -100000f, 100000f, maxY));
             Vector3 vector = center - new Vector3(size * 0.5f, 0f, size * 0.5f);
             Vector3 vector2 = center + new Vector3(size * 0.5f, 0f, size * 0.5f);
             vector.y = Mathf.Min(vector.y, minY);
             vector2.y = Mathf.Max(vector2.y, maxY);
-            Bounds bounds = default(Bounds);
-            Vector3 vector3 = new Vector3(num, num, num);
+            Bounds bounds = default;
+            Vector3 vector3 = new(num, num, num);
             bounds.SetMinMax(vector - vector3, vector2 + vector3);
             if (bounds.Intersects(cameraInfo.m_bounds))
             {
@@ -259,16 +258,16 @@ namespace Commons.Utils
             }
         }
 
-        public struct OverlayData
+        public struct OverlayData(RenderManager.CameraInfo cameraInfo)
         {
-            public RenderManager.CameraInfo CameraInfo { get; }
-            public Color? Color;
-            public float? Width;
-            public bool? CutStart;
-            public bool? CutEnd;
-            public bool? RenderLimit;
-            public bool? AlphaBlend;
-            public bool SplitPoint;
+            public RenderManager.CameraInfo CameraInfo { get; } = cameraInfo;
+            public Color? Color = null;
+            public float? Width = null;
+            public bool? CutStart = null;
+            public bool? CutEnd = null;
+            public bool? RenderLimit = null;
+            public bool? AlphaBlend = null;
+            public bool SplitPoint = false;
 
             public bool Cut
             {
@@ -277,18 +276,6 @@ namespace Commons.Utils
                     CutStart = value;
                     CutEnd = value;
                 }
-            }
-
-            public OverlayData(RenderManager.CameraInfo cameraInfo)
-            {
-                CameraInfo = cameraInfo;
-                Color = null;
-                Width = null;
-                RenderLimit = null;
-                CutStart = null;
-                CutEnd = null;
-                AlphaBlend = null;
-                SplitPoint = false;
             }
 
             public OverlayData Copy()

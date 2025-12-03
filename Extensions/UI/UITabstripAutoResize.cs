@@ -1,13 +1,6 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using ICities;
 using ColossalFramework.UI;
-using ColossalFramework;
-using ColossalFramework.Plugins;
-using System.Threading;
 using System;
-using System.Linq;
 using Commons.Utils;
 
 namespace Commons.Extensions.UI

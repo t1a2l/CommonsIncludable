@@ -142,7 +142,10 @@ namespace Commons.LiteUI
                 return new Color((float)r, (float)g, (float)b, 1);
             }
 
-            public override string ToString() => $"H: {H.ToString("0.00")}, S: {S.ToString("0.00")}, V:{V.ToString("0.00")}";
+            public override readonly string ToString()
+            {
+                return $"H: {H:0.00}, S: {S:0.00}, V:{V:0.00}";
+            }
         }
     }
 }

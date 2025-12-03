@@ -23,7 +23,7 @@ namespace Commons.UI
         private int m_totalItems = 0;
         private int m_currentPage = 1;
 
-        private int[] m_allowedItemCount = new int[] { 5, 10, 20, 50 };
+        private int[] m_allowedItemCount = [5, 10, 20, 50];
         private UIDropDown m_itemsPerPageDD;
 
         private int TotalPages
@@ -37,7 +37,7 @@ namespace Commons.UI
 
         public event Action<int> OnGoToPage;
 
-        private void Awake()
+        public void Awake()
         {
             m_pagePanel = GetComponent<UIPanel>();
             m_pagePanel.padding = new RectOffset(0, 0, 0, 0);
@@ -60,7 +60,7 @@ namespace Commons.UI
             MonoUtils.LimitWidthAndBox(itemsPerPageLbl, m_pagePanel.width * .2f);
 
             m_itemsPerPageDD = UIHelperExtension.CloneBasicDropDownNoLabel(
-                m_allowedItemCount.Select(x => x.ToString("0")).ToArray(),
+                [.. m_allowedItemCount.Select(x => x.ToString("0"))],
                 (idx) =>
                     {
                         if (idx >= 0)
@@ -127,8 +127,8 @@ namespace Commons.UI
             var targetArray = newOptions.Where(x => x > 0).GroupBy(x => x).Select(x => x.Key).OrderBy(x => x).ToArray();
             if (targetArray.Length > 0)
             {
-                m_allowedItemCount = newOptions.Where(x => x > 0).GroupBy(x => x).Select(x => x.Key).OrderBy(x => x).ToArray();
-                m_itemsPerPageDD.items = m_allowedItemCount.Select(x => x.ToString("0")).ToArray();
+                m_allowedItemCount = [.. newOptions.Where(x => x > 0).GroupBy(x => x).Select(x => x.Key).OrderBy(x => x)];
+                m_itemsPerPageDD.items = [.. m_allowedItemCount.Select(x => x.ToString("0"))];
                 m_itemsPerPageDD.selectedIndex = 0;
             }
         }

@@ -22,7 +22,7 @@ namespace Commons.Redirectors
                 var rootAssetFolder = Path.GetDirectoryName(m_TargetAsset.package.packagePath);
                 LogUtils.DoErrorLog($"rootAssetFolder2: {rootAssetFolder}; ");
                 bool bundledAnyFile = false;
-                if (!(CommonProperties.AssetExtraFileNames is null))
+                if (CommonProperties.AssetExtraFileNames is not null)
                 {
                     foreach (string filename in CommonProperties.AssetExtraFileNames)
                     {
@@ -34,7 +34,7 @@ namespace Commons.Redirectors
                         }
                     }
                 }
-                if (!(CommonProperties.AssetExtraDirectoryNames is null))
+                if (CommonProperties.AssetExtraDirectoryNames is not null)
                 {
                     foreach (string directory in CommonProperties.AssetExtraDirectoryNames)
                     {
@@ -50,7 +50,7 @@ namespace Commons.Redirectors
                 if (bundledAnyFile)
                 {
                     var tagsField = __instance.GetType().GetField("m_Tags", Patcher.allFlags);
-                    tagsField.SetValue(__instance, (tagsField.GetValue(__instance) as string[]).Concat(new string[] { CommonProperties.ModName, $" {CommonProperties.Acronym}" }).Distinct().ToArray());
+                    tagsField.SetValue(__instance, (tagsField.GetValue(__instance) as string[]).Concat([CommonProperties.ModName, $" {CommonProperties.Acronym}"]).Distinct().ToArray());
                 }
 			}
         }

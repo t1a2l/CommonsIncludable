@@ -34,23 +34,23 @@ namespace Commons.Utils
 
         }
 
-        public static Vector2 RadianToVector2(float radian) => new Vector2(Mathf.Cos(radian), Mathf.Sin(radian));
+        public static Vector2 RadianToVector2(float radian) => new(Mathf.Cos(radian), Mathf.Sin(radian));
 
         public static Vector2 DegreeToVector2(float degree) => RadianToVector2(degree * Mathf.Deg2Rad);
 
         private const ulong DeBruijnSequence = 0x37E84A99DAE458F;
 
         private static readonly int[] MultiplyDeBruijnBitPosition =
-        {
-        0, 1, 17, 2, 18, 50, 3, 57,
-        47, 19, 22, 51, 29, 4, 33, 58,
-        15, 48, 20, 27, 25, 23, 52, 41,
-        54, 30, 38, 5, 43, 34, 59, 8,
-        63, 16, 49, 56, 46, 21, 28, 32,
-        14, 26, 24, 40, 53, 37, 42, 7,
-        62, 55, 45, 31, 13, 39, 36, 6,
-        61, 44, 12, 35, 60, 11, 10, 9,
-    };
+        [
+            0, 1, 17, 2, 18, 50, 3, 57,
+            47, 19, 22, 51, 29, 4, 33, 58,
+            15, 48, 20, 27, 25, 23, 52, 41,
+            54, 30, 38, 5, 43, 34, 59, 8,
+            63, 16, 49, 56, 46, 21, 28, 32,
+            14, 26, 24, 40, 53, 37, 42, 7,
+            62, 55, 45, 31, 13, 39, 36, 6,
+            61, 44, 12, 35, 60, 11, 10, 9,
+        ];
 
         /// <summary>
         /// Search the mask data from least significant bit (LSB) to the most significant bit (MSB) for a set bit (1)

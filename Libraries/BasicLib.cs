@@ -20,12 +20,12 @@ namespace Commons.Libraries
         [XmlElement("descriptorsData")]
         public virtual ListWrapper<DESC> SavedDescriptorsSerialized
         {
-            get => new ListWrapper<DESC>() { listVal = m_savedDescriptorsSerialized.Values.ToList() };
+            get => new() { listVal = [.. m_savedDescriptorsSerialized.Values] };
             set => m_savedDescriptorsSerialized = value.listVal.ToDictionary(x => x.SaveName, x => x);
         }
 
         [XmlIgnore]
-        protected Dictionary<string, DESC> m_savedDescriptorsSerialized = new Dictionary<string, DESC>();
+        protected Dictionary<string, DESC> m_savedDescriptorsSerialized = [];
 
 
         public void Add(string indexName, DESC descriptor)
@@ -59,10 +59,9 @@ namespace Commons.Libraries
         public IEnumerator BasicInputFiltering(string input, Wrapper<string[]> result)
         {
             yield return result.Value =
-             m_savedDescriptorsSerialized.Keys
-              .Where((x) => input.IsNullOrWhiteSpace() ? true : LocaleManager.cultureInfo.CompareInfo.IndexOf(x, input, CompareOptions.IgnoreCase) >= 0)
-              .OrderBy((x) => x)
-              .ToArray();
+             [.. m_savedDescriptorsSerialized.Keys
+              .Where((x) => input.IsNullOrWhiteSpace() || LocaleManager.cultureInfo.CompareInfo.IndexOf(x, input, CompareOptions.IgnoreCase) >= 0)
+              .OrderBy((x) => x)];
         }
     }
 }

@@ -34,7 +34,7 @@ namespace Commons.Utils
         {
             var imageSize = new Vector2(Mathf.Max(Mathf.NextPowerOfTwo(tex.width), 1), Mathf.Max(Mathf.NextPowerOfTwo(tex.height), 1));
 
-            TextureScaler.scale(tex, (int)imageSize.x, (int)imageSize.y);
+            TextureScaler.Scale(tex, (int)imageSize.x, (int)imageSize.y);
             return tex;
         }
 
@@ -113,7 +113,7 @@ namespace Commons.Utils
 
                 if (multipler < 1)
                 {
-                    TextureScaler.scale(texText, (int)(texText.width * multipler), texText.height);
+                    TextureScaler.Scale(texText, (int)(texText.width * multipler), texText.height);
                 }
                 MergeTextures(tex, texText.GetPixels(), (int)posText.x, (int)posText.y, texText.width, texText.height, false);
                 UnityEngine.Object.Destroy(texText);
@@ -173,7 +173,7 @@ namespace Commons.Utils
             var textColors = new Stack<ColorInfo>();
             textColors.Clear();
             textColors.Push(new ColorInfo(baseColor));
-            var tokens = (PoolList<UIMarkupToken>)typeof(UIMarkupTokenizer).GetMethod("Tokenize", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(null, new object[] { text });
+            var tokens = (PoolList<UIMarkupToken>)typeof(UIMarkupTokenizer).GetMethod("Tokenize", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(null, [text]);
             Vector2 texSize = CalculateTextureSize(uidynamicFont, textScale, ref tokens, out int startYPos);
             if (texSize.x <= 0 || texSize.y <= 0)
             {
@@ -337,7 +337,7 @@ namespace Commons.Utils
                     }
                     else if (Matches(uimarkupToken, TAG_LINE))
                     {
-                        string[] args = uimarkupToken.GetAttribute(0)?.m_Value?.value?.Split(new char[] { ',' }, 3);
+                        string[] args = uimarkupToken.GetAttribute(0)?.m_Value?.value?.Split([','], 3);
                         if (args == null || args.Length != 3)
                         {
                             LogUtils.DoErrorLog($"INVALID ARGUMENT: {uimarkupToken.GetAttribute(0)?.m_Value?.value ?? "<NULL>"}");
@@ -347,7 +347,7 @@ namespace Commons.Utils
                         if (spriteLineTex.height > outputTexture.height)
                         {
                             float scale = ((float)outputTexture.height) / spriteLineTex.height;
-                            TextureScaler.scale(spriteLineTex, Mathf.RoundToInt(spriteLineTex.width * scale), Mathf.RoundToInt(spriteLineTex.height * scale));
+                            TextureScaler.Scale(spriteLineTex, Mathf.RoundToInt(spriteLineTex.width * scale), Mathf.RoundToInt(spriteLineTex.height * scale));
                         }
                         int targetY = (outputTexture.height - spriteLineTex.height) / 2;
                         outputTexture.SetPixels((int)position.x, targetY, spriteLineTex.width, spriteLineTex.height, spriteLineTex.GetPixels());
@@ -403,12 +403,12 @@ namespace Commons.Utils
                         {
                             Vector3 b2 = kOutlineOffsets[j] * 3;
                             Vector3 targetOffset = vector4 + b2;
-                            MergeTextures(tex, colors.Select(z => new Color(outlineColor.r, outlineColor.g, outlineColor.b, z.a)).ToArray(), Mathf.RoundToInt(targetOffset.x), Mathf.RoundToInt(targetOffset.y), glyph.glyphWidth, glyph.glyphHeight, glyph.flipped, !glyph.flipped, glyph.flipped, true);
+                            MergeTextures(tex, [.. colors.Select(z => new Color(outlineColor.r, outlineColor.g, outlineColor.b, z.a))], Mathf.RoundToInt(targetOffset.x), Mathf.RoundToInt(targetOffset.y), glyph.glyphWidth, glyph.glyphHeight, glyph.flipped, !glyph.flipped, glyph.flipped, true);
                         }
                     }
 
 
-                    MergeTextures(tex, colors.Select(z => new Color(textColor.r, textColor.g, textColor.b, z.a)).ToArray(), Mathf.RoundToInt(vector4.x), Mathf.RoundToInt(vector4.y), glyph.glyphWidth, glyph.glyphHeight, glyph.flipped, !glyph.flipped, glyph.flipped);
+                    MergeTextures(tex, [.. colors.Select(z => new Color(textColor.r, textColor.g, textColor.b, z.a))], Mathf.RoundToInt(vector4.x), Mathf.RoundToInt(vector4.y), glyph.glyphWidth, glyph.glyphHeight, glyph.flipped, !glyph.flipped, glyph.flipped);
                     x += glyph.maxX;
                 }
             }
@@ -466,32 +466,29 @@ namespace Commons.Utils
                 targetScale = (float)targetHeight / spriteInfo.height;
             }
             Texture2D readableTexture = spriteInfo.texture.MakeReadable();
-            TextureScaler.scale(readableTexture, (int)(readableTexture.width * targetScale), (int)(readableTexture.height * targetScale));
+            TextureScaler.Scale(readableTexture, (int)(readableTexture.width * targetScale), (int)(readableTexture.height * targetScale));
             int width = readableTexture.width;
             int height = readableTexture.height;
             Vector2 targetPosition = (position ?? new Vector2((tex.width - width) / 2, (tex.height - height) / 2)) + positionOffset;
             Color[] colors = readableTexture.GetPixels();
-            if (blendFunction == null)
-            {
-                blendFunction = (x, y) => y;
-            }
+            blendFunction ??= (x, y) => y;
 
-            tex.SetPixels((int)targetPosition.x, (int)targetPosition.y, width, height, colors.Select((x, y) => blendFunction(tex.GetPixel((int)targetPosition.x + (y % width), (int)targetPosition.y + (y / width)), x * color)).ToArray());
+            tex.SetPixels((int)targetPosition.x, (int)targetPosition.y, width, height, [.. colors.Select((x, y) => blendFunction(tex.GetPixel((int)targetPosition.x + (y % width), (int)targetPosition.y + (y / width)), x * color))]);
             return new Vector4(targetPosition.x, targetPosition.y, width, height);
         }
 
-        internal static readonly Vector2[] kOutlineOffsets = new Vector2[]
-            {
-                new Vector2(-1f, -1f),
-                new Vector2(-1f, 0),
-                new Vector2(-1f, 1f),
-                new Vector2(0, 1f),
-                new Vector2(1f, -1f),
-                new Vector2(1f, 0),
-                new Vector2(1f, 1f),
-                new Vector2(0, -1f)
-            };
-        private static float characterSpacing = 0;
+        internal static readonly Vector2[] kOutlineOffsets =
+        [
+            new(-1f, -1f),
+            new(-1f, 0),
+            new(-1f, 1f),
+            new(0, 1f),
+            new(1f, -1f),
+            new(1f, 0),
+            new(1f, 1f),
+            new(0, -1f)
+        ];
+        private static readonly float characterSpacing = 0;
 
 
         private struct ColorInfo

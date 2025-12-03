@@ -67,7 +67,7 @@ namespace Commons.Utils
             };
             if (border?.Second ?? false)
             {
-                return new List<SpriteInfo>() {
+                return [
                     res,
                     new SpriteInfo
                         {
@@ -75,11 +75,11 @@ namespace Commons.Utils
                             name = generatedSpriteName +NoBorderSuffix,
                             border =new RectOffset()
                         }
-                    };
+                    ];
             }
             else
             {
-                return new List<SpriteInfo>() { res };
+                return [res];
             }
         }
 
@@ -101,7 +101,7 @@ namespace Commons.Utils
 
         public static void ParseBorderDescriptors(IEnumerable<string> lines, out Dictionary<string, Tuple<RectOffset, bool>> borderDescriptors)
         {
-            borderDescriptors = new Dictionary<string, Tuple<RectOffset, bool>>();
+            borderDescriptors = [];
             foreach (string line in lines)
             {
                 string[] lineSpilt = line.Split('=');
@@ -122,18 +122,19 @@ namespace Commons.Utils
         }
 
         public static void RegenerateDefaultTextureAtlas(List<SpriteInfo> newFiles) => RegenerateTextureAtlas(UIView.GetAView().defaultAtlas, newFiles);
+
         public static void RegenerateTextureAtlas(UITextureAtlas textureAtlas, List<SpriteInfo> newFiles)
         {
             IEnumerable<string> newSpritesNames = newFiles.Select(x => x.name);
             newFiles.AddRange(textureAtlas.sprites.Where(x => !newSpritesNames.Contains(x.name)));
             textureAtlas.sprites.Clear();
-            textureAtlas.AddSprites(newFiles.ToArray());
+            textureAtlas.AddSprites([.. newFiles]);
             if (textureAtlas.texture == null)
             {
                 textureAtlas.material.mainTexture = new Texture2D(1, 1);
                 (textureAtlas.material.mainTexture as Texture2D).SetPixel(0, 0, default);
             }
-            Rect[] array = textureAtlas.texture.PackTextures(textureAtlas.sprites.Select(x => x.texture).ToArray(), textureAtlas.padding, 4096 * 4);
+            Rect[] array = textureAtlas.texture.PackTextures([.. textureAtlas.sprites.Select(x => x.texture)], textureAtlas.padding, 4096 * 4);
 
             for (int i = 0; i < textureAtlas.count; i++)
             {

@@ -13,11 +13,11 @@ namespace Commons.LiteUI.BaseElements
     {
         private string libraryFilter = "";
         private Vector2 libraryScroll;
-        private Wrapper<string[]> librarySearchResults = new Wrapper<string[]>();
+        private readonly Wrapper<string[]> librarySearchResults = new();
         private Coroutine librarySearchCoroutine;
 
-        private Texture ImportTex = GUICommons.GetByNameFromDefaultAtlas("Import");
-        private Texture ExportTex = GUICommons.GetByNameFromDefaultAtlas("Export");
+        private readonly Texture ImportTex = GUICommons.GetByNameFromDefaultAtlas("Import");
+        private readonly Texture ExportTex = GUICommons.GetByNameFromDefaultAtlas("Export");
 
         public string DeleteQuestionI18n { get; set; } = "";
         public string ImportI18n { get; set; } = "";
@@ -202,7 +202,7 @@ namespace Commons.LiteUI.BaseElements
         {
             Status = FooterBarStatus.AskingToImport;
             libraryFilter = "";
-            librarySearchResults.Value = new string[0];
+            librarySearchResults.Value = [];
             RestartLibraryFilterCoroutine();
         }
 

@@ -47,11 +47,11 @@ namespace Commons.UI
             m_agesChart.width = 70;
             m_agesChart.height = 70;
             m_agesChart.name = "AgesChart";
-            Color32 criancaColor = new Color32(254, 218, 155, 255);
-            Color32 adolescenteColor = new Color32(205, 239, 145, 255);
-            Color32 jovemColor = new Color32(189, 206, 235, 255);
-            Color32 adultoColor = new Color32(255, 162, 162, 255);
-            Color32 idosoColor = new Color32(100, 224, 206, 255);
+            Color32 criancaColor = new(254, 218, 155, 255);
+            Color32 adolescenteColor = new(205, 239, 145, 255);
+            Color32 jovemColor = new(189, 206, 235, 255);
+            Color32 adultoColor = new(255, 162, 162, 255);
+            Color32 idosoColor = new(100, 224, 206, 255);
             int y = 0;
             CriaFatiaELegenda(criancaColor, m_agesChart, pieLegendPanel, "ZONEDBUILDING_CHILDREN", 14 * y++);
             CriaFatiaELegenda(adolescenteColor, m_agesChart, pieLegendPanel, "ZONEDBUILDING_TEENS", 14 * y++);

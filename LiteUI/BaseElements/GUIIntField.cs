@@ -48,7 +48,7 @@ namespace Commons.LiteUI.BaseElements
 
             if (id == focusedFieldId)
             {
-                lastValue = lastValue ?? value.ToString("0");
+                lastValue ??= value.ToString("0");
                 GUI.SetNextControlName(id);
                 lastValue = GUILayout.TextField(lastValue, GUILayout.Width(50));
                 lastFocusedFieldId = focusedFieldId;

@@ -1,7 +1,6 @@
 ﻿using ColossalFramework.Globalization;
 using Commons.Interfaces;
 using Commons.Utils;
-using System.Collections;
 using System.IO;
 
 namespace Commons.Libraries
@@ -15,10 +14,7 @@ namespace Commons.Libraries
         {
             get
             {
-                if (m_instance == null)
-                {
-                    m_instance = LoadInstance();
-                }
+                m_instance ??= LoadInstance();
                 return m_instance;
             }
         }

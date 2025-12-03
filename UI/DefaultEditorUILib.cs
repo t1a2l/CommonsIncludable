@@ -131,7 +131,7 @@ namespace Commons.UI
                 bool shiftPressed = Event.current.shift;
                 bool altPressed = Event.current.alt;
                 tf.text = Mathf.Max(tf.allowNegative ? float.MinValue : 0, currentValue + 0.0003f + (eventParam.wheelDelta * (altPressed && ctrlPressed ? 0.001f : ctrlPressed ? 0.1f : altPressed ? 0.01f : shiftPressed ? 10 : 1))).ToString("F3");
-                m_submitField.Invoke(tf, new object[0]);
+                m_submitField.Invoke(tf, []);
                 eventParam.Use();
             }
         }
@@ -141,7 +141,7 @@ namespace Commons.UI
             {
                 bool shiftPressed = Event.current.shift;
                 tf.text = Mathf.Max(tf.allowNegative ? float.MinValue : 0, currentValue + 0.0003f + (eventParam.wheelDelta * (shiftPressed ? 10 : 1))).ToString("F0");
-                m_submitField.Invoke(tf, new object[0]);
+                m_submitField.Invoke(tf, []);
                 eventParam.Use();
             }
         }
@@ -155,7 +155,7 @@ namespace Commons.UI
         public static void AddEmptyDropdown(string title, out UIDropDown dropdown, UIHelperExtension parentHelper, OnDropdownSelectionChanged onChange) => AddEmptyDropdown(title, out dropdown, out _, parentHelper, onChange);
         public static void AddEmptyDropdown(string title, out UIDropDown dropdown, out UILabel label, UIHelperExtension parentHelper, OnDropdownSelectionChanged onChange)
         {
-            dropdown = (UIDropDown)parentHelper.AddDropdown(title, new string[0], 0, onChange);
+            dropdown = (UIDropDown)parentHelper.AddDropdown(title, [], 0, onChange);
             label = dropdown.parent.GetComponentInChildren<UILabel>();
             label.padding.top = 10;
             MonoUtils.LimitWidthAndBox(label, (parentHelper.Self.width / 2) - 10);
@@ -174,7 +174,7 @@ namespace Commons.UI
                     onChange((thisDD.objectUserData as Tuple<string, T>[])[x].Second);
                 }
             }
-            thisDD = dropdown = (UIDropDown)parentHelper.AddDropdown(title, options.Select(x => x.First).ToArray(), 0, onChange is null ? null : (OnDropdownSelectionChanged)defaultOnChange);
+            thisDD = dropdown = (UIDropDown)parentHelper.AddDropdown(title, [.. options.Select(x => x.First)], 0, onChange is null ? null : (OnDropdownSelectionChanged)defaultOnChange);
             dropdown.objectUserData = options;
             label = dropdown.parent.GetComponentInChildren<UILabel>();
             label.padding.top = 10;
@@ -359,7 +359,7 @@ namespace Commons.UI
                  if (groupInfo != null)
                  {
                      LibBaseFile<LIB, DESC>.Instance.Remove(locDD.selectedValue);
-                     locDD.items = LibBaseFile<LIB, DESC>.Instance.List().ToArray();
+                     locDD.items = [.. LibBaseFile<LIB, DESC>.Instance.List()];
                  }
 
              }, "CONTENT_DELETE");
@@ -375,7 +375,7 @@ namespace Commons.UI
                      if (newEntry != default)
                      {
                          LibBaseFile<LIB, DESC>.Instance.Add(saveTxt.text,  newEntry);
-                         locDD.items = LibBaseFile<LIB, DESC>.Instance.List().ToArray();
+                         locDD.items = [.. LibBaseFile<LIB, DESC>.Instance.List()];
                          locDD.selectedValue = saveTxt.text;
                      }
                  }

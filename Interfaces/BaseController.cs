@@ -17,12 +17,9 @@ namespace Commons.Interfaces
         {
             get
             {
-                if (m_bridgeUUI is null)
-                {
-                    m_bridgeUUI = BasicIUserModSimplified<U, C>.UseUuiIfAvailable
+                m_bridgeUUI ??= BasicIUserModSimplified<U, C>.UseUuiIfAvailable
                         ? PluginUtils.GetImplementationTypeForMod<BridgeUUIFallback, IBridgeUUI>(gameObject, "UnifiedUILib", "2.2.9", ClassBridgeUUI)
                         : gameObject.AddComponent<BridgeUUIFallback>();
-                }
                 return m_bridgeUUI;
             }
         }

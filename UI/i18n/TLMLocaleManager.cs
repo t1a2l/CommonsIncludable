@@ -15,7 +15,7 @@ namespace Commons.UI.i18n
     {
         internal static readonly string m_translateFilesPath = $"{FileUtils.BASE_FOLDER_PATH}__translations{Path.DirectorySeparatorChar}";
 
-        public static readonly string[] locales = new string[] { "en", "pt", "ko", "de", "cn", "pl", "nl", "fr", "es", "ru", "zh", "ja" };
+        public static readonly string[] locales = ["en", "pt", "ko", "de", "cn", "pl", "nl", "fr", "es", "ru", "zh", "ja"];
 
         public const string m_defaultPrefixInGame = "";
         public const string m_defaultTestKey = "TEST_UP";
@@ -31,7 +31,7 @@ namespace Commons.UI.i18n
         internal static readonly Func<LocaleManager, Locale> m_localeManagerLocale = ReflectionUtils.GetGetFieldDelegate<LocaleManager, Locale>(typeof(LocaleManager).GetField("m_Locale", Patcher.allFlags));
         internal static readonly Func<Locale, Dictionary<Locale.Key, string>> m_localeStringsDictionary = ReflectionUtils.GetGetFieldDelegate<Locale, Dictionary<Locale.Key, string>>(typeof(Locale).GetField("m_LocalizedStrings", Patcher.allFlags));
 
-        internal static SavedString CurrentLanguageId => new SavedString("LoadedLanguage", Settings.gameSettingsFile, "en", true);
+        internal static SavedString CurrentLanguageId => new("LoadedLanguage", Settings.gameSettingsFile, "en", true);
 
         private static string m_language = "";
 
@@ -119,7 +119,7 @@ namespace Commons.UI.i18n
                     foreach (Delegate eventHandler in (field.GetValue(LocaleManager.instance) as MulticastDelegate).GetInvocationList())
                     {
                         try
-                        { eventHandler.Method.Invoke(eventHandler.Target, new object[] { }); }
+                        { eventHandler.Method.Invoke(eventHandler.Target, []); }
                         catch { }
                     }
                 }
@@ -131,7 +131,7 @@ namespace Commons.UI.i18n
             string folderPath = $"{m_translateFilesPath}{languageCode}{Path.DirectorySeparatorChar}";
             var files = Directory.GetFiles(folderPath, "*.txt").ToList();
             files.Sort();
-            LogUtils.DoLog($"{string.Join(",", files.ToArray())}");
+            LogUtils.DoLog($"{string.Join(",", [.. files])}");
             foreach (string file in files)
             {
                 FileSplitter(File.ReadAllText(file));

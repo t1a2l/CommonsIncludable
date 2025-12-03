@@ -17,7 +17,7 @@ namespace Commons.Redirectors
             System.Collections.Generic.List<Type> impls = ReflectionUtils.GetInterfaceImplementations(typeof(IViewStartActions), typeof(UIViewRedirector));
             foreach (Type impl in impls)
             {
-                var inst =impl.GetConstructor(new Type[0])?.Invoke(new object[0]) as IViewStartActions;
+                var inst =impl.GetConstructor([])?.Invoke([]) as IViewStartActions;
                 inst?.OnViewStart();
             }
         }

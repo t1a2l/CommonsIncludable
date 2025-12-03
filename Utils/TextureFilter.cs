@@ -38,11 +38,7 @@ namespace Commons.Utils
         {
             var outPixels = new Color[inPixels.Length];
 
-            if (method != null)
-            {
-                method(width, height, inPixels, ref outPixels, parameters);
-            }
-
+            method?.Invoke(width, height, inPixels, ref outPixels, parameters);
 
             float endTime = Time.realtimeSinceStartup;
 
@@ -160,7 +156,7 @@ namespace Commons.Utils
         public static float[][] GaussianKernel(float sigma, int size, bool normalize = true)
         {
             float[][] kernel = new float[size][];
-            float mean = (float)size / 2;
+            _ = (float)size / 2;
 
             float sigmaSqr2 = sigma * sigma * 2f;
             float sigmaSqr2piInv = 1f / Mathf.Sqrt((float)Math.PI * sigmaSqr2);
@@ -175,8 +171,7 @@ namespace Commons.Utils
                 for (int y = 0; y < size; y++)
                 {
                     int ky = y - k;
-                    float g = 0f;
-
+                    float g;
                     if (x > k && y < k)
                     {
                         g = kernel[size - x - 1][y];
@@ -208,115 +203,115 @@ namespace Commons.Utils
         }
 
         // Do not normalize
-        public static readonly float[][] EDGEDETECT_KERNEL_1 = new float[3][]
-        {
-        new float[3]{ 1, 0, -1 },
-        new float[3]{ 0, 0, 0 },
-        new float[3]{ -1, 0, 1 }
-        };
+        public static readonly float[][] EDGEDETECT_KERNEL_1 =
+        [
+            [1, 0, -1],
+            [0, 0, 0],
+            [-1, 0, 1]
+        ];
 
         // Do not normalize
-        public static readonly float[][] EDGEDETECT_KERNEL_2 = new float[3][]
-        {
-        new float[3]{ 0, 1, 0 },
-        new float[3]{ 1, -4, 1 },
-        new float[3]{ 0, 1, 0 }
-        };
+        public static readonly float[][] EDGEDETECT_KERNEL_2 =
+        [
+            [0, 1, 0],
+            [1, -4, 1],
+            [0, 1, 0]
+        ];
 
         // Do not normalize
         // Vertical * horizontal
-        public static readonly float[][] EDGEDETECT_KERNEL_3 = new float[3][]
-        {
-        new float[3]{ -1, -1, -1 },
-        new float[3]{ -1,  8, -1 },
-        new float[3]{ -1, -1, -1 }
-        };
+        public static readonly float[][] EDGEDETECT_KERNEL_3 =
+        [
+            [-1, -1, -1],
+            [-1,  8, -1],
+            [-1, -1, -1]
+        ];
 
         // Do not normalize
-        public static readonly float[][] EDGEDETECT_KERNEL_HORIZONTAL = new float[3][]
-        {
-        new float[3]{ -1, -1, -1 },
-        new float[3]{ 2, 2, 2 },
-        new float[3]{ -1, -1, -1 }
-        };
+        public static readonly float[][] EDGEDETECT_KERNEL_HORIZONTAL =
+        [
+            [-1, -1, -1],
+            [2, 2, 2],
+            [-1, -1, -1]
+        ];
 
         // Do not normalize
-        public static readonly float[][] EDGEDETECT_KERNEL_VERTICAL = new float[3][]
-        {
-        new float[3]{ -1, 2, -1 },
-        new float[3]{ -1, 2, -1 },
-        new float[3]{ -1, 2, -1 }
-        };
+        public static readonly float[][] EDGEDETECT_KERNEL_VERTICAL =
+        [
+            [-1, 2, -1],
+            [-1, 2, -1],
+            [-1, 2, -1]
+        ];
 
         // Do not normalize
-        public static readonly float[][] SHARPEN_KERNEL = new float[3][]
-        {
-        new float[3]{ 0, -1, 0 },
-        new float[3]{ -1, 5, -1 },
-        new float[3]{ 0, -1, 0 }
-        };
+        public static readonly float[][] SHARPEN_KERNEL =
+        [
+            [0, -1, 0],
+            [-1, 5, -1],
+            [0, -1, 0]
+        ];
 
         // Do not normalize
-        public static readonly float[][] LINEAR_KERNEL = new float[3][]
-        {
-        new float[3]{ 1f /9, 1f /9, 1f /9 },
-        new float[3]{ 1f /9, 1f /9, 1f /9 },
-        new float[3]{ 1f /9, 1f /9, 1f /9 }
-        };
+        public static readonly float[][] LINEAR_KERNEL =
+        [
+            [1f /9, 1f /9, 1f /9],
+            [1f /9, 1f /9, 1f /9],
+            [1f /9, 1f /9, 1f /9]
+        ];
 
         // Do not normalize
-        public static readonly float[][] GAUSSIAN_KERNEL_3 = new float[3][]
-        {
-        new float[3]{ 0.07511361f, 0.1238414f, 0.07511361f },
-        new float[3]{ 0.1238414f, 0.20418f, 0.1238414f },
-        new float[3]{ 0.07511361f, 0.1238414f, 0.07511361f }
-        };
+        public static readonly float[][] GAUSSIAN_KERNEL_3 =
+        [
+            [0.07511361f, 0.1238414f, 0.07511361f],
+            [0.1238414f, 0.20418f, 0.1238414f],
+            [0.07511361f, 0.1238414f, 0.07511361f]
+        ];
 
         // Do not normalize
-        public static readonly float[][] GAUSSIAN_KERNEL_5 = new float[5][]
-        {
-        new float[5]{ 0.002969016f, 0.01330621f, 0.02193823f, 0.01330621f, 0.002969016f },
-        new float[5]{ 0.01330621f, 0.05963429f, 0.09832032f, 0.05963429f, 0.01330621f },
-        new float[5]{ 0.02193823f, 0.09832032f, 0.1621028f, 0.09832032f, 0.02193823f },
-        new float[5]{ 0.01330621f, 0.05963429f, 0.09832032f, 0.05963429f, 0.01330621f },
-        new float[5]{ 0.002969016f, 0.01330621f, 0.02193823f, 0.01330621f, 0.002969016f }
-        };
+        public static readonly float[][] GAUSSIAN_KERNEL_5 =
+        [
+            [0.002969016f, 0.01330621f, 0.02193823f, 0.01330621f, 0.002969016f],
+            [0.01330621f, 0.05963429f, 0.09832032f, 0.05963429f, 0.01330621f],
+            [0.02193823f, 0.09832032f, 0.1621028f, 0.09832032f, 0.02193823f],
+            [0.01330621f, 0.05963429f, 0.09832032f, 0.05963429f, 0.01330621f],
+            [0.002969016f, 0.01330621f, 0.02193823f, 0.01330621f, 0.002969016f]
+        ];
 
         // Do not normalize
-        public static readonly float[][] GAUSSIAN_KERNEL_7 = new float[7][]
-        {
-        new float[7]{ 1.965191E-05f, 0.0002394093f, 0.001072958f, 0.001769009f, 0.001072958f, 0.0002394093f, 1.965191E-05f },
-        new float[7]{ 0.0002394093f, 0.002916602f, 0.01307131f, 0.02155094f, 0.01307131f, 0.002916602f, 0.0002394093f },
-        new float[7]{ 0.001072958f, 0.01307131f, 0.05858152f, 0.0965846f, 0.05858152f, 0.01307131f, 0.001072958f },
-        new float[7]{ 0.001769009f, 0.02155094f, 0.0965846f, 0.1592411f, 0.0965846f, 0.02155094f, 0.001769009f },
-        new float[7]{ 0.001072958f, 0.01307131f, 0.05858152f, 0.0965846f, 0.05858152f, 0.01307131f, 0.001072958f },
-        new float[7]{ 0.0002394093f, 0.002916602f, 0.01307131f, 0.02155094f, 0.01307131f, 0.002916602f, 0.0002394093f },
-        new float[7]{ 1.965191E-05f, 0.0002394093f, 0.001072958f, 0.001769009f, 0.001072958f, 0.0002394093f, 1.965191E-05f },
-        };
+        public static readonly float[][] GAUSSIAN_KERNEL_7 =
+        [
+            [1.965191E-05f, 0.0002394093f, 0.001072958f, 0.001769009f, 0.001072958f, 0.0002394093f, 1.965191E-05f],
+            [0.0002394093f, 0.002916602f, 0.01307131f, 0.02155094f, 0.01307131f, 0.002916602f, 0.0002394093f],
+            [0.001072958f, 0.01307131f, 0.05858152f, 0.0965846f, 0.05858152f, 0.01307131f, 0.001072958f],
+            [0.001769009f, 0.02155094f, 0.0965846f, 0.1592411f, 0.0965846f, 0.02155094f, 0.001769009f],
+            [0.001072958f, 0.01307131f, 0.05858152f, 0.0965846f, 0.05858152f, 0.01307131f, 0.001072958f],
+            [0.0002394093f, 0.002916602f, 0.01307131f, 0.02155094f, 0.01307131f, 0.002916602f, 0.0002394093f],
+            [1.965191E-05f, 0.0002394093f, 0.001072958f, 0.001769009f, 0.001072958f, 0.0002394093f, 1.965191E-05f]
+        ];
 
         // Do not normalize
-        public static readonly float[][] GAUSSIAN_KERNEL_9 = new float[9][]
-        {
-        new float[9]{ 1.791064E-08f, 5.931188E-07f, 7.225666E-06f, 3.238319E-05f, 5.339085E-05f, 3.238319E-05f, 7.225666E-06f, 5.931188E-07f, 1.791064E-08f },
-        new float[9]{ 5.931188E-07f, 1.96414E-05f, 0.0002392812f, 0.001072384f, 0.001768062f, 0.001072384f, 0.0002392812f, 1.96414E-05f, 5.931188E-07f },
-        new float[9]{ 7.225666E-06f, 0.0002392812f, 0.002915042f, 0.01306431f, 0.02153941f, 0.01306431f, 0.002915042f, 0.0002392812f, 7.225666E-06f },
-        new float[9]{ 3.238319E-05f, 0.001072384f, 0.01306431f, 0.05855018f, 0.09653293f, 0.05855018f, 0.01306431f, 0.001072384f, 3.238319E-05f },
-        new float[9]{ 5.339085E-05f, 0.001768062f, 0.02153941f, 0.09653293f, 0.1591559f, 0.09653293f, 0.02153941f, 0.001768062f, 5.339085E-05f },
-        new float[9]{ 3.238319E-05f, 0.001072384f, 0.01306431f, 0.05855018f, 0.09653293f, 0.05855018f, 0.01306431f, 0.001072384f, 3.238319E-05f },
-        new float[9]{ 7.225666E-06f, 0.0002392812f, 0.002915042f, 0.01306431f, 0.02153941f, 0.01306431f, 0.002915042f, 0.0002392812f, 7.225666E-06f },
-        new float[9]{ 5.931188E-07f, 1.96414E-05f, 0.0002392812f, 0.001072384f, 0.001768062f, 0.001072384f, 0.0002392812f, 1.96414E-05f, 5.931188E-07f },
-        new float[9]{ 1.791064E-08f, 5.931188E-07f, 7.225666E-06f, 3.238319E-05f, 5.339085E-05f, 3.238319E-05f, 7.225666E-06f, 5.931188E-07f, 1.791064E-08f },
-        };
+        public static readonly float[][] GAUSSIAN_KERNEL_9 =
+        [
+            [1.791064E-08f, 5.931188E-07f, 7.225666E-06f, 3.238319E-05f, 5.339085E-05f, 3.238319E-05f, 7.225666E-06f, 5.931188E-07f, 1.791064E-08f],
+            [5.931188E-07f, 1.96414E-05f, 0.0002392812f, 0.001072384f, 0.001768062f, 0.001072384f, 0.0002392812f, 1.96414E-05f, 5.931188E-07f],
+            [7.225666E-06f, 0.0002392812f, 0.002915042f, 0.01306431f, 0.02153941f, 0.01306431f, 0.002915042f, 0.0002392812f, 7.225666E-06f],
+            [3.238319E-05f, 0.001072384f, 0.01306431f, 0.05855018f, 0.09653293f, 0.05855018f, 0.01306431f, 0.001072384f, 3.238319E-05f],
+            [5.339085E-05f, 0.001768062f, 0.02153941f, 0.09653293f, 0.1591559f, 0.09653293f, 0.02153941f, 0.001768062f, 5.339085E-05f],
+            [3.238319E-05f, 0.001072384f, 0.01306431f, 0.05855018f, 0.09653293f, 0.05855018f, 0.01306431f, 0.001072384f, 3.238319E-05f],
+            [7.225666E-06f, 0.0002392812f, 0.002915042f, 0.01306431f, 0.02153941f, 0.01306431f, 0.002915042f, 0.0002392812f, 7.225666E-06f],
+            [5.931188E-07f, 1.96414E-05f, 0.0002392812f, 0.001072384f, 0.001768062f, 0.001072384f, 0.0002392812f, 1.96414E-05f, 5.931188E-07f],
+            [1.791064E-08f, 5.931188E-07f, 7.225666E-06f, 3.238319E-05f, 5.339085E-05f, 3.238319E-05f, 7.225666E-06f, 5.931188E-07f, 1.791064E-08f]
+        ];
 
         // Do not normalize
-        public static readonly float[][] LAPLACIAN_GAUSSIAN_KERNEL = new float[5][]
-        {
-        new float[5]{ 0,  0,  -1, 0,  0 },
-        new float[5]{ 0,  -1, -2, -1, 0 },
-        new float[5]{ -1, -2, 16, -2, -1 },
-        new float[5]{ 0,  -1, -2, -1, 0 },
-        new float[5]{ 0,  0,  -1, 0,  0 }
-        };
+        public static readonly float[][] LAPLACIAN_GAUSSIAN_KERNEL =
+        [
+            [0,  0,  -1, 0,  0],
+            [0,  -1, -2, -1, 0],
+            [-1, -2, 16, -2, -1],
+            [0,  -1, -2, -1, 0],
+            [0,  0,  -1, 0,  0]
+        ];
         #endregion
 
         public static Texture2D Convolution(Texture2D inTex, float[][] kernel, int iteration) => Filter(inTex, ConvolutionFunc, kernel, iteration);

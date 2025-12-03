@@ -1,5 +1,4 @@
-﻿using System;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
 using Commons.Interfaces;
 using Commons.Utils;
 using UnityEngine;

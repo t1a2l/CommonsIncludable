@@ -101,7 +101,7 @@ namespace Commons.Extensions.UI
                 return;
             }
 
-            foreach (UICheckBox item in m_parent.components)
+            foreach (UICheckBox item in m_parent.components.Cast<UICheckBox>())
             {
                 item.zOrder = (!item.isChecked ? 0 : 9999) + ((IdAndWeight) item.objectUserData).weight;
             }
@@ -109,11 +109,10 @@ namespace Commons.Extensions.UI
             m_parent.components.OrderBy(x => (((UICheckBox) x).isChecked ? 0 : 9999) + ((IdAndWeight) ((UICheckBox) x).objectUserData).weight).ForEach(x => x.zOrder = 999999);
         }
 
-        public List<T> GetSelectionOrder() => m_parent.components
+        public List<T> GetSelectionOrder() => [.. m_parent.components
             .Where(x => x is UICheckBox check && check.isChecked)
             .OrderBy(x => ((x as UICheckBox).objectUserData as IdAndWeight).weight)
-            .Select(x => ((x as UICheckBox).objectUserData as IdAndWeight).id)
-            .ToList();
+            .Select(x => ((x as UICheckBox).objectUserData as IdAndWeight).id)];
 
     }
 

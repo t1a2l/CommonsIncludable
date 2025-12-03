@@ -45,11 +45,9 @@ namespace Commons.Interfaces
             {
                 if (m_modId == 0)
                 {
-                    m_modId = Singleton<PluginManager>.instance.GetPluginsInfo().Where((PluginManager.PluginInfo pi) =>
-                 pi.assemblyCount > 0
-                 && pi.isEnabled
-                 && pi.GetAssemblies().Where(x => x == typeof(U).Assembly).Count() > 0
-             ).Select(x => x?.publishedFileID.AsUInt64 ?? ulong.MaxValue).Min();
+                    m_modId = Singleton<PluginManager>.instance.GetPluginsInfo().Where(pi => pi.assemblyCount > 0
+                    && pi.isEnabled
+                    && pi.GetAssemblies().Where(x => x == typeof(U).Assembly).Count() > 0).Select(x => x?.publishedFileID.AsUInt64 ?? ulong.MaxValue).Min();
                 }
                 return m_modId;
             }
@@ -61,14 +59,9 @@ namespace Commons.Interfaces
         {
             get
             {
-                if (m_rootFolder == null)
-                {
-                    m_rootFolder = Singleton<PluginManager>.instance.GetPluginsInfo().Where((PluginManager.PluginInfo pi) =>
-                 pi.assemblyCount > 0
-                 && pi.isEnabled
-                 && pi.GetAssemblies().Where(x => x == typeof(U).Assembly).Count() > 0
-             ).FirstOrDefault()?.modPath;
-                }
+                m_rootFolder ??= Singleton<PluginManager>.instance.GetPluginsInfo().Where(pi => pi.assemblyCount > 0
+                && pi.isEnabled
+                && pi.GetAssemblies().Where(x => x == typeof(U).Assembly).Count() > 0).FirstOrDefault()?.modPath;
                 return m_rootFolder;
             }
         }
@@ -203,7 +196,7 @@ namespace Commons.Interfaces
         private SavedString CurrentSaveVersion { get; } = new SavedString(CommonProperties.Acronym + "SaveVersion", Settings.gameSettingsFile, "null", true);
         public static bool IsCityLoaded => Singleton<SimulationManager>.instance.m_metaData != null;
 
-        public static U m_instance = new U();
+        public static U m_instance = new();
         public static U Instance => m_instance;
 
         private UIComponent m_onSettingsUiComponent;
@@ -309,10 +302,10 @@ namespace Commons.Interfaces
                 return true;
             }));
 
-            if (!(GameObject.FindObjectOfType<TLMLocaleManager>() is null))
+            if (GameObject.FindObjectOfType<TLMLocaleManager>() is not null)
             {
                 UIDropDown dd = null;
-                dd = group9.AddDropdownLocalized("MOD_LANG", (new string[] { "GAME_DEFAULT_LANGUAGE" }.Concat(TLMLocaleManager.locales.Select(x => $"LANG_{x}")).Select(x => Locale.Get(x))).ToArray(), TLMLocaleManager.GetLoadedLanguage(), delegate (int idx)
+                dd = group9.AddDropdownLocalized("MOD_LANG", [.. (new string[] { "GAME_DEFAULT_LANGUAGE" }.Concat(TLMLocaleManager.locales.Select(x => $"LANG_{x}")).Select(x => Locale.Get(x)))], TLMLocaleManager.GetLoadedLanguage(), delegate (int idx)
                 {
                     TLMLocaleManager.SaveLoadedLanguage(idx);
                     TLMLocaleManager.ReloadLanguage();
@@ -359,7 +352,7 @@ namespace Commons.Interfaces
                         textButton1 = "Okay!",
                         showButton2 = true,
                         textButton2 = "Workshop Page",
-                        showButton3 = !(targetUrl is null),
+                        showButton3 = targetUrl is not null,
                         textButton3 = targetUrl?.First ?? "",
                         messageAlign = UIHorizontalAlignment.Left,
                         useFullWindowWidth = fullWidth,
@@ -408,8 +401,8 @@ namespace Commons.Interfaces
                     unchecked
                     {
                         text = $"Some conflicting mods were found active. Disable or unsubscribe them to make the <color yellow>{SimpleName}</color> work properly.\n\n" +
-                           string.Join("\n\n", notes.Select(x => $"\t -{x.Value.First} (id: {(x.Key == (ulong)-1 ? "<LOCAL>" : x.Key.ToString())})\n" +
-                            $"\t\t<color yellow>WHY?</color> {x.Value.Second ?? "This DLL have a name of an incompatible mod, but it's installed locally. Ignore this warning if you know what you are doing."}").ToArray()) +
+                           string.Join("\n\n", [.. notes.Select(x => $"\t -{x.Value.First} (id: {(x.Key == (ulong)-1 ? "<LOCAL>" : x.Key.ToString())})\n" +
+                            $"\t\t<color yellow>WHY?</color> {x.Value.Second ?? "This DLL have a name of an incompatible mod, but it's installed locally. Ignore this warning if you know what you are doing."}")]) +
                             $"\n\nDisable or unsubscribe them at main menu and try again!";
                     }
                     ShowModal(new BindProperties()
@@ -448,12 +441,12 @@ namespace Commons.Interfaces
 
         protected virtual void ExtraOnViewStartActions() { }
 
-        protected virtual Dictionary<ulong, string> IncompatibleModList { get; } = new Dictionary<ulong, string>();
-        protected virtual List<string> IncompatibleDllModList { get; } = new List<string>();
+        protected virtual Dictionary<ulong, string> IncompatibleModList { get; } = [];
+        protected virtual List<string> IncompatibleDllModList { get; } = [];
 
-        private Dictionary<ulong, string> IncompatibleModListCommons { get; } = new Dictionary<ulong, string>();
-        private List<string> IncompatibleDllModListCommons { get; } = new List<string>();
-        protected virtual List<ulong> AutomaticUnsubMods { get; } = new List<ulong>();
+        private Dictionary<ulong, string> IncompatibleModListCommons { get; } = [];
+        private List<string> IncompatibleDllModListCommons { get; } = [];
+        protected virtual List<ulong> AutomaticUnsubMods { get; } = [];
 
 
         public IEnumerable<KeyValuePair<ulong, string>> IncompatibleModListAll => IncompatibleModListCommons.Union(IncompatibleModList);

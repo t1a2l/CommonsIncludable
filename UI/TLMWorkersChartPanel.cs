@@ -38,13 +38,13 @@ namespace Commons.UI
             int porc2 = workers[2] * 100 / sum;
             int porc3 = workers[3] * 100 / sum;
 
-            m_workersChart.SetValues(new int[] { porc0, porc1, porc2, porc3, 100 - porc0 - porc1 - porc2 - porc3 });
+            m_workersChart.SetValues([porc0, porc1, porc2, porc3, 100 - porc0 - porc1 - porc2 - porc3]);
 
             porc0 = workplaces[0] * 100 / sum;
             porc1 = workplaces[1] * 100 / sum;
             porc2 = workplaces[2] * 100 / sum;
 
-            m_workplaceChart.SetValues(new int[] { porc0, porc1, porc2, 100 - porc0 - porc1 - porc2 });
+            m_workplaceChart.SetValues([porc0, porc1, porc2, 100 - porc0 - porc1 - porc2]);
         }
 
         private void CreateLineCharts(Vector3 relativePos)
@@ -75,10 +75,10 @@ namespace Commons.UI
             m_workplaceChart.height = 70;
             m_workplaceChart.name = "WorkersChart";
 
-            Color32 unskill = new Color32(210, 40, 40, 255);
-            Color32 oneSchool = new Color32(180, 180, 40, 255);
-            Color32 twoSchool = new Color32(40, 180, 40, 255);
-            Color32 threeSchool = new Color32(40, 40, 210, 255);
+            Color32 unskill = new(210, 40, 40, 255);
+            Color32 oneSchool = new(180, 180, 40, 255);
+            Color32 twoSchool = new(40, 180, 40, 255);
+            Color32 threeSchool = new(40, 40, 210, 255);
             int y = 0;
             m_legendL0 = CriaFatiaELegenda(unskill, m_workplaceChart, pieLegendPanel, "ZONEDBUILDING_UNEDUCATED", 14 * y++);
             m_legendL1 = CriaFatiaELegenda(oneSchool, m_workplaceChart, pieLegendPanel, "ZONEDBUILDING_EDUCATED", 14 * y++);

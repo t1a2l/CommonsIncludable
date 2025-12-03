@@ -9,7 +9,7 @@ namespace Commons.Utils
     {
         #region Sorting
 
-        public static int NaturalCompare(string left, string right) => (int)typeof(PublicTransportDetailPanel).GetMethod("NaturalCompare", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(null, new object[] { left, right });
+        public static int NaturalCompare(string left, string right) => (int)typeof(PublicTransportDetailPanel).GetMethod("NaturalCompare", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(null, [left, right]);
 
         public static void Quicksort<T>(IList<T> elements, Comparison<T> comp, bool invert) where T : UIComponent => Quicksort(elements, 0, elements.Count - 1, comp, invert);
 
@@ -70,9 +70,7 @@ namespace Commons.Utils
                 }
                 if (i <= num)
                 {
-                    var value = elements[i];
-                    elements[i] = elements[num];
-                    elements[num] = value;
+                    (elements[num], elements[i]) = (elements[i], elements[num]);
                     i++;
                     num--;
                 }

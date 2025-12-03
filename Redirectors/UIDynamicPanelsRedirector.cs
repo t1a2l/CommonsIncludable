@@ -38,7 +38,7 @@ namespace Commons.Redirectors
                 }
                 var listDynPanel = __instance.m_DynamicPanels.Where(x => x?.name != DialogControl.PANEL_ID).ToList();
                 listDynPanel.Insert(0, DialogControl.CreatePanelInfo(view));
-                __instance.m_DynamicPanels = listDynPanel.ToArray();
+                __instance.m_DynamicPanels = [.. listDynPanel];
                 TLMLocaleManager.m_localeStringsDictionary(TLMLocaleManager.m_localeManagerLocale(LocaleManager.instance))[new Locale.Key() { m_Identifier = TLMLocaleManager.m_defaultTestKey }] = "OK";
                 TLMLocaleManager.m_localeStringsDictionary(TLMLocaleManager.m_localeManagerLocale(LocaleManager.instance))[new Locale.Key() { m_Identifier = TLMLocaleManager.m_defaultModControllingKey }] = CommonProperties.ModName;
             }
@@ -46,10 +46,7 @@ namespace Commons.Redirectors
 
         public static void RemovePanel()
         {
-            if (!(UIView.library is null))
-            {
-                UIView.library.m_DynamicPanels = UIView.library.m_DynamicPanels.Where(x => x?.name != DialogControl.PANEL_ID).ToArray();
-            }
+            UIView.library?.m_DynamicPanels = [.. UIView.library.m_DynamicPanels.Where(x => x?.name != DialogControl.PANEL_ID)];
         }
     }
 }

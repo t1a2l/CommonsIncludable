@@ -297,7 +297,7 @@ namespace Commons.UI
 
         private void OnRemoveItem(UIComponent component, UIMouseEventParameter eventParam)
         {
-            ReferenceData = ReferenceData.Where((x, y) => y != SelectedIndex).ToArray();
+            ReferenceData = [.. ReferenceData.Where((x, y) => y != SelectedIndex)];
             SelectedIndex = Math.Min(SelectedIndex, ReferenceData.Length - 1);
             FixTabstrip();
         }
@@ -305,9 +305,7 @@ namespace Commons.UI
         {
             if (SelectedIndex > 0 && ReferenceData.Length > 1)
             {
-                D temp = ReferenceData[SelectedIndex];
-                ReferenceData[SelectedIndex] = ReferenceData[SelectedIndex - 1];
-                ReferenceData[SelectedIndex - 1] = temp;
+                (ReferenceData[SelectedIndex - 1], ReferenceData[SelectedIndex]) = (ReferenceData[SelectedIndex], ReferenceData[SelectedIndex - 1]);
                 SelectedIndex--;
                 FixTabstrip();
             }
@@ -316,19 +314,21 @@ namespace Commons.UI
         {
             if (SelectedIndex < ReferenceData.Length && ReferenceData.Length > 1)
             {
-                D temp = ReferenceData[SelectedIndex];
-                ReferenceData[SelectedIndex] = ReferenceData[SelectedIndex + 1];
-                ReferenceData[SelectedIndex + 1] = temp;
+                (ReferenceData[SelectedIndex + 1], ReferenceData[SelectedIndex]) = (ReferenceData[SelectedIndex], ReferenceData[SelectedIndex + 1]);
                 SelectedIndex++;
                 FixTabstrip();
             }
         }
         private void OnAddItemOnList(UIComponent component, UIMouseEventParameter eventParam)
         {
-            ReferenceData = ReferenceData.Concat(new D[] { new D
-            {
-                SaveName = "New rule",
-            } }).ToArray();
+            ReferenceData =
+            [
+                .. ReferenceData,
+                new D
+                {
+                    SaveName = "New rule",
+                },
+            ];
             SelectedIndex = ReferenceData.Length - 1;
             FixTabstrip();
         }

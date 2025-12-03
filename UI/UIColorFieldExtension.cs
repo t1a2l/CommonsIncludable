@@ -52,7 +52,7 @@ namespace Commons.UI
                                     colorField.selectedColor = targetColor;
                                     ((UITextField)x).textColor = Color.white;
                                     ((UITextField)x).text = targetColor.ToRGB();
-                                    colorField.GetType().GetMethod("OnSelectedColorChanged", Patcher.allFlags).Invoke(colorField, new object[0]);
+                                    colorField.GetType().GetMethod("OnSelectedColorChanged", Patcher.allFlags).Invoke(colorField, []);
                                     ((UITextField)x).selectionStart = selStart;
                                     ((UITextField)x).selectionEnd = selEnd;
                                 }

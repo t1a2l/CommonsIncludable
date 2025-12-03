@@ -18,9 +18,7 @@ namespace Commons.Utils.UtilitiesClasses
         {
             if (min.CompareTo(max) >= 0)
             {
-                var temp = min;
-                min = max;
-                max = temp;
+                (max, min) = (min, max);
             }
             Minimum = min;
             Maximum = max;

@@ -28,10 +28,8 @@ namespace Commons.Utils
                 return null;
             }
 
-            using (var read = new BinaryReader(stream))
-            {
-                return read.ReadBytes((int)stream.Length);
-            }
+            using var read = new BinaryReader(stream);
+            return read.ReadBytes((int)stream.Length);
         }
 
         public static string LoadResourceString(string name)
@@ -45,31 +43,25 @@ namespace Commons.Utils
                 return null;
             }
 
-            using (var read = new StreamReader(stream))
-            {
-                return read.ReadToEnd();
-            }
+            using var read = new StreamReader(stream);
+            return read.ReadToEnd();
         }
         public static IEnumerable<string> LoadResourceStringLines(string name)
         {
             name = $"{Prefix}.{name}";
 
-            using (var stream = (UnmanagedMemoryStream)Assembly.GetExecutingAssembly().GetManifestResourceStream(name))
+            using var stream = (UnmanagedMemoryStream)Assembly.GetExecutingAssembly().GetManifestResourceStream(name);
+            if (stream == null)
             {
-                if (stream == null)
-                {
-                    LogUtils.DoLog("Could not find resource: " + name);
-                    yield break;
-                }
+                LogUtils.DoLog("Could not find resource: " + name);
+                yield break;
+            }
 
-                using (var reader = new StreamReader(stream))
-                {
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
-                    {
-                        yield return line;
-                    }
-                }
+            using var reader = new StreamReader(stream);
+            string line;
+            while ((line = reader.ReadLine()) != null)
+            {
+                yield return line;
             }
         }
 

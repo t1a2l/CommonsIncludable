@@ -13,24 +13,21 @@ namespace Commons.Utils
     {
 
         public static Dictionary<ulong, Tuple<string, string>> VerifyModsEnabled(Dictionary<ulong, string> modIds, List<string> modsDlls) =>
-            Singleton<PluginManager>.instance.GetPluginsInfo().Where((PluginManager.PluginInfo pi) =>
-            pi.assemblyCount > 0
+            Singleton<PluginManager>.instance.GetPluginsInfo().Where(pi => pi.assemblyCount > 0
             && pi.isEnabled
             && (
                 (modIds?.Keys.Contains(pi.publishedFileID.AsUInt64) ?? false)
              || (modsDlls != null && pi.GetAssemblies().Where(x => modsDlls.Contains(x.GetName().Name)).Count() > 0)
             )
         ).ToDictionary(x => x.publishedFileID.AsUInt64, x => Tuple.New(((IUserMod)x.userModInstance).Name, x.publishedFileID.AsUInt64 != ~0UL && modIds.TryGetValue(x.publishedFileID.AsUInt64, out string message) ? message : null));
-        public static Dictionary<ulong, string> VerifyModsSubscribed(List<ulong> modIds) => Singleton<PluginManager>.instance.GetPluginsInfo().Where((PluginManager.PluginInfo pi) =>
-            pi.assemblyCount > 0
+        public static Dictionary<ulong, string> VerifyModsSubscribed(List<ulong> modIds) => Singleton<PluginManager>.instance.GetPluginsInfo().Where(pi => pi.assemblyCount > 0
             && (modIds?.Contains(pi.publishedFileID.AsUInt64) ?? false)
         ).ToDictionary(x => x.publishedFileID.AsUInt64, x => ((IUserMod)x.userModInstance)?.Name);
 
 
         public static I GetImplementationTypeForMod<F, I>(GameObject objTarget, string dllName, string dllMinVersion, string nonFallbackClassName, string dllMaxVersion = null) where F : MonoBehaviour, I where I : Component
         {
-            if (Singleton<PluginManager>.instance.GetPluginsInfo().Where((PluginManager.PluginInfo pi) =>
-            pi.assemblyCount > 0
+            if (Singleton<PluginManager>.instance.GetPluginsInfo().Where(pi => pi.assemblyCount > 0
             && pi.isEnabled
             && (pi.GetAssemblies().Where(x => (x.GetName().Name == dllName) && x.GetName().Version.CompareTo(new Version(dllMinVersion)) >= 0 && (dllMaxVersion is null || x.GetName().Version.CompareTo(new Version(dllMaxVersion)) < 0)).Count() > 0)
 

@@ -29,6 +29,6 @@ namespace Commons.Utils.UtilitiesClasses
 
     public static class CoroutineWithData
     {
-        public static CoroutineWithData<U> From<U>(MonoBehaviour owner, IEnumerator<U> target) => new CoroutineWithData<U>(owner, target);
+        public static CoroutineWithData<U> From<U>(MonoBehaviour owner, IEnumerator<U> target) => new(owner, target);
     }
 }

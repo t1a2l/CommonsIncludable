@@ -37,10 +37,7 @@ namespace Commons.Utils.UtilitiesClasses
                 }
 
                 var value = (TValue) valueSerializer.Deserialize(reader);
-                if (value.SaveName == null)
-                {
-                    value.SaveName = $"<UNNAMED_{counterUnknown++}>";
-                }
+                value.SaveName ??= $"<UNNAMED_{counterUnknown++}>";
                 Add(value.SaveName, value);
 
             }
@@ -63,10 +60,7 @@ namespace Commons.Utils.UtilitiesClasses
             foreach (var key in Keys)
             {
                 TValue value = this[key];
-                if (value.SaveName == null)
-                {
-                    value.SaveName = key;
-                }
+                value.SaveName ??= key;
                 valueSerializer.Serialize(writer, value, ns);
             }
 
@@ -77,10 +71,7 @@ namespace Commons.Utils.UtilitiesClasses
             get => base[key];
             set {
                 Remove(key);
-                if(value.SaveName == null)
-                {
-                    value.SaveName = key;
-                }
+                value.SaveName ??= key;
                 base[value.SaveName] = value;
             }
         }
@@ -88,10 +79,7 @@ namespace Commons.Utils.UtilitiesClasses
         public new void Add(string key, TValue value)
         {
             Remove(key);
-            if (value.SaveName == null)
-            {
-                value.SaveName = key;
-            }
+            value.SaveName ??= key;
             base.Add(value.SaveName, value);
         }
 

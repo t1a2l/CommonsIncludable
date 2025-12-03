@@ -30,10 +30,10 @@ namespace Commons.Utils
         public static bool TryGetWorkshopId(PrefabInfo info, out long workshopId)
         {
             workshopId = -1L;
-            return info != null && info.name != null && info.name.Contains(".") && long.TryParse(info.name.Split(new char[]
-            {
+            return info != null && info.name != null && info.name.Contains(".") && long.TryParse(info.name.Split(
+            [
                 '.'
-            })[0], out workshopId);
+            ])[0], out workshopId);
         }
 
         public static void ScanPrefabsFolders<T>(string filenameToSearch, Action<FileStream, T> action) where T : PrefabInfo => ScanPrefabsFolders(new Dictionary<string, Action<FileStream, T>>
@@ -60,10 +60,8 @@ namespace Commons.Utils
                                 list.Add(filePath);
                                 if (File.Exists(filePath))
                                 {
-                                    using (FileStream stream = File.OpenRead(filePath))
-                                    {
-                                        actions[filenameToSearch](stream, loaded);
-                                    }
+                                    using FileStream stream = File.OpenRead(filePath);
+                                    actions[filenameToSearch](stream, loaded);
                                 }
                             }
                         }
@@ -145,10 +143,8 @@ namespace Commons.Utils
                         list.Add(filePath);
                         if (File.Exists(filePath))
                         {
-                            using (FileStream stream = File.OpenRead(filePath))
-                            {
-                                action(stream, package, asset);
-                            }
+                            using FileStream stream = File.OpenRead(filePath);
+                            action(stream, package, asset);
                         }
                     }
                 }
@@ -185,11 +181,10 @@ namespace Commons.Utils
 
             var executingAssembly = Assembly.GetExecutingAssembly();
             string folderName = $"{packageDirectory}";
-            return executingAssembly
+            return [.. executingAssembly
                 .GetManifestResourceNames()
                 .Where(r => r.StartsWith(folderName) && r.EndsWith(extension))
-                .Select(r => r.Substring(folderName.Length + 1))
-                .ToArray();
+                .Select(r => r.Substring(folderName.Length + 1))];
         }
         #endregion
     }

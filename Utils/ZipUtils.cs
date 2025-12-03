@@ -26,17 +26,13 @@ namespace Commons.Utils
             var output = bytes;
             try
             {
-                using (var msi = new MemoryStream(bytes))
+                using var msi = new MemoryStream(bytes);
+                using var mso = new MemoryStream();
+                using (var gs = new GZipStream(mso, CompressionMode.Compress))
                 {
-                    using (var mso = new MemoryStream())
-                    {
-                        using (var gs = new GZipStream(mso, CompressionMode.Compress))
-                        {
-                            CopyTo(msi, gs);
-                        }
-                        output = mso.ToArray();
-                    }
+                    CopyTo(msi, gs);
                 }
+                output = mso.ToArray();
             }
             catch (Exception e)
             {

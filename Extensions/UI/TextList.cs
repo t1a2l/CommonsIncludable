@@ -29,10 +29,7 @@ namespace Commons.Extensions.UI
             get => m_itemsList;
             set
             {
-                if (value == null)
-                {
-                    value = new Dictionary<T, string>();
-                }
+                value ??= [];
                 m_itemsList = value;
                 SelectedItem = default;
                 RedrawButtons();
@@ -98,7 +95,7 @@ namespace Commons.Extensions.UI
                 GameObject.Destroy(t.gameObject);
             }
 
-            var scrollObj = new GameObject("Lines Listing Scroll", new Type[] { typeof(UIScrollablePanel) });
+            var scrollObj = new GameObject("Lines Listing Scroll", [typeof(UIScrollablePanel)]);
             //			DebugOutputPanel.AddMessage (PluginManager.MessageType.Message, "SCROLL LOADED");
             m_linesListPanel = scrollObj.GetComponent<UIScrollablePanel>();
             m_linesListPanel.autoLayout = false;
@@ -106,7 +103,7 @@ namespace Commons.Extensions.UI
             m_linesListPanel.height = height;
             m_linesListPanel.useTouchMouseScroll = true;
             m_linesListPanel.scrollWheelAmount = 20;
-            m_linesListPanel.eventMouseWheel += (UIComponent component, UIMouseEventParameter eventParam) =>
+            m_linesListPanel.eventMouseWheel += (component, eventParam) =>
             {
                 m_linesListPanel.scrollPosition -= new Vector2(0, eventParam.wheelDelta * m_linesListPanel.scrollWheelAmount);
             };
@@ -117,7 +114,7 @@ namespace Commons.Extensions.UI
 
             m_linesListPanel.useTouchMouseScroll = true;
             m_linesListPanel.scrollWheelAmount = 20;
-            m_linesListPanel.eventMouseWheel += (UIComponent component, UIMouseEventParameter eventParam) =>
+            m_linesListPanel.eventMouseWheel += (component, eventParam) =>
             {
                 m_linesListPanel.scrollPosition -= new Vector2(0, eventParam.wheelDelta * m_linesListPanel.scrollWheelAmount);
                 eventParam.Use();

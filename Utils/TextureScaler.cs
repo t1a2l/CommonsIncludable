@@ -12,10 +12,10 @@ namespace Commons.Utils
         /// <param name="width">Destination texture width</param>
         /// <param name="height">Destination texture height</param>
         /// <param name="mode">Filtering mode</param>
-        public static Texture2D scaled(Texture2D src, int width, int height, FilterMode mode = FilterMode.Trilinear)
+        public static Texture2D Scaled(Texture2D src, int width, int height, FilterMode mode = FilterMode.Trilinear)
         {
             var texR = new Rect(0, 0, width, height);
-            _gpu_scale(src, width, height, mode);
+            Gpu_scale(src, width, height, mode);
 
             //Get rendered data back to a new texture
             var result = new Texture2D(width, height, TextureFormat.ARGB32, true);
@@ -31,10 +31,10 @@ namespace Commons.Utils
         /// <param name="width">New width</param>
         /// <param name="height">New height</param>
         /// <param name="mode">Filtering mode</param>
-        public static void scale(Texture2D tex, int width, int height, FilterMode mode = FilterMode.Trilinear)
+        public static void Scale(Texture2D tex, int width, int height, FilterMode mode = FilterMode.Trilinear)
         {
             var texR = new Rect(0, 0, width, height);
-            _gpu_scale(tex, width, height, mode);
+            Gpu_scale(tex, width, height, mode);
 
             // Update new texture
             tex.Resize(width, height);
@@ -43,7 +43,7 @@ namespace Commons.Utils
         }
 
         // Internal unility that renders the source texture into the RTT - the scaling method itself.
-        private static void _gpu_scale(Texture2D src, int width, int height, FilterMode fmode)
+        private static void Gpu_scale(Texture2D src, int width, int height, FilterMode fmode)
         {
             //We need the source texture in VRAM because we render with it
             src.filterMode = fmode;

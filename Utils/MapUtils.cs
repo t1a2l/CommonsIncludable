@@ -30,7 +30,7 @@ namespace Commons.Utils
 
         public static Vector3 CalculatePositionRelative(Vector3 absolutePos, float angle, Vector3 reference)
         {
-            Vector3 relativePos = new Vector3
+            Vector3 relativePos = new()
             {
                 y = absolutePos.y - reference.y
             };
@@ -54,7 +54,7 @@ namespace Commons.Utils
 
         public static Vector3 OffsetWithRotation(Vector3 offset, float angle)
         {
-            Vector3 position = new Vector3
+            Vector3 position = new()
             {
                 y = offset.y
             };

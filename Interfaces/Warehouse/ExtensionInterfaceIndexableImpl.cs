@@ -7,7 +7,7 @@ namespace Commons.Interfaces.Warehouse
 {
     public abstract class ExtensionInterfaceIndexableImpl<R, U> : DataExtensionBase<U> where R : IIdentifiable, new() where U : ExtensionInterfaceIndexableImpl<R, U>, new()
     {
-        protected NonSequentialList<R> m_cachedList = new NonSequentialList<R>();
+        protected NonSequentialList<R> m_cachedList = [];
 
 
         [XmlElement("Data")]

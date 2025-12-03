@@ -15,7 +15,7 @@ namespace Commons.ModShared
         public override bool IsUuiAvailable { get; } = false;
         public override void RegisterMod<U, C, T>(BasicIUserMod<U, C, T> modInstance) => AddModButton<U, C, T>(modInstance);
 
-        private void TogglePanel(UIComponent component, UIMouseEventParameter eventParam)
+        private void TogglePanel()
         {
             if (m_modsPanel == null)
             {
@@ -108,7 +108,7 @@ namespace Commons.ModShared
                     }
                     else
                     {
-                        TogglePanel(component, ms);
+                        TogglePanel();
                     }
                 };
 
@@ -144,7 +144,7 @@ namespace Commons.ModShared
             where C : BaseController<U, C>
             where T : BasicKPanel<U, C, T>
         {
-            if (!(m_modsTabstrip.Find<UIComponent>(CommonProperties.Acronym) is null))
+            if (m_modsTabstrip.Find<UIComponent>(CommonProperties.Acronym) is not null)
             {
                 return;
             }

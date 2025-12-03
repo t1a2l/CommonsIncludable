@@ -192,7 +192,7 @@ namespace Commons.Extensions.UI
                 label.text = text;
                 UIDropDown uIDropDown = uIPanel.Find<UIDropDown>("Dropdown");
                 uIDropDown.items = options;
-                if (!(eventCallback is null))
+                if (eventCallback is not null)
                 {
                     uIDropDown.eventSelectedIndexChanged += delegate (UIComponent c, int sel)
                     {
@@ -740,7 +740,7 @@ namespace Commons.Extensions.UI
                 GameObject.Destroy(uIPanel.Find<UIDropDown>("Dropdown").gameObject);
                 var ddcs = new NumberedColorList(uIPanel, defaultValues, addButtonContainer);
 
-                ddcs.EventOnClick += (int value) => eventCallback(value);
+                ddcs.EventOnClick += value => eventCallback(value);
 
                 ddcs.EventOnAdd += () => eventAdd?.Invoke();
                 return ddcs;
@@ -768,7 +768,7 @@ namespace Commons.Extensions.UI
                 GameObject.Destroy(uIPanel.Find<UIDropDown>("Dropdown").gameObject);
                 var ddcs = new TextList<T>(uIPanel, defaultValues, width, height, name);
 
-                ddcs.EventOnSelect += (T value) => eventCallback(value);
+                ddcs.EventOnSelect += value => eventCallback(value);
 
                 return ddcs;
             }
@@ -878,10 +878,7 @@ namespace Commons.Extensions.UI
 
         public UIHelperExtension AddTogglableGroup(string title, out UILabel toggleLabel)
         {
-            if (m_groupStates == null)
-            {
-                m_groupStates = new Dictionary<string, DecorationPropertiesPanel.GroupInfo>();
-            }
+            m_groupStates ??= [];
 
             UIHelperExtension newGroup = AddGroupExtended(title, out toggleLabel, out UIPanel parentPanel);
             toggleLabel.text = title;

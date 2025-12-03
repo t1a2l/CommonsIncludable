@@ -10,7 +10,7 @@ namespace Commons.LiteUI.BaseElements
 {
     public abstract class GUIWindow : MonoBehaviour, IDestroyableObject, IUIObject
     {
-		private static readonly List<GUIWindow> Windows = new List<GUIWindow>();
+		private static readonly List<GUIWindow> Windows = [];
 
         private static GUIWindow resizingWindow;
         private static Vector2 resizeDragHandle = Vector2.zero;
@@ -34,14 +34,13 @@ namespace Commons.LiteUI.BaseElements
 		
 
         private Vector2 minSize = Vector2.zero;
-        private Rect windowRect = new Rect(0, 0, 64, 64);
+        private Rect windowRect = new(0, 0, 64, 64);
 
         private bool visible;
         private Texture2D cachedModIcon;
 
         public static GUIStyle HighlightStyle => GUIStyle.none;
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811", Justification = ".ctor of a Unity component")]
         protected GUIWindow(string title, Rect rect, bool resizable = true, bool hasTitlebar = true, Vector2 minSize = default)
         {
             id = UnityEngine.Random.Range(1024, int.MaxValue);
@@ -94,7 +93,7 @@ namespace Commons.LiteUI.BaseElements
         {
             if (skin.font is null)
             {
-                skin.font = Font.CreateDynamicFontFromOSFont(new string[0], 12);
+                skin.font = Font.CreateDynamicFontFromOSFont([], 12);
                 cachedFontName = null;
                 cachedFontSize = 12;
             }

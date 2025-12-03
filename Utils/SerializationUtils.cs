@@ -6,7 +6,7 @@ namespace Commons.Utils
     public class SerializationUtils
     {
         #region Default (de)serialization
-        public static string SerializeColor(Color32 value, string separator) => string.Join(separator, new string[] { value.r.ToString(), value.g.ToString(), value.b.ToString() });
+        public static string SerializeColor(Color32 value, string separator) => string.Join(separator, [value.r.ToString(), value.g.ToString(), value.b.ToString()]);
 
         public static Color DeserializeColor(string value, string separator)
         {
@@ -19,7 +19,7 @@ namespace Commons.Utils
                 }
                 else
                 {
-                    LogUtils.DoLog($"val = {value}; list = {string.Join(",", list.ToArray())} (Size {list.Count})");
+                    LogUtils.DoLog($"val = {value}; list = {string.Join(",", [.. list])} (Size {list.Count})");
                 }
             }
             return Color.clear;

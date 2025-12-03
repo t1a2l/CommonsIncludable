@@ -11,9 +11,9 @@ namespace Commons.Interfaces.Warehouse
         public abstract bool AllowGlobal { get; }
 
         [XmlElement("ListStringData")]
-        public List<SimpleEnumerableList<T, string>> m_cachedListString = new List<SimpleEnumerableList<T, string>>();
+        public List<SimpleEnumerableList<T, string>> m_cachedListString = [];
 
-        public event Action<int, T, string> eventOnValueChanged;
+        public event Action<int, T, string> EventOnValueChanged;
 
 
 
@@ -32,7 +32,7 @@ namespace Commons.Interfaces.Warehouse
         {
             if (m_cachedListString.Count <= idx)
             {
-                m_cachedListString.Add(new SimpleEnumerableList<T, string>());
+                m_cachedListString.Add([]);
                 idx = m_cachedListString.Count - 1;
             }
             if (value == null)
@@ -43,7 +43,7 @@ namespace Commons.Interfaces.Warehouse
             {
                 m_cachedListString[idx][key] = value;
             }
-            eventOnValueChanged?.Invoke(idx, key, value);
+            EventOnValueChanged?.Invoke(idx, key, value);
             return idx;
         }
 
@@ -52,7 +52,7 @@ namespace Commons.Interfaces.Warehouse
             if (idx < m_cachedListString.Count)
             {
                 m_cachedListString.RemoveAt(idx);
-                eventOnValueChanged?.Invoke(idx, default, null);
+                EventOnValueChanged?.Invoke(idx, default, null);
             }
         }
 
@@ -63,7 +63,7 @@ namespace Commons.Interfaces.Warehouse
                 if (m_cachedListString[idx].ContainsKey(key))
                 {
                     m_cachedListString[idx].Remove(key);
-                    eventOnValueChanged?.Invoke(idx, key, null);
+                    EventOnValueChanged?.Invoke(idx, key, null);
                 }
             }
         }

@@ -1,5 +1,4 @@
 ﻿using Commons.Utils.UtilitiesClasses;
-using System.Linq;
 using System.Xml.Serialization;
 using static Commons.Utils.XmlUtils;
 
@@ -8,12 +7,12 @@ namespace Commons.Interfaces
     public class ILibableAsContainer<D> : ILibable
     {
         [XmlIgnore]
-        internal D[] m_dataArray = new D[0];
+        internal D[] m_dataArray = [];
 
         public ListWrapper<D> Data
         {
-            get => new ListWrapper<D> { listVal = m_dataArray.ToList() };
-            set => m_dataArray = value.listVal.ToArray();
+            get => new() { listVal = [.. m_dataArray] };
+            set => m_dataArray = [.. value.listVal];
         }
         [XmlAttribute("saveName")]
         public virtual string SaveName { get; set; }

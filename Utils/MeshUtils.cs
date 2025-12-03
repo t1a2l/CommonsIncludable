@@ -76,13 +76,13 @@ namespace Commons.Utils
             }
             return result;
         }
-        private static int[] kTriangleIndices = new int[]{
+        private static readonly int[] kTriangleIndices = [
                 0,
                 1,
                 3,
                 3,
                 1,
                 2
-        };
+        ];
     }
 }

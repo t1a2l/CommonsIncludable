@@ -16,13 +16,13 @@ namespace Commons.Utils.UtilitiesClasses
 
         public System.Xml.Schema.XmlSchema GetSchema() => null;
 
-        private List<TValue> m_items = new List<TValue>();
+        private List<TValue> m_items = [];
         private Tuple<TValue, int>[] m_hourTable;
         
         public void ReadXml(System.Xml.XmlReader reader)
 
         {
-            m_items = new List<TValue>();
+            m_items = [];
             if (reader.IsEmptyElement)
             {
                 reader.Read();

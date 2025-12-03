@@ -13,7 +13,7 @@ namespace Commons.UI
 
         public Vector2 Size
         {
-            get => new Vector2(m_camera.targetTexture.width, m_camera.targetTexture.height);
+            get => new(m_camera.targetTexture.width, m_camera.targetTexture.height);
             set {
                 if (Size != value)
                 {

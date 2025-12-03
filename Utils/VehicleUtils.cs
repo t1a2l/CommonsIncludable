@@ -30,8 +30,8 @@ namespace Commons.Utils
             return saida;
         }
         public static int GetCapacity(VehicleInfo info) => GetCapacity(info, info.m_vehicleAI);
-        private static Dictionary<Type, FieldInfo> m_cachedCapacityFieldForAiType = new Dictionary<Type, FieldInfo>();
-        private static Dictionary<Type, FieldInfo> m_cachedTransportInfoFieldsForAiType = new Dictionary<Type, FieldInfo>();
+        private static readonly Dictionary<Type, FieldInfo> m_cachedCapacityFieldForAiType = [];
+        private static readonly Dictionary<Type, FieldInfo> m_cachedTransportInfoFieldsForAiType = [];
         public static int GetCapacity<AI>(VehicleInfo info, AI ai, bool noLoop = false) where AI : VehicleAI
         {
             if (info == null)
@@ -161,15 +161,10 @@ namespace Commons.Utils
  
         public static void ReplaceVehicleModel(ushort idx, VehicleInfo newInfo)
         {
-            if (newInfo == null)
-            {
-                throw new ArgumentNullException("newInfo cannot be null!");
-            }
-
             VehicleManager instance = VehicleManager.instance;
             CitizenManager.instance.ReleaseUnits(instance.m_vehicles.m_buffer[idx].m_citizenUnits);
             instance.m_vehicles.m_buffer[idx].Unspawn(idx);
-            instance.m_vehicles.m_buffer[idx].Info = newInfo;
+            instance.m_vehicles.m_buffer[idx].Info = newInfo ?? throw new ArgumentNullException("newInfo cannot be null!");
             instance.m_vehicles.m_buffer[idx].Spawn(idx);
             newInfo.m_vehicleAI.CreateVehicle(idx, ref instance.m_vehicles.m_buffer[idx]);
         }

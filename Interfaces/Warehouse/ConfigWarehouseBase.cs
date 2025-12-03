@@ -21,7 +21,7 @@ namespace Commons.Interfaces.Warehouse
         protected const int TYPE_PART = 0xF00;
         protected const int TYPE_DICTIONARY = 0x500;
 
-        protected static Dictionary<string, I> loadedCities = new Dictionary<string, I>();
+        protected static Dictionary<string, I> loadedCities = [];
 
         protected string cityId;
         protected string cityName;
@@ -186,11 +186,11 @@ namespace Commons.Interfaces.Warehouse
         public virtual void SetInt(T idx, int? value) => SetToFile(idx, value);
 
         [XmlElement("StringData")]
-        public SimpleEnumerableList<T, string> m_cachedStringSaved = new SimpleEnumerableList<T, string>();
+        public SimpleEnumerableList<T, string> m_cachedStringSaved = [];
         [XmlElement("IntData")]
-        public SimpleEnumerableList<T, int?> m_cachedIntSaved = new SimpleEnumerableList<T, int?>();
+        public SimpleEnumerableList<T, int?> m_cachedIntSaved = [];
         [XmlElement("BoolData")]
-        public SimpleEnumerableList<T, bool?> m_cachedBoolSaved = new SimpleEnumerableList<T, bool?>();
+        public SimpleEnumerableList<T, bool?> m_cachedBoolSaved = [];
 
 
         private string GetSavedString(T i)

@@ -61,10 +61,7 @@ namespace Commons.Utils.UtilitiesClasses
             foreach (var key in Keys)
             {
                 TValue value = this[key];
-                if (value.Id == null)
-                {
-                    value.Id = key;
-                }
+                value.Id ??= key;
                 valueSerializer.Serialize(writer, value, ns);
             }
 
@@ -76,10 +73,7 @@ namespace Commons.Utils.UtilitiesClasses
             set
             {
                 Remove(key);
-                if (value.Id == null)
-                {
-                    value.Id = key;
-                }
+                value.Id ??= key;
                 base[value.Id.Value] = value;
             }
         }
@@ -87,16 +81,13 @@ namespace Commons.Utils.UtilitiesClasses
         public new void Add(long key, TValue value)
         {
             Remove(key);
-            if (value.Id == null)
-            {
-                value.Id = key;
-            }
+            value.Id ??= key;
             base.Add(value.Id.Value, value);
         }
 
         public static NonSequentialList<TValue> operator +(NonSequentialList<TValue> left, TValue right)
         {
-            if (!(right.Id is null))
+            if (right.Id is not null)
             {
                 left[right.Id ?? 0] = right;
             }
@@ -105,7 +96,7 @@ namespace Commons.Utils.UtilitiesClasses
 
         public static NonSequentialList<TValue> operator -(NonSequentialList<TValue> left, TValue right)
         {
-            if (!(right.Id is null))
+            if (right.Id is not null)
             {
                 left.Remove(right.Id ?? 0);
             }

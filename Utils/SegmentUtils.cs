@@ -56,7 +56,7 @@ namespace Commons.Utils
                 : NetManager.instance.m_segments.m_buffer[segmentID].m_endNode;
             resultNodes.Add(edgeNode);
             CalculatePathNet(segmentID, segmentID, edgeNode, startSegment, ref result, ref resultNodes, requireSameDirection, requireSameSizeAndType);
-            nodes = resultNodes.ToArray();
+            nodes = [.. resultNodes];
             return result;
         }
 
@@ -169,7 +169,7 @@ namespace Commons.Utils
                     int referIdx = path.IndexOf(refer);
                     if (referIdx != 0)
                     {
-                        path = path.GetRange(referIdx, path.Count - referIdx).Concat(path.Take(referIdx)).ToList();
+                        path = [.. path.GetRange(referIdx, path.Count - referIdx), .. path.Take(referIdx)];
                     }
                 }
                 else
@@ -180,7 +180,7 @@ namespace Commons.Utils
                 GetEdgeNodes(ref path, out startRef, out endRef, localAdjust);
                 return path;
             }
-            nodes = new ushort[0];
+            nodes = [];
             startRef = false;
             endRef = false;
             return null;
@@ -351,9 +351,7 @@ namespace Commons.Utils
                     if (nodeStartS == ((NetManager.instance.m_segments.m_buffer[accessSegments[0]].m_flags & NetSegment.Flags.Invert) != 0))
                     {
                         accessSegments.Reverse();
-                        bool temp = nodeStartS;
-                        nodeStartS = nodeStartE;
-                        nodeStartE = temp;
+                        (nodeStartE, nodeStartS) = (nodeStartS, nodeStartE);
                     }
                 }
                 else
@@ -363,9 +361,7 @@ namespace Commons.Utils
                     if (VectorUtils.XZ(NetManager.instance.m_nodes.m_buffer[nodeF].m_position).GetAngleToPoint(VectorUtils.XZ(NetManager.instance.m_nodes.m_buffer[nodeL].m_position)) > 180)
                     {
                         accessSegments.Reverse();
-                        bool temp = nodeStartS;
-                        nodeStartS = nodeStartE;
-                        nodeStartE = temp;
+                        (nodeStartE, nodeStartS) = (nodeStartS, nodeStartE);
                     }
                 }
             }
@@ -397,7 +393,7 @@ namespace Commons.Utils
             return accessSegments.Select(x => Tuple.New(x, NetManager.instance.m_segments.m_buffer[x].m_averageLength));
         }
 
-        public struct ComparableRoad
+        public readonly struct ComparableRoad
         {
             public ComparableRoad(ushort segmentId, bool startNode, bool itself = false)
             {
@@ -452,7 +448,7 @@ namespace Commons.Utils
                                 bool isSegment1StartNode = segment1Obj.m_startNode == nodeReference;
                                 bool isSegment1Entering = isSegment1StartNode != ((NetManager.instance.m_segments.m_buffer[segment1].m_flags & NetSegment.Flags.Invert) != 0);
 
-                                if (!(segment1Obj.Info.GetAI() is RoadBaseAI seg1Ai))
+                                if (segment1Obj.Info.GetAI() is not RoadBaseAI seg1Ai)
                                 {
                                     continue;
                                 }
@@ -472,7 +468,7 @@ namespace Commons.Utils
                                 else
                                 {
                                     ref NetSegment segmentRefObj = ref NetManager.instance.m_segments.m_buffer[segmentReference];
-                                    if (!(segmentRefObj.Info.GetAI() is RoadBaseAI roadAi))
+                                    if (segmentRefObj.Info.GetAI() is not RoadBaseAI roadAi)
                                     {
                                         continue;
                                     }
@@ -663,7 +659,7 @@ namespace Commons.Utils
                 {
                     ushort segId = m_closestSegsFind[i];
                     ref NetSegment seg = ref NetManager.instance.m_segments.m_buffer[segId];
-                    if (!(seg.Info.GetAI() is RoadBaseAI))
+                    if (seg.Info.GetAI() is not RoadBaseAI)
                     {
                         continue;
                     }

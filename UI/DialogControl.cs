@@ -142,7 +142,7 @@ namespace Commons.Utils
             #region Bindings creation
             mainPanel.gameObject.AddComponent<DialogControl>();
             BindPropertyByKey bindByKey = mainPanel.gameObject.AddComponent<BindPropertyByKey>();
-            bindByKey.m_Bindings.AddRange(new List<BindPropertyByKey.BindingInfo>(){
+            bindByKey.m_Bindings.AddRange([
                 CreateBind("title"          ,title, "text"),
                 CreateBind("icon"           ,modIcon, "spriteName"),
                 CreateBind("showClose"          ,closeButton, "isVisible"),
@@ -154,7 +154,7 @@ namespace Commons.Utils
                 CreateBind("textButton1"        ,button1,"text"),
                 CreateBind("textButton2"        ,button2,"text"),
                 CreateBind("textButton3"        ,button3,"text"),
-            });
+            ]);
             #endregion
 
             #region Declare Dynamic Panel Info
@@ -179,7 +179,7 @@ namespace Commons.Utils
             MonoUtils.UiTextFieldDefaultsForm(textField);
         }
 
-        private static BindPropertyByKey.BindingInfo CreateBind(string key, UIComponent component, string property) => new BindPropertyByKey.BindingInfo()
+        private static BindPropertyByKey.BindingInfo CreateBind(string key, UIComponent component, string property) => new()
         {
             key = key,
             target = new BindingReference()
@@ -220,7 +220,7 @@ namespace Commons.Utils
             boxContainerTitle.relativePosition = new Vector3(0, 2);
 
             //This action allow centralize all calls to single object, coming from any mod
-            m_mainPanel.objectUserData = new Action<Dictionary<string, object>, Func<int, bool>>((Dictionary<string, object> properties, Func<int, bool> callback) => StartCoroutine(Enqueue(BindProperties.FromDictionary(properties), callback)));
+            m_mainPanel.objectUserData = new Action<Dictionary<string, object>, Func<int, bool>>((properties, callback) => StartCoroutine(Enqueue(BindProperties.FromDictionary(properties), callback)));
             m_mainPanel.stringUserData = VERSION;
 
 
@@ -235,7 +235,7 @@ namespace Commons.Utils
         private void FontHack()
         {
             var labels = Component.FindObjectsOfType<UILabel>().GroupBy(x => x.font).Select(x => x.First()).ToList();
-            var testString = string.Join("", new string[0x500].Select((x, i) =>
+            var testString = string.Join("", [.. new string[0x500].Select((x, i) =>
             {
                 try
                 {
@@ -245,7 +245,7 @@ namespace Commons.Utils
                 {
                     return "";
                 }
-            }).ToArray());
+            })]);
             foreach (var label in labels)
             {
                 var orText = label.text;
@@ -372,7 +372,7 @@ namespace Commons.Utils
 
                 int lastPage = tutorialEntries.Length - 1;
                 int currentPage = Math.Max(0, Math.Min(lastPage, propertiesToSet.help_currentPage));
-                string targetImg = $"{propertiesToSet.help_fullPathName}{Path.DirectorySeparatorChar}{currentPage.ToString("D3")}.jpg";
+                string targetImg = $"{propertiesToSet.help_fullPathName}{Path.DirectorySeparatorChar}{currentPage:D3}.jpg";
                 string textureImagePath = File.Exists(targetImg) ? targetImg : null;
                 string path = propertiesToSet.help_fullPathName;
                 string feature = propertiesToSet.help_featureName;
@@ -433,7 +433,7 @@ namespace Commons.Utils
                 DDpanel.anchor = UIAnchorStyle.CenterHorizontal;
                 DDpanel.zOrder = m_textField.zOrder + 1;
                 DDpanel.autoLayout = true;
-                m_dropDown = UIHelperExtension.CloneBasicDropDownNoLabel(new string[0], (x) => { }, DDpanel);
+                m_dropDown = UIHelperExtension.CloneBasicDropDownNoLabel([], (x) => { }, DDpanel);
                 m_dropDown.name = DD_INPUT_ID;
                 m_dropDown.minimumSize = new Vector2(m_boxText.minimumSize.x - 10, 25);
                 m_dropDown.size = new Vector2(m_boxText.minimumSize.x - 10, 40);
@@ -443,7 +443,7 @@ namespace Commons.Utils
                 m_dropDown.horizontalAlignment = UIHorizontalAlignment.Left;
             }
             m_dropDown.parent.isVisible = propertiesToSet.showDropDown;
-            m_dropDown.items = propertiesToSet.dropDownOptions?.Split(BindProperties.DD_OPTIONS_SEPARATOR.ToCharArray()) ?? new string[0];
+            m_dropDown.items = propertiesToSet.dropDownOptions?.Split(BindProperties.DD_OPTIONS_SEPARATOR.ToCharArray()) ?? [];
             m_dropDown.selectedIndex = propertiesToSet.dropDownCurrentSelection;
 
 
@@ -508,7 +508,7 @@ namespace Commons.Utils
         #region Field Declaration
         private Func<int, bool> m_currentCallback;
         //queue to store the modal order
-        private readonly Queue<TupleRef<string, BindProperties, Func<int, bool>>> m_modalQueue = new Queue<TupleRef<string, BindProperties, Func<int, bool>>>();
+        private readonly Queue<TupleRef<string, BindProperties, Func<int, bool>>> m_modalQueue = new();
 
         private UIPanel m_mainPanel;
         private UIPanel m_titleContainer;
@@ -544,7 +544,7 @@ namespace Commons.Utils
 
         public static void ShowModalError(string title, string message, bool showGitHubButton = false)
         {
-            BindProperties properties = new BindProperties
+            BindProperties properties = new()
             {
                 title = "Error!",
                 message = $"<color red>{title}</color>" + (message is null ? "" : $"\nDetails:\n\n{message}"),
@@ -557,7 +557,7 @@ namespace Commons.Utils
                 useFullWindowWidth = true,
                 smallFont = true
             };
-            bool action(int x)
+            static bool action(int x)
             {
                 if (x == 2)
                 {
@@ -579,7 +579,7 @@ namespace Commons.Utils
         private static void ShowModalInternal(BindProperties properties, Func<int, bool> action)
         {
             UIComponent uIComponent = UIView.library.Get(PANEL_ID);
-            if (!(uIComponent is null) && uIComponent.objectUserData is Action<Dictionary<string, object>, Func<int, bool>> addAction)
+            if (uIComponent is not null && uIComponent.objectUserData is Action<Dictionary<string, object>, Func<int, bool>> addAction)
             {
                 addAction(properties.ToDictionary(), action);
             }
@@ -592,7 +592,7 @@ namespace Commons.Utils
         public static void UpdateCurrentMessage(string newText)
         {
             UIComponent uIComponent = UIView.library.Get(PANEL_ID);
-            if (!(uIComponent is null) && uIComponent.GetComponent<BindPropertyByKey>() is BindPropertyByKey properties && properties != null)
+            if (uIComponent is not null && uIComponent.GetComponent<BindPropertyByKey>() is BindPropertyByKey properties && properties != null)
             {
                 properties.FindBinding("message").property.value = newText;
             }
@@ -618,7 +618,7 @@ namespace Commons.Utils
         private static void ShowModalPromptTextInternal(BindProperties properties, Func<int, string, bool> action)
         {
             UIComponent uIComponent = UIView.library.Get(PANEL_ID);
-            if (!(uIComponent is null) && uIComponent.objectUserData is Action<Dictionary<string, object>, Func<int, bool>> addAction)
+            if (uIComponent is not null && uIComponent.objectUserData is Action<Dictionary<string, object>, Func<int, bool>> addAction)
             {
                 bool targetAction(int x)
                 {
@@ -645,7 +645,7 @@ namespace Commons.Utils
                 help_currentPage = startPage,
                 help_fullPathName = fullPathName,
                 help_featureName = featureName,
-                help_formatsEntries = new string[] { featureName }.Concat(formatsEntries).ToArray(),
+                help_formatsEntries = [featureName, .. formatsEntries],
             };
             if (Dispatcher.mainSafe != Dispatcher.currentSafe)
             {
@@ -790,36 +790,42 @@ namespace Commons.Utils
                 return result;
             }
 
-            public Dictionary<string, object> ToDictionary() => new Dictionary<string, object>()
+            public readonly Dictionary<string, object> ToDictionary()
             {
-                ["title"] = title ?? CommonProperties.ModName,
-                ["icon"] = icon ?? CommonProperties.ModIcon,
-                ["showClose"] = showClose,
-                ["message"] = message,
-                ["messageAlign"] = messageAlign,
-                ["showButton1"] = showButton1,
-                ["showButton2"] = showButton2,
-                ["showButton3"] = showButton3,
-                ["textButton1"] = textButton1,
-                ["textButton2"] = textButton2,
-                ["textButton3"] = textButton3,
-                ["useFullWindowWidth"] = useFullWindowWidth,
-                ["showTextField"] = showTextField,
-                ["showDropDown"] = showDropDown,
-                ["dropDownOptions"] = dropDownOptions,
-                ["dropDownCurrentSelection"] = dropDownCurrentSelection,
-                ["defaultTextFieldContent"] = defaultTextFieldContent,
-                ["imageTexturePath"] = imageTexturePath,
-                ["smallFont"] = smallFont,
+                return new Dictionary<string, object>()
+                {
+                    ["title"] = title ?? CommonProperties.ModName,
+                    ["icon"] = icon ?? CommonProperties.ModIcon,
+                    ["showClose"] = showClose,
+                    ["message"] = message,
+                    ["messageAlign"] = messageAlign,
+                    ["showButton1"] = showButton1,
+                    ["showButton2"] = showButton2,
+                    ["showButton3"] = showButton3,
+                    ["textButton1"] = textButton1,
+                    ["textButton2"] = textButton2,
+                    ["textButton3"] = textButton3,
+                    ["useFullWindowWidth"] = useFullWindowWidth,
+                    ["showTextField"] = showTextField,
+                    ["showDropDown"] = showDropDown,
+                    ["dropDownOptions"] = dropDownOptions,
+                    ["dropDownCurrentSelection"] = dropDownCurrentSelection,
+                    ["defaultTextFieldContent"] = defaultTextFieldContent,
+                    ["imageTexturePath"] = imageTexturePath,
+                    ["smallFont"] = smallFont,
 
-                ["help_isArticle"] = help_isArticle,
-                ["help_fullPathName"] = help_fullPathName,
-                ["help_currentPage"] = help_currentPage,
-                ["help_featureName"] = help_featureName,
-                ["help_formatsEntries"] = help_formatsEntries,
-            };
+                    ["help_isArticle"] = help_isArticle,
+                    ["help_fullPathName"] = help_fullPathName,
+                    ["help_currentPage"] = help_currentPage,
+                    ["help_featureName"] = help_featureName,
+                    ["help_formatsEntries"] = help_formatsEntries,
+                };
+            }
 
-            public override string ToString() => string.Join(",", ToDictionary().ToList().Select(x => $"{x.Key}≠{x.Value}").ToArray());
+            public override readonly string ToString()
+            {
+                return string.Join(",", [.. ToDictionary().ToList().Select(x => $"{x.Key}≠{x.Value}")]);
+            }
         }
 
         #endregion

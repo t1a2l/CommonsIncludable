@@ -3,18 +3,11 @@ using UnityEngine;
 
 namespace Commons.Utils
 {
-    public class RandomPastelColorGenerator
+    public class RandomPastelColorGenerator(uint randomSeed, float randomizerFactor, PastelConfig pastelConfig)
     {
-        private readonly Randomizer m_random;
-        private readonly float m_randomizerFactor;
-        private readonly PastelConfig m_pastelConfig;
-
-        public RandomPastelColorGenerator(uint randomSeed, float randomizerFactor, PastelConfig pastelConfig)
-        {
-            m_random = new Randomizer(randomSeed);
-            m_randomizerFactor = randomizerFactor;
-            m_pastelConfig = pastelConfig;
-        }
+        private readonly Randomizer m_random = new(randomSeed);
+        private readonly float m_randomizerFactor = randomizerFactor;
+        private readonly PastelConfig m_pastelConfig = pastelConfig;
 
 
         /// <summary>
@@ -23,11 +16,12 @@ namespace Commons.Utils
         /// <returns></returns>
         public Color32 GetNext()
         {
-            byte[] colorBytes = new byte[3];
-            colorBytes[0] = (byte) (m_random.UInt32(128) + 64);
-            colorBytes[1] = (byte) (m_random.UInt32(128) + 64);
-            colorBytes[2] = (byte) (m_random.UInt32(128) + 64);
-
+            byte[] colorBytes =
+            [
+                (byte) (m_random.UInt32(128) + 64),
+                (byte) (m_random.UInt32(128) + 64),
+                (byte) (m_random.UInt32(128) + 64),
+            ];
             uint colorDestaq = 7;
             if (m_randomizerFactor != 1)
             {
@@ -44,7 +38,7 @@ namespace Commons.Utils
                 }
             }
 
-            Color32 color = new Color32
+            Color32 color = new()
             {
                 a = 255,
                 r = (byte) (colorBytes[0] / ((colorDestaq & 0b100) > 0 ? 1 : m_randomizerFactor)),

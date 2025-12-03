@@ -72,7 +72,7 @@ namespace Commons.Utils
                     //doErrorLog("CheckInfoCompatibility 3");
                     if (allowedTypes == null
                         || allowedTypes.Length == 0
-                        || !(info.GetAI() is DepotAI depotAI)
+                        || info.GetAI() is not DepotAI depotAI
                         || (depotAI.m_transportInfo != null && allowedTypes.Contains(depotAI.m_transportInfo.m_vehicleReason))
                         || (depotAI.m_secondaryTransportInfo != null && allowedTypes.Contains(depotAI.m_secondaryTransportInfo.m_vehicleReason)))
                     {
@@ -100,7 +100,7 @@ namespace Commons.Utils
 
         public static StopPointDescriptor[] GetAllSpawnPoints(BuildingAI buidlingAI)
         {
-            if (!(buidlingAI is DepotAI depotAI))
+            if (buidlingAI is not DepotAI depotAI)
             {
                 return null;
             }
@@ -156,7 +156,7 @@ namespace Commons.Utils
 
                 return x.relativePosition.y.CompareTo(y.relativePosition.y);
             });
-            return stops.ToArray();
+            return [.. stops];
         }
 
         private static void AddSpawnPoint(TransportInfo info, List<StopPointDescriptor> stops, Vector3 position, Vector3 target, bool canInvert)

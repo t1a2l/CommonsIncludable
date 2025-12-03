@@ -18,21 +18,11 @@ namespace Commons.Utils.StructExtensions
 
         private static bool IsIntegerType(Type type)
         {
-            switch (Type.GetTypeCode(type))
+            return Type.GetTypeCode(type) switch
             {
-                case TypeCode.Byte:
-                case TypeCode.SByte:
-                case TypeCode.UInt16:
-                case TypeCode.UInt32:
-                case TypeCode.UInt64:
-                case TypeCode.Int16:
-                case TypeCode.Int32:
-                case TypeCode.Int64:
-                case TypeCode.Decimal:
-                    return true;
-                default:
-                    return type.IsArray && IsIntegerType(type.GetElementType());
-            }
+                TypeCode.Byte or TypeCode.SByte or TypeCode.UInt16 or TypeCode.UInt32 or TypeCode.UInt64 or TypeCode.Int16 or TypeCode.Int32 or TypeCode.Int64 or TypeCode.Decimal => true,
+                _ => type.IsArray && IsIntegerType(type.GetElementType()),
+            };
         }
 
         public static bool IsNumeric(this Type type) => type == typeof(byte) ||
@@ -49,32 +39,20 @@ namespace Commons.Utils.StructExtensions
 
         public static bool IsFloatingPoint(this Type type)
         {
-            switch (Type.GetTypeCode(type))
+            return Type.GetTypeCode(type) switch
             {
-                case TypeCode.Decimal:
-                case TypeCode.Double:
-                case TypeCode.Single:
-                    return true;
-                default:
-                    return false;
-            }
+                TypeCode.Decimal or TypeCode.Double or TypeCode.Single => true,
+                _ => false,
+            };
         }
 
         public static bool IsSigned(this Type type)
         {
-            switch (Type.GetTypeCode(type))
+            return Type.GetTypeCode(type) switch
             {
-                case TypeCode.SByte:
-                case TypeCode.Int16:
-                case TypeCode.Int32:
-                case TypeCode.Int64:
-                case TypeCode.Decimal:
-                case TypeCode.Double:
-                case TypeCode.Single:
-                    return true;
-                default:
-                    return false;
-            }
+                TypeCode.SByte or TypeCode.Int16 or TypeCode.Int32 or TypeCode.Int64 or TypeCode.Decimal or TypeCode.Double or TypeCode.Single => true,
+                _ => false,
+            };
         }
 
         public static bool IsInteger(this Type type) => type.IsPrimitive && IsIntegerType(type);

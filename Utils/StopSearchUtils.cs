@@ -81,10 +81,10 @@ namespace Commons.Utils
                     }
                 }
             }
-            result = result.OrderBy(x => x.First).ToList();
-            distanceSqrA = result.Select(x => x.Second).ToList();
-            stopPositions = result.Select(x => x.Third).ToList();
-            return result.Select(x => x.First).ToList();
+            result = [.. result.OrderBy(x => x.First)];
+            distanceSqrA = [.. result.Select(x => x.Second)];
+            stopPositions = [.. result.Select(x => x.Third)];
+            return [.. result.Select(x => x.First)];
         }
 
 
@@ -165,9 +165,9 @@ namespace Commons.Utils
             });
             if (CommonProperties.DebugMode)
             {
-                LogUtils.DoLog($"{buildingInfo.name} PLAT ORDER:\n{string.Join("\n", result.Select((x, y) => $"{y}=> {x.ToString()}").ToArray())}");
+                LogUtils.DoLog($"{buildingInfo.name} PLAT ORDER:\n{string.Join("\n", [.. result.Select((x, y) => $"{y}=> {x}")])}");
             }
-            return result.ToArray();
+            return [.. result];
         }
 
         private static bool MapLane(BuildingInfo buildingInfo, BuildingInfo.PathInfo path, Vector3 position, Vector3 position2, Vector3 directionPath, NetInfo.Lane refLane, out StopPointDescriptorLanes result)
@@ -338,34 +338,20 @@ namespace Commons.Utils
 
         public static int VehicleToPriority(VehicleInfo.VehicleType tt)
         {
-            switch (tt)
+            return tt switch
             {
-                case VehicleInfo.VehicleType.Car:
-                    return 99;
-                case VehicleInfo.VehicleType.Metro:
-                case VehicleInfo.VehicleType.Train:
-                case VehicleInfo.VehicleType.Monorail:
-                    return 20;
-                case VehicleInfo.VehicleType.Ship:
-                    return 10;
-                case VehicleInfo.VehicleType.Plane:
-                    return 5;
-                case VehicleInfo.VehicleType.Tram:
-                    return 88;
-                case VehicleInfo.VehicleType.Helicopter:
-                    return 7;
-                case VehicleInfo.VehicleType.Ferry:
-                    return 15;
-
-                case VehicleInfo.VehicleType.CableCar:
-                    return 30;
-                case VehicleInfo.VehicleType.Blimp:
-                    return 12;
-                case VehicleInfo.VehicleType.Balloon:
-                    return 11;
-                default:
-                    return 9999;
-            }
+                VehicleInfo.VehicleType.Car => 99,
+                VehicleInfo.VehicleType.Metro or VehicleInfo.VehicleType.Train or VehicleInfo.VehicleType.Monorail => 20,
+                VehicleInfo.VehicleType.Ship => 10,
+                VehicleInfo.VehicleType.Plane => 5,
+                VehicleInfo.VehicleType.Tram => 88,
+                VehicleInfo.VehicleType.Helicopter => 7,
+                VehicleInfo.VehicleType.Ferry => 15,
+                VehicleInfo.VehicleType.CableCar => 30,
+                VehicleInfo.VehicleType.Blimp => 12,
+                VehicleInfo.VehicleType.Balloon => 11,
+                _ => 9999,
+            };
         }
     }
 }

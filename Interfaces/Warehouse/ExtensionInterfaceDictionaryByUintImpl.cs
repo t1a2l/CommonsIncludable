@@ -8,10 +8,10 @@ namespace Commons.Interfaces.Warehouse
     {
 
         [XmlElement("DictData")]
-        public SimpleNonSequentialList<SimpleEnumerableList<T, D>> m_cachedDictDataSaved = new SimpleNonSequentialList<SimpleEnumerableList<T, D>>();
+        public SimpleNonSequentialList<SimpleEnumerableList<T, D>> m_cachedDictDataSaved = [];
 
 
-        public event Action<uint, T, D> eventOnValueChanged;
+        public event Action<uint, T, D> EventOnValueChanged;
 
         #region Utils R/W
         protected D SafeGet(uint idx, T key)
@@ -28,7 +28,7 @@ namespace Commons.Interfaces.Warehouse
         {
             if (!m_cachedDictDataSaved.ContainsKey(idx))
             {
-                m_cachedDictDataSaved[idx] = new SimpleEnumerableList<T, D>();
+                m_cachedDictDataSaved[idx] = [];
             }
             if (value == null)
             {
@@ -38,7 +38,7 @@ namespace Commons.Interfaces.Warehouse
             {
                 m_cachedDictDataSaved[idx][key] = value;
             }
-            eventOnValueChanged?.Invoke(idx, key, value);
+            EventOnValueChanged?.Invoke(idx, key, value);
         }
 
         public void SafeCleanEntry(uint idx)
@@ -47,7 +47,7 @@ namespace Commons.Interfaces.Warehouse
             {
                 m_cachedDictDataSaved.Remove(idx);
             }
-            eventOnValueChanged?.Invoke(idx, default, null);
+            EventOnValueChanged?.Invoke(idx, default, null);
         }
 
         public void SafeCleanProperty(uint idx, T key)
@@ -57,7 +57,7 @@ namespace Commons.Interfaces.Warehouse
                 if (m_cachedDictDataSaved[idx].ContainsKey(key))
                 {
                     m_cachedDictDataSaved[idx].Remove(key);
-                    eventOnValueChanged?.Invoke(idx, key, null);
+                    EventOnValueChanged?.Invoke(idx, key, null);
                 }
             }
         }

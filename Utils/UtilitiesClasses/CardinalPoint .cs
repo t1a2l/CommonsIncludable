@@ -7,8 +7,8 @@ namespace Commons.Utils.UtilitiesClasses
 {
 	public struct CardinalPoint
     {
-        public static readonly string[] m_cardinal16 = new string[]
-        {
+        public static readonly string[] m_cardinal16 =
+        [
             "N",
             "NNE",
             "NE",
@@ -25,9 +25,11 @@ namespace Commons.Utils.UtilitiesClasses
             "WNW",
             "NW",
             "NNW",
-        };
+        ];
+
         [Obsolete("Use localized version", true)]
         public static string GetCardinalPoint16(float angle) => GetCardinalPoint16_internal(angle);
+
         private static string GetCardinalPoint16_internal(float angle)
         {
             float diagSize = 22.5f;
@@ -45,8 +47,6 @@ namespace Commons.Utils.UtilitiesClasses
             return m_cardinal16[0];
         }
         public static string GetCardinalPoint16LocalizedShort(float angle) => Locale.Get("CMNS_CARDINALPOINT_SHORT", GetCardinalPoint16_internal(angle));
-
-
 
         public static CardinalPoint GetCardinalPoint(float angle, float diagSize = 45)
         {
@@ -121,7 +121,7 @@ namespace Commons.Utils.UtilitiesClasses
 
         private CardinalInternal InternalValue { get; set; }
 
-        public CardinalInternal Value => InternalValue;
+        public readonly CardinalInternal Value => InternalValue;
 
         public static readonly CardinalPoint N = CardinalInternal.N;
         public static readonly CardinalPoint E = CardinalInternal.E;
@@ -133,14 +133,14 @@ namespace Commons.Utils.UtilitiesClasses
         public static readonly CardinalPoint NW = CardinalInternal.NW;
         public static readonly CardinalPoint ZERO = CardinalInternal.ZERO;
 
-        public static implicit operator CardinalPoint(CardinalInternal otherType) => new CardinalPoint
+        public static implicit operator CardinalPoint(CardinalInternal otherType) => new()
         {
             InternalValue = otherType
         };
 
         public static implicit operator CardinalInternal(CardinalPoint otherType) => otherType.InternalValue;
 
-        public int StepsTo(CardinalPoint other)
+        public readonly int StepsTo(CardinalPoint other)
         {
             if (other.InternalValue == InternalValue)
             {
@@ -169,165 +169,115 @@ namespace Commons.Utils.UtilitiesClasses
 
         public static int operator -(CardinalPoint c, CardinalPoint other) => c.StepsTo(other);
 
-        public Vector2 GetCardinalOffset()
+        public readonly Vector2 GetCardinalOffset()
         {
-            switch (InternalValue)
+            return InternalValue switch
             {
-                case CardinalInternal.E:
-                    return new Vector2(1, 0);
-                case CardinalInternal.W:
-                    return new Vector2(-1, 0);
-                case CardinalInternal.N:
-                    return new Vector2(0, 1);
-                case CardinalInternal.S:
-                    return new Vector2(0, -1);
-                case CardinalInternal.NE:
-                    return new Vector2(1, 1);
-                case CardinalInternal.NW:
-                    return new Vector2(-1, 1);
-                case CardinalInternal.SE:
-                    return new Vector2(1, -1);
-                case CardinalInternal.SW:
-                    return new Vector2(-1, -1);
-            }
-            return Vector2.zero;
+                CardinalInternal.E => new Vector2(1, 0),
+                CardinalInternal.W => new Vector2(-1, 0),
+                CardinalInternal.N => new Vector2(0, 1),
+                CardinalInternal.S => new Vector2(0, -1),
+                CardinalInternal.NE => new Vector2(1, 1),
+                CardinalInternal.NW => new Vector2(-1, 1),
+                CardinalInternal.SE => new Vector2(1, -1),
+                CardinalInternal.SW => new Vector2(-1, -1),
+                _ => Vector2.zero,
+            };
         }
 
 
-        public Vector2 GetCardinalOffset2D()
+        public readonly Vector2 GetCardinalOffset2D()
         {
-            switch (InternalValue)
+            return InternalValue switch
             {
-                case CardinalInternal.E:
-                    return new Vector2(1, 0);
-                case CardinalInternal.W:
-                    return new Vector2(-1, 0);
-                case CardinalInternal.S:
-                    return new Vector2(0, 1);
-                case CardinalInternal.N:
-                    return new Vector2(0, -1);
-                case CardinalInternal.SE:
-                    return new Vector2(1, 1);
-                case CardinalInternal.SW:
-                    return new Vector2(-1, 1);
-                case CardinalInternal.NE:
-                    return new Vector2(1, -1);
-                case CardinalInternal.NW:
-                    return new Vector2(-1, -1);
-            }
-            return Vector2.zero;
+                CardinalInternal.E => new Vector2(1, 0),
+                CardinalInternal.W => new Vector2(-1, 0),
+                CardinalInternal.S => new Vector2(0, 1),
+                CardinalInternal.N => new Vector2(0, -1),
+                CardinalInternal.SE => new Vector2(1, 1),
+                CardinalInternal.SW => new Vector2(-1, 1),
+                CardinalInternal.NE => new Vector2(1, -1),
+                CardinalInternal.NW => new Vector2(-1, -1),
+                _ => Vector2.zero,
+            };
         }
 
-        public int GetCardinalAngle()
+        public readonly int GetCardinalAngle()
         {
-            switch (InternalValue)
+            return InternalValue switch
             {
-                case CardinalInternal.N:
-                    return 0;
-                case CardinalInternal.S:
-                    return 180;
-                case CardinalInternal.E:
-                    return 90;
-                case CardinalInternal.W:
-                    return 270;
-                case CardinalInternal.NE:
-                    return 45;
-                case CardinalInternal.NW:
-                    return 315;
-                case CardinalInternal.SE:
-                    return 135;
-                case CardinalInternal.SW:
-                    return 225;
-            }
-            return 0;
+                CardinalInternal.N => 0,
+                CardinalInternal.S => 180,
+                CardinalInternal.E => 90,
+                CardinalInternal.W => 270,
+                CardinalInternal.NE => 45,
+                CardinalInternal.NW => 315,
+                CardinalInternal.SE => 135,
+                CardinalInternal.SW => 225,
+                _ => 0,
+            };
         }
-        public byte GetCardinalIndex8()
+        public readonly byte GetCardinalIndex8()
         {
-            switch (InternalValue)
+            return InternalValue switch
             {
-                case CardinalInternal.N:
-                    return 0;
-                case CardinalInternal.S:
-                    return 4;
-                case CardinalInternal.E:
-                    return 2;
-                case CardinalInternal.W:
-                    return 6;
-                case CardinalInternal.NE:
-                    return 1;
-                case CardinalInternal.NW:
-                    return 7;
-                case CardinalInternal.SE:
-                    return 3;
-                case CardinalInternal.SW:
-                    return 5;
-            }
-            return 8;
+                CardinalInternal.N => 0,
+                CardinalInternal.S => 4,
+                CardinalInternal.E => 2,
+                CardinalInternal.W => 6,
+                CardinalInternal.NE => 1,
+                CardinalInternal.NW => 7,
+                CardinalInternal.SE => 3,
+                CardinalInternal.SW => 5,
+                _ => 8,
+            };
         }
 
         public static CardinalPoint operator ++(CardinalPoint c)
         {
-            switch (c.InternalValue)
+            return c.InternalValue switch
             {
-                case CardinalInternal.N:
-                    return NE;
-                case CardinalInternal.NE:
-                    return E;
-                case CardinalInternal.E:
-                    return SE;
-                case CardinalInternal.SE:
-                    return S;
-                case CardinalInternal.S:
-                    return SW;
-                case CardinalInternal.SW:
-                    return W;
-                case CardinalInternal.W:
-                    return NW;
-                case CardinalInternal.NW:
-                    return N;
-                default:
-                    return ZERO;
-            }
+                CardinalInternal.N => NE,
+                CardinalInternal.NE => E,
+                CardinalInternal.E => SE,
+                CardinalInternal.SE => S,
+                CardinalInternal.S => SW,
+                CardinalInternal.SW => W,
+                CardinalInternal.W => NW,
+                CardinalInternal.NW => N,
+                _ => ZERO,
+            };
         }
 
         public static CardinalPoint operator --(CardinalPoint c)
         {
-            switch (c.InternalValue)
+            return c.InternalValue switch
             {
-                case CardinalInternal.N:
-                    return NW;
-                case CardinalInternal.NE:
-                    return N;
-                case CardinalInternal.E:
-                    return NE;
-                case CardinalInternal.SE:
-                    return E;
-                case CardinalInternal.S:
-                    return SE;
-                case CardinalInternal.SW:
-                    return S;
-                case CardinalInternal.W:
-                    return SW;
-                case CardinalInternal.NW:
-                    return W;
-                default:
-                    return ZERO;
-            }
+                CardinalInternal.N => NW,
+                CardinalInternal.NE => N,
+                CardinalInternal.E => NE,
+                CardinalInternal.SE => E,
+                CardinalInternal.S => SE,
+                CardinalInternal.SW => S,
+                CardinalInternal.W => SW,
+                CardinalInternal.NW => W,
+                _ => ZERO,
+            };
         }
 
-        public static CardinalPoint operator &(CardinalPoint c1, CardinalPoint c2) => new CardinalPoint
+        public static CardinalPoint operator &(CardinalPoint c1, CardinalPoint c2) => new()
         {
             InternalValue = c1.InternalValue & c2.InternalValue
         };
 
-        public static CardinalPoint operator |(CardinalPoint c1, CardinalPoint c2) => new CardinalPoint
+        public static CardinalPoint operator |(CardinalPoint c1, CardinalPoint c2) => new()
         {
             InternalValue = c1.InternalValue | c2.InternalValue
         };
 
-        public override int GetHashCode() => base.GetHashCode();
+        public override readonly int GetHashCode() => base.GetHashCode();
 
-        public override bool Equals(object o) => o.GetType() == GetType() && this == ((CardinalPoint)o);
+        public override readonly bool Equals(object o) => o.GetType() == GetType() && this == ((CardinalPoint)o);
 
         public static bool operator ==(CardinalPoint c1, CardinalPoint c2) => c1.InternalValue == c2.InternalValue;
 
@@ -335,7 +285,7 @@ namespace Commons.Utils.UtilitiesClasses
 
         public static bool operator >(CardinalPoint left, CardinalPoint right) => (Compare(left, right) > 0);
 
-        public int CompareTo(CardinalPoint other)
+        public readonly int CompareTo(CardinalPoint other)
         {
             if (this == other)
             {
@@ -372,27 +322,19 @@ namespace Commons.Utils.UtilitiesClasses
 
         public static CardinalPoint operator ~(CardinalPoint c)
         {
-            switch (c.InternalValue)
+            return c.InternalValue switch
             {
-                case CardinalInternal.N:
-                    return S;
-                case CardinalInternal.NE:
-                    return SW;
-                case CardinalInternal.E:
-                    return W;
-                case CardinalInternal.SE:
-                    return NW;
-                case CardinalInternal.S:
-                    return N;
-                case CardinalInternal.SW:
-                    return NE;
-                case CardinalInternal.W:
-                    return E;
-                case CardinalInternal.NW:
-                    return SE;
-                default:
-                    return ZERO;
+                CardinalInternal.N => S,
+                CardinalInternal.NE => SW,
+                CardinalInternal.E => W,
+                CardinalInternal.SE => NW,
+                CardinalInternal.S => N,
+                CardinalInternal.SW => NE,
+                CardinalInternal.W => E,
+                CardinalInternal.NW => SE,
+                _ => ZERO,
             };
+            ;
         }
 
         public enum CardinalInternal
@@ -408,23 +350,23 @@ namespace Commons.Utils.UtilitiesClasses
             ZERO = 0
         }
 
-        public Vector2 GetPointForAngle(Vector2 p1, float distance) => p1 + GetCardinalOffset() * distance;
+        public readonly Vector2 GetPointForAngle(Vector2 p1, float distance) => p1 + GetCardinalOffset() * distance;
 
 
-        public override string ToString() => InternalValue.ToString();
-        public string ToStringLocalized8() => Locale.Get("CMNS_CARDINALPOINT_SHORT", InternalValue.ToString());
+        public override readonly string ToString() => InternalValue.ToString();
+        public readonly string ToStringLocalized8() => Locale.Get("CMNS_CARDINALPOINT_SHORT", InternalValue.ToString());
 
         public static CardinalPoint GetCardinal2D(Vector2 p1, Vector2 p2)
         {
-            Vector2 p1Inv = new Vector2(p1.x, -p1.y);
-            Vector2 p2Inv = new Vector2(p2.x, -p2.y);
+            Vector2 p1Inv = new(p1.x, -p1.y);
+            Vector2 p2Inv = new(p2.x, -p2.y);
             return GetCardinalPoint((p1Inv).GetAngleToPoint(p2Inv));
         }
 
         public static CardinalPoint GetCardinal2D4(Vector2 p1, Vector2 p2)
         {
-            Vector2 p1Inv = new Vector2(p1.x, -p1.y);
-            Vector2 p2Inv = new Vector2(p2.x, -p2.y);
+            Vector2 p1Inv = new(p1.x, -p1.y);
+            Vector2 p2Inv = new(p2.x, -p2.y);
             return GetCardinalPoint4((p1Inv).GetAngleToPoint(p2Inv));
         }
 

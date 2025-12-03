@@ -146,7 +146,7 @@ namespace Commons.Utils.UtilitiesClasses
                 T x = _heap[_count];        // lift item x out from the last position
                 int index = SiftDown(0);    // sift the gap at the root down to the bottom
                 SiftUp(index, ref x, 0);    // sift the gap up, and insert x in its rightful position
-                _heap[_count] = default(T); // don't leak x
+                _heap[_count] = default; // don't leak x
 
                 return targetReturn;
             }
@@ -260,7 +260,7 @@ namespace Commons.Utils.UtilitiesClasses
 
         private T[] _heap;
         private int _count;
-        private IComparer<T> _comparer;
+        private readonly IComparer<T> _comparer;
         private bool _isHeap;
         private const int DefaultCapacity = 6;
 

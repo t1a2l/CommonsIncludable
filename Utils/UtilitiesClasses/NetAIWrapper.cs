@@ -7,12 +7,12 @@ namespace Commons.Utils.UtilitiesClasses
     public class NetAIWrapper : IEquatable<NetAIWrapper>
     {
         public NetAI AI { get; }
-        private FieldInfo m_elevated;
-        private FieldInfo m_bridge;
-        private FieldInfo m_slope;
-        private FieldInfo m_tunnel;
-        private FieldInfo m_invisible;
-        private ElevationType m_defaultElevationType;
+        private readonly FieldInfo m_elevated;
+        private readonly FieldInfo m_bridge;
+        private readonly FieldInfo m_slope;
+        private readonly FieldInfo m_tunnel;
+        private readonly FieldInfo m_invisible;
+        private readonly ElevationType m_defaultElevationType;
 
         public NetAIWrapper(NetAI ai)
         {
@@ -102,7 +102,7 @@ namespace Commons.Utils.UtilitiesClasses
         }
 
 
-        public bool IsInvisible() => m_invisible != null ? (bool)m_invisible.GetValue(AI) : false;
+        public bool IsInvisible() => m_invisible != null && (bool)m_invisible.GetValue(AI);
 
 
         public enum ElevationType
@@ -122,22 +122,15 @@ namespace Commons.Utils.UtilitiesClasses
             {
                 return elevationType == m_defaultElevationType || elevationType == ElevationType.Default ? Default : null;
             }
-            switch (elevationType == ElevationType.Default ? m_defaultElevationType : elevationType)
+            return (elevationType == ElevationType.Default ? m_defaultElevationType : elevationType) switch
             {
-                default:
-                case ElevationType.None:
-                    return null;
-                case ElevationType.Ground:
-                    return m_defaultElevationType == ElevationType.Ground || !strict ? Default : null;
-                case ElevationType.Tunnel:
-                    return Tunnel ?? (strict ? null : Default);
-                case ElevationType.Elevated:
-                    return Elevated ?? (strict ? null : Default);
-                case ElevationType.Bridge:
-                    return Bridge ?? (strict ? null : Default);
-                case ElevationType.Slope:
-                    return Slope ?? (strict ? null : Default);
-            }
+                ElevationType.Ground => m_defaultElevationType == ElevationType.Ground || !strict ? Default : null,
+                ElevationType.Tunnel => Tunnel ?? (strict ? null : Default),
+                ElevationType.Elevated => Elevated ?? (strict ? null : Default),
+                ElevationType.Bridge => Bridge ?? (strict ? null : Default),
+                ElevationType.Slope => Slope ?? (strict ? null : Default),
+                _ => null,
+            };
         }
 
         internal ElevationType ToType(NetInfo oldInfo)

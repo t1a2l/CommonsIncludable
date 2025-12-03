@@ -23,7 +23,7 @@ namespace Commons.Utils
             }
             catch
             {
-                Debug.LogErrorFormat($"{CommonProperties.Acronym}: Error log: {{0}} (args = {{1}})", format, args == null ? "[]" : string.Join(",", args.Select(x => x != null ? x.ToString() : "--NULL--").ToArray()));
+                Debug.LogErrorFormat($"{CommonProperties.Acronym}: Error log: {{0}} (args = {{1}})", format, args == null ? "[]" : string.Join(",", [.. args.Select(x => x != null ? x.ToString() : "--NULL--")]));
             }
         }
         public static void DoWarnLog(string format, params object[] args)
@@ -34,7 +34,7 @@ namespace Commons.Utils
             }
             catch
             {
-                Debug.LogErrorFormat($"{CommonProperties.Acronym}: Error log: {{0}} (args = {{1}})", format, args == null ? "[]" : string.Join(",", args.Select(x => x != null ? x.ToString() : "--NULL--").ToArray()));
+                Debug.LogErrorFormat($"{CommonProperties.Acronym}: Error log: {{0}} (args = {{1}})", format, args == null ? "[]" : string.Join(",", [.. args.Select(x => x != null ? x.ToString() : "--NULL--")]));
             }
         }
         public static void DoErrorLog(string format, params object[] args)
@@ -45,7 +45,7 @@ namespace Commons.Utils
             }
             catch
             {
-                Debug.LogErrorFormat($"{CommonProperties.Acronym}: Error log: {{0}} (args = {{1}})", format, args == null ? "[]" : string.Join(",", args.Select(x => x != null ? x.ToString() : "--NULL--").ToArray()));
+                Debug.LogErrorFormat($"{CommonProperties.Acronym}: Error log: {{0}} (args = {{1}})", format, args == null ? "[]" : string.Join(",", [.. args.Select(x => x != null ? x.ToString() : "--NULL--")]));
             }
         }
 
@@ -54,14 +54,14 @@ namespace Commons.Utils
             if (force || CommonProperties.DebugMode)
             {
                 int j = 0;
-                Debug.Log($"TRANSPILLED:\n\t{string.Join("\n\t", inst.Select(x => $"{j++:D8} {x.opcode,-10} {ParseOperand(inst, x.operand)}").ToArray())}");
+                Debug.Log($"TRANSPILLED:\n\t{string.Join("\n\t", [.. inst.Select(x => $"{j++:D8} {x.opcode,-10} {ParseOperand(inst, x.operand)}")])}");
             }
         }
 
         public static string GetLinesPointingToLabel(List<CodeInstruction> inst, Label lbl)
         {
             int j = 0;
-            return "\t" + string.Join("\n\t", inst.Select(x => Tuple.New(x, $"{j++:D8} {x.opcode,-10} {ParseOperand(inst, x.operand)}")).Where(x => x.First.operand is Label label && label == lbl).Select(x => x.Second).ToArray());
+            return "\t" + string.Join("\n\t", [.. inst.Select(x => Tuple.New(x, $"{j++:D8} {x.opcode,-10} {ParseOperand(inst, x.operand)}")).Where(x => x.First.operand is Label label && label == lbl).Select(x => x.Second)]);
         }
 
 
@@ -74,7 +74,7 @@ namespace Commons.Utils
 
             if (operand is Label lbl)
             {
-                return "LBL: " + instr.Select((x, y) => Tuple.New(x, y)).Where(x => x.First.labels.Contains(lbl)).Select(x => $"{x.Second.ToString("D8")} {x.First.opcode.ToString().PadRight(10)} {ParseOperand(instr, x.First.operand)}").FirstOrDefault() ?? "<UNKNOWN!!!>";
+                return "LBL: " + instr.Select((x, y) => Tuple.New(x, y)).Where(x => x.First.labels.Contains(lbl)).Select(x => $"{x.Second:D8} {x.First.opcode,-10} {ParseOperand(instr, x.First.operand)}").FirstOrDefault() ?? "<UNKNOWN!!!>";
             }
             else
             {

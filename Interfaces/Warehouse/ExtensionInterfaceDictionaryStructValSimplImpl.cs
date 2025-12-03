@@ -11,10 +11,10 @@ namespace Commons.Interfaces.Warehouse
     {
 
         [XmlElement("DictData")]
-        public SimpleXmlDictionaryStructVal<T, D> m_cachedDictDataSaved = new SimpleXmlDictionaryStructVal<T, D>();
+        public SimpleXmlDictionaryStructVal<T, D> m_cachedDictDataSaved = [];
 
 
-        public event Action<T, D?> eventOnValueChanged;
+        public event Action<T, D?> EventOnValueChanged;
 
         #region Utils R/W
         protected D? SafeGet(T key)
@@ -37,7 +37,7 @@ namespace Commons.Interfaces.Warehouse
             {
                 m_cachedDictDataSaved[key] = value ?? default;
             }
-            eventOnValueChanged?.Invoke(key, value);
+            EventOnValueChanged?.Invoke(key, value);
         }
 
 
@@ -46,7 +46,7 @@ namespace Commons.Interfaces.Warehouse
             if (m_cachedDictDataSaved.ContainsKey(key))
             {
                 m_cachedDictDataSaved.Remove(key);
-                eventOnValueChanged?.Invoke(key, null);
+                EventOnValueChanged?.Invoke(key, null);
             }
 
         }

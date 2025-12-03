@@ -1,5 +1,4 @@
-﻿using Commons.Utils;
-using Commons.Utils.StructExtensions;
+﻿using Commons.Utils.StructExtensions;
 using System;
 
 namespace Commons.LiteUI

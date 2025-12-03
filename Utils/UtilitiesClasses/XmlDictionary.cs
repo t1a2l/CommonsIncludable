@@ -111,7 +111,7 @@ namespace Commons.Utils.UtilitiesClasses
         {
             get => id; set
             {
-                if (!(value is null))
+                if (value is not null)
                 {
                     id = value;
                 }

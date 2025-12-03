@@ -29,7 +29,7 @@ namespace Commons.Utils
         {
 
 
-            Bounds bounds = new Bounds(position, new Vector3(maxDistance * 2f, maxDistance * 2f, maxDistance * 2f));
+            Bounds bounds = new(position, new Vector3(maxDistance * 2f, maxDistance * 2f, maxDistance * 2f));
             int num = Mathf.Max((int)((bounds.min.x - 64f) / 64f + 135f), 0);
             int num2 = Mathf.Max((int)((bounds.min.z - 64f) / 64f + 135f), 0);
             int num3 = Mathf.Min((int)((bounds.max.x + 64f) / 64f + 135f), 269);
