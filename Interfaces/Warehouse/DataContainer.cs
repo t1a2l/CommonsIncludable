@@ -15,7 +15,7 @@ namespace Commons.Interfaces.Warehouse
     {
         public static event Action OnDataLoaded;
 
-        public Dictionary<Type, IDataExtension> Instances { get; private set; } = new Dictionary<Type, IDataExtension>();
+        public Dictionary<Type, IDataExtension> Instances { get; private set; } = [];
 
         #region Serialization
         public IManagers Managers => SerializableDataManager?.managers;
@@ -26,7 +26,7 @@ namespace Commons.Interfaces.Warehouse
         public void OnLoadData()
         {
             LogUtils.DoLog($"LOADING DATA {GetType()}");
-            instance.Instances = new Dictionary<Type, IDataExtension>();
+            instance.Instances = [];
             List<Type> instancesExt = ReflectionUtils.GetInterfaceImplementations(typeof(IDataExtension), GetType());
             var instancesLegacies = ReflectionUtils.GetSubtypesRecursive(typeof(DataExtensionLegacyBase<>), GetType()).ToDictionary(x => x.BaseType.GetGenericArguments()[0], x => x);
             LogUtils.DoLog($"SUBTYPE COUNT: {instancesExt.Count}; LEGACY COUNT: {instancesLegacies.Count}");
@@ -44,10 +44,10 @@ namespace Commons.Interfaces.Warehouse
                         }
                         catch (ReflectionTypeLoadException r)
                         {
-                            allTypes = r.Types.Where(k => !(k is null));
+                            allTypes = r.Types.Where(k => k is not null);
                         }
                         var targetParameters = allTypes.Where(x => !x.IsAbstract && !x.IsInterface && !x.IsGenericType && ReflectionUtils.CanMakeGenericTypeVia(type.GetGenericArguments()[0], x)).ToArray();
-                        LogUtils.DoLog($"PARAMETER PARAMS FOR {type.GetGenericArguments()[0]} FOUND: [{string.Join(",", targetParameters.Select(x => x.ToString()).ToArray())}]");
+                        LogUtils.DoLog($"PARAMETER PARAMS FOR {type.GetGenericArguments()[0]} FOUND: [{string.Join(",", [.. targetParameters.Select(x => x.ToString())])}]");
                         foreach (var param in targetParameters)
                         {
                             var targetType = type.MakeGenericType(param);
@@ -84,7 +84,7 @@ namespace Commons.Interfaces.Warehouse
                 LogUtils.DoLog($"SEARCHING FOR LEGACY {type}");
                 if (instancesLegacies.ContainsKey(type))
                 {
-                    var basicInstanceLegacy = (IDataExtensionLegacy)instancesLegacies[type].GetConstructor(new Type[0]).Invoke(new Type[0]);
+                    var basicInstanceLegacy = (IDataExtensionLegacy)instancesLegacies[type].GetConstructor([]).Invoke(new Type[0]);
                     if (!SerializableDataManager.EnumerateData().Contains(legacyId))
                     {
                         byte[] storage2 = MemoryStreamToArray(legacyId);
@@ -158,11 +158,9 @@ namespace Commons.Interfaces.Warehouse
 
         private byte[] MemoryStreamToArray(string saveId)
         {
-            using (var memoryStream2 = new MemoryStream(SerializableDataManager.LoadData(saveId)))
-            {
-                byte[] storage2 = memoryStream2.ToArray();
-                return storage2;
-            }
+            using var memoryStream2 = new MemoryStream(SerializableDataManager.LoadData(saveId));
+            byte[] storage2 = memoryStream2.ToArray();
+            return storage2;
         }
 
         // Token: 0x0600003B RID: 59 RVA: 0x00004020 File Offset: 0x00002220
@@ -206,7 +204,7 @@ namespace Commons.Interfaces.Warehouse
 
         public void OnReleased()
         {
-            if (!(instance?.Instances?.Values is null))
+            if (instance?.Instances?.Values is not null)
             {
                 foreach (IDataExtension item in instance.Instances.Values)
                 {

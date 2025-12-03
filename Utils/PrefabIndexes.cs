@@ -50,7 +50,7 @@ namespace Commons.Utils
             {
                 if (m_prefabsData is null)
                 {
-                    var prefabMapping = PackageManager.FilterAssets(new Package.AssetType[] { UserAssetType.CustomAssetMetaData }).Select(x => Tuple.New(x.fullName, x)).ToDictionary(x => x.First, x => x.Second);
+                    var prefabMapping = PackageManager.FilterAssets([UserAssetType.CustomAssetMetaData]).Select(x => Tuple.New(x.fullName, x)).ToDictionary(x => x.First, x => x.Second);
                     m_prefabsData = GetInfos().Where(x => x?.name != null).Select(x => new IndexedPrefabData<T>(prefabMapping.TryGetValue(x.name, out Package.Asset asset) ? asset : null, x)).ToDictionary(x => x.PrefabName, x => (IIndexedPrefabData)x);
                 }
                 return m_prefabsData;
@@ -62,7 +62,7 @@ namespace Commons.Utils
         private Dictionary<string, string> LoadAuthors()
         {
             var authors = new Dictionary<string, string>();
-            foreach (Package.Asset current in PackageManager.FilterAssets(new Package.AssetType[] { UserAssetType.CustomAssetMetaData }))
+            foreach (Package.Asset current in PackageManager.FilterAssets([UserAssetType.CustomAssetMetaData]))
             {
                 PublishedFileId id = current.package.GetPublishedFileID();
                 string publishedFileId = string.Concat(id.AsUInt64);
@@ -96,18 +96,15 @@ namespace Commons.Utils
 
         public IEnumerator BasicInputFiltering(string input, Wrapper<string[]> result)
         {
-            yield return result.Value = PrefabsData.Values
-              .Where((x) => input.IsNullOrWhiteSpace() ? true : LocaleManager.cultureInfo.CompareInfo.IndexOf($"{x.DisplayName}\n{x.Author?.personaName}\n{x.PrefabName}", input, CompareOptions.IgnoreCase) >= 0)
+            yield return result.Value = [.. PrefabsData.Values
+              .Where((x) => input.IsNullOrWhiteSpace() || LocaleManager.cultureInfo.CompareInfo.IndexOf($"{x.DisplayName}\n{x.Author?.personaName}\n{x.PrefabName}", input, CompareOptions.IgnoreCase) >= 0)
               .Select(x => x.DisplayName)
-              .OrderBy((x) => x)
-              .ToArray();
+              .OrderBy((x) => x)];
         }
 
         public IEnumerator BasicInputFilteringDetailed(string input, Wrapper<IIndexedPrefabData[]> result)
         {
-            yield return result.Value = PrefabsData.Values
-              .Where((x) => input.IsNullOrWhiteSpace() ? true : LocaleManager.cultureInfo.CompareInfo.IndexOf($"{x.DisplayName}\n{x.Author?.personaName}\n{x.PrefabName}", input, CompareOptions.IgnoreCase) >= 0)
-              .ToArray();
+            yield return result.Value = [.. PrefabsData.Values.Where((x) => input.IsNullOrWhiteSpace() || LocaleManager.cultureInfo.CompareInfo.IndexOf($"{x.DisplayName}\n{x.Author?.personaName}\n{x.PrefabName}", input, CompareOptions.IgnoreCase) >= 0)];
         }
 
 
@@ -135,7 +132,7 @@ namespace Commons.Utils
             Prefab = prefab;
             PrefabName = prefab.name;
             DisplayName = prefab.GetUncheckedLocalizedTitle();
-            if (!(src is null))
+            if (src is not null)
             {
                 WorkshopId = src.package.GetPublishedFileID().AsUInt64;
                 if (ulong.TryParse(src.package.packageAuthor.Substring("steamid:".Length), out ulong authorID))

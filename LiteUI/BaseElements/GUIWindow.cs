@@ -27,11 +27,9 @@ namespace Commons.LiteUI.BaseElements
         private readonly bool resizable;
         private readonly bool hasTitlebar;
         private GUISkin skin;
-#pragma warning disable IDE0052 // Remove unread private members
-		private string cachedFontName = string.Empty;
-        private int cachedFontSize;
-#pragma warning restore IDE0052 // Remove unread private members
-		
+
+		// private string cachedFontName = string.Empty;
+        // private int cachedFontSize;
 
         private Vector2 minSize = Vector2.zero;
         private Rect windowRect = new(0, 0, 64, 64);
@@ -91,12 +89,14 @@ namespace Commons.LiteUI.BaseElements
 
         public void UpdateFont()
         {
+#pragma warning disable IDE0074 // Use compound assignment
             if (skin.font is null)
             {
                 skin.font = Font.CreateDynamicFontFromOSFont([], 12);
-                cachedFontName = null;
-                cachedFontSize = 12;
+                //cachedFontName = null;
+                //cachedFontSize = 12;
             }
+#pragma warning restore IDE0074 // Use compound assignment
         }
 
         public void OnDestroy()
