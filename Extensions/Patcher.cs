@@ -25,7 +25,7 @@ namespace Commons.Extensions
 
             Debug.Log("com.redirectors.TLM: Patching...");
 
-            patched = true;
+            patched = true; 
             GameObject m_topObj = GameObject.Find("Patches") ?? new GameObject("Patches");
             Type typeTarg = typeof(IPatcher);
             List<Type> instances = ReflectionUtils.GetInterfaceImplementations(typeTarg, typeTarg);
@@ -57,7 +57,7 @@ namespace Commons.Extensions
 
             patched = false;
 
-            UnityEngine.Debug.Log("com.redirectors.TLM: Reverted...");
+            Debug.Log("com.redirectors.TLM: Reverted...");
         }
     }
 }
