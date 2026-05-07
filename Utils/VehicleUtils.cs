@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using TransportLinesManager.Utils;
 
 namespace Commons.Utils
 {
@@ -283,6 +284,81 @@ namespace Commons.Utils
                 i++;
             }
             yield break;
+        }
+
+        public static VehicleInfo GetModelByPercentageOrCount(List<TransportAsset> assetList, ushort lineId, out string modelName, string status)
+        {
+            modelName = null;
+            if (assetList == null || assetList.Count == 0)
+            {
+                return null;
+            }
+
+            // Determine which budget time slot index to use
+            int index = TransportLinesManager.WorldInfoPanels.Tabs.TLMAssetSelectorTab.GetBudgetSelectedIndex();
+            if (index < 0) index = 0;
+
+            bool isCustomConfig = TransportLinesManager.Data.DataContainers.TLMTransportLineExtension.Instance.IsUsingCustomConfig(lineId);
+
+            if (isCustomConfig)
+            {
+                // COUNT MODE: pick any asset where usedCount < totalCount
+                var candidates = assetList
+                    .Where(a => a.count.ContainsKey(index) && a.count[index].totalCount > a.count[index].usedCount)
+                    .ToList();
+
+                if (candidates.Count == 0)
+                {
+                    return null;
+                }
+
+                // Pick randomly among eligible candidates
+                var chosen = candidates[SimulationManager.instance.m_randomizer.Int32(0, candidates.Count - 1)];
+                modelName = chosen.name;
+            }
+            else
+            {
+                // PERCENT MODE: weighted random draw by spawn_percent
+                var eligible = assetList
+                    .Where(a => a.spawn_percent.ContainsKey(index) && a.spawn_percent[index] > 0)
+                    .ToList();
+
+                if (eligible.Count == 0)
+                {
+                    return null;
+                }
+
+                int totalWeight = eligible.Sum(a => a.spawn_percent[index]);
+                if (totalWeight <= 0)
+                {
+                    return null;
+                }
+
+                int roll = SimulationManager.instance.m_randomizer.Int32(0, totalWeight - 1);
+                int cumulative = 0;
+                modelName = null;
+                foreach (var asset in eligible)
+                {
+                    cumulative += asset.spawn_percent[index];
+                    if (roll < cumulative)
+                    {
+                        modelName = asset.name;
+                        break;
+                    }
+                }
+
+                if (modelName == null)
+                {
+                    modelName = eligible[eligible.Count - 1].name;
+                }
+            }
+
+            VehicleInfo info = PrefabCollection<VehicleInfo>.FindLoaded(modelName);
+            if (info == null)
+            {
+                LogUtils.DoLog($"GetModelByPercentageOrCount: model '{modelName}' not found in PrefabCollection!");
+            }
+            return info;
         }
 
         #endregion
