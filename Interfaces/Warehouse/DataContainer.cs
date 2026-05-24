@@ -23,6 +23,7 @@ namespace Commons.Interfaces.Warehouse
         public ISerializableData SerializableDataManager { get; private set; }
 
         public void OnCreated(ISerializableData serializableData) => SerializableDataManager = serializableData;
+
         public void OnLoadData()
         {
             LogUtils.DoLog($"LOADING DATA {GetType()}");

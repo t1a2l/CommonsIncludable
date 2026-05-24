@@ -184,22 +184,8 @@ namespace Commons.UI
             dropdown.GetComponentInParent<UIPanel>().autoFitChildrenVertically = true;
         }
 
-
-        [Obsolete("Use version with specific option list", true)]
-        public static void AddDropdown(string title, out UIDropDown dropdown, UIHelperExtension parentHelper, string[] options, OnDropdownSelectionChanged onChange) => AddDropdown(title, out dropdown, out _, parentHelper, options, onChange);
-
-        [Obsolete("Use version with specific option list", true)]
-        public static void AddDropdown(string title, out UIDropDown dropdown, out UILabel label, UIHelperExtension parentHelper, string[] options, OnDropdownSelectionChanged onChange)
-        {
-            dropdown = (UIDropDown)parentHelper.AddDropdown(title, options, 0, onChange);
-            label = dropdown.parent.GetComponentInChildren<UILabel>();
-            label.padding.top = 10;
-            MonoUtils.LimitWidthAndBox(label, (parentHelper.Self.width / 2) - 10);
-            dropdown.width = (parentHelper.Self.width / 2) - 10;
-            dropdown.GetComponentInParent<UIPanel>().autoLayoutDirection = LayoutDirection.Horizontal;
-            dropdown.GetComponentInParent<UIPanel>().autoFitChildrenVertically = true;
-        }
         public static void AddTextField(string title, out UITextField textField, UIHelperExtension parentHelper, OnTextSubmitted onSubmit, string defaultValue = null, OnTextChanged onChanged = null) => AddTextField(title, out textField, out UILabel label, parentHelper, onSubmit, defaultValue, onChanged);
+        
         public static void AddTextField(string title, out UITextField textField, out UILabel label, UIHelperExtension parentHelper, OnTextSubmitted onSubmit, string defaultValue = null, OnTextChanged onChanged = null)
         {
             textField = parentHelper.AddTextField(title, onChanged, defaultValue ?? "", onSubmit);
@@ -211,6 +197,7 @@ namespace Commons.UI
             label.padding.right = 8;
             MonoUtils.LimitWidthAndBox(label, (parentHelper.Self.width / 2) - 10, true);
         }
+        
         public static UIListBox CreatePopup(UIPanel rootContainer)
         {
             UIListBox popup;

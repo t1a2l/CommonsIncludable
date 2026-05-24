@@ -71,29 +71,9 @@ namespace Commons.Utils
             uiItem.height = 28;
             uiItem.padding = new RectOffset(5, 5, 5, 5);
         }
-        [Obsolete("Use extension", true)]
-        public static Color ContrastColor(Color color, bool grayAsWhite = false)
-        {
-            if (color == default)
-            {
-                return Color.black;
-            }
-            // Counting the perceptive luminance - human eye favors green color... 
-            float a = (0.299f * color.r) + (0.587f * color.g) + (0.114f * color.b);
 
-            float d;
-            if (a > 0.5)
-            {
-                d = 0; // bright colors - black font
-            }
-            else
-            {
-                d = grayAsWhite ? 0.5f : 1; // dark colors - white font
-            }
-
-            return new Color(d, d, d, 1);
-        }
         public static UIDragHandle CreateDragHandle(UIComponent parent, UIComponent target) => CreateDragHandle(parent, target, -1);
+
         public static UIDragHandle CreateDragHandle(UIComponent parent, UIComponent target, float height)
         {
             CreateUIElement(out UIDragHandle dh, parent.transform);
@@ -105,6 +85,7 @@ namespace Commons.Utils
             dh.Start();
             return dh;
         }
+
         public static void InitButton<T>(T component, bool isCheck, string baseSprite, bool allLower = false) where T : UIInteractiveComponent
         {
             string sprite = baseSprite;//"ButtonMenu";
@@ -135,7 +116,6 @@ namespace Commons.Utils
             component.textColor = new Color32(255, 255, 255, 255);
         }
 
-
         public static void InitButtonFull<T>(T component, bool isCheck, string baseSprite, bool noCaps = false) where T : UIInteractiveComponent
         {
             string sprite = baseSprite;
@@ -149,6 +129,7 @@ namespace Commons.Utils
             }
             component.textColor = new Color32(255, 255, 255, 255);
         }
+
         public static void InitButtonSameSprite(UIButton button, string baseSprite)
         {
             string sprite = baseSprite;//"ButtonMenu";
@@ -159,6 +140,7 @@ namespace Commons.Utils
             button.pressedBgSprite = sprite;
             button.textColor = new Color32(255, 255, 255, 255);
         }
+
         public static void InitButtonFg(UIButton button, bool isCheck, string baseSprite)
         {
             string sprite = baseSprite;//"ButtonMenu";
@@ -170,6 +152,7 @@ namespace Commons.Utils
             button.pressedFgSprite = isCheck ? sprite + "Pressed" : spriteHov;
             button.textColor = new Color32(255, 255, 255, 255);
         }
+
         public static void InitCircledButton(UIComponent parent, out UIButton button, CommonsSpriteNames sprite, MouseEventHandler onClicked, string tooltipLocale, float size = 40) => InitCircledButton(parent, out button, ResourceLoader.GetDefaultSpriteNameFor(sprite), onClicked, tooltipLocale == null ? null : Locale.Get(tooltipLocale), size);
 
         public static void InitCircledButton(UIComponent parent, out UIButton button, string sprite, MouseEventHandler onClicked, string name, float size = 40)
@@ -182,6 +165,7 @@ namespace Commons.Utils
             button.eventClicked += onClicked;
             button.tooltip = name;
         }
+
         public static void InitCircledButtonText(UIComponent parent, out UIButton button, string text, MouseEventHandler onClicked, string tooltip, float size = 40)
         {
             CreateUIElement(out button, parent.transform, tooltip, new UnityEngine.Vector4(0, 0, size, size));
@@ -225,7 +209,6 @@ namespace Commons.Utils
 
         }
 
-
         public UISlider GenerateSliderField(UIHelperExtension uiHelper, OnValueChanged action, out UILabel label, out UIPanel container)
         {
             var budgetMultiplier = (UISlider)uiHelper.AddSlider("", 0f, 5, 0.05f, 1, action);
@@ -240,6 +223,7 @@ namespace Commons.Utils
             container.wrapLayout = true;
             return budgetMultiplier;
         }
+
         public static void ClearAllVisibilityEvents(UIComponent u)
         {
             System.Reflection.FieldInfo field = ReflectionUtils.GetEventField(u.GetType(), "eventVisibilityChanged");
@@ -251,7 +235,9 @@ namespace Commons.Utils
         }
 
         public static PropertyChangedEventHandler<Vector2> LimitWidthAndBox<T>(T x) where T : UIComponent => LimitWidthAndBox(x, x.minimumSize.x, out _);
+
         public static PropertyChangedEventHandler<Vector2> LimitWidthAndBox<T>(T x, out UIPanel boxContainer) where T : UIComponent => LimitWidthAndBox(x, x.minimumSize.x, out boxContainer);
+
         public static PropertyChangedEventHandler<Vector2> LimitWidthAndBox<T>(T label, float maxWidth, bool alsoMinSize = false) where T : UIComponent => LimitWidthAndBox(label, maxWidth, out _, alsoMinSize);
         public static PropertyChangedEventHandler<Vector2> LimitWidthAndBox<T>(T label, float maxWidth, out UIPanel boxContainer, bool alsoMinSize = false) where T : UIComponent
         {
@@ -273,13 +259,8 @@ namespace Commons.Utils
             return LimitWidthPrivate(label, maxWidth, alsoMinSize);
         }
 
-        [Obsolete("Use box version", true)]
-        public static PropertyChangedEventHandler<Vector2> LimitWidth(UIComponent x) => LimitWidth(x, x.minimumSize.x);
-        [Obsolete("Use box version", true)]
-        public static PropertyChangedEventHandler<Vector2> LimitWidth(UIComponent x, float maxWidth, bool alsoMinSize = false) => LimitWidthPrivate(x, maxWidth, alsoMinSize);
-        [Obsolete("Use box version", true)]
-        public static PropertyChangedEventHandler<Vector2> LimitWidth(UIInteractiveComponent x, float maxWidth, bool alsoMinSize = false) => LimitWidthPrivate(x, maxWidth, alsoMinSize);
         public static PropertyChangedEventHandler<Vector2> LimitWidthNoBox(UIComponent x, float maxWidth) => LimitWidthPrivate(x, maxWidth, true);
+
         private static PropertyChangedEventHandler<Vector2> LimitWidthPrivate(UIComponent x, float maxWidth, bool alsoMinSize)
         {
             x.autoSize = true;

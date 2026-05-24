@@ -27,9 +27,6 @@ namespace Commons.Utils.UtilitiesClasses
             "NNW",
         ];
 
-        [Obsolete("Use localized version", true)]
-        public static string GetCardinalPoint16(float angle) => GetCardinalPoint16_internal(angle);
-
         private static string GetCardinalPoint16_internal(float angle)
         {
             float diagSize = 22.5f;
