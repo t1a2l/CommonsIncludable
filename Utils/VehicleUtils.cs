@@ -286,7 +286,7 @@ namespace Commons.Utils
             yield break;
         }
 
-        public static VehicleInfo GetModelByPercentageOrCount(List<TransportAsset> assetList, ushort lineId, out string modelName, string status)
+        public static VehicleInfo GetModelByPercentageOrCount(List<TransportAsset> assetList, ushort lineId, out string modelName)
         {
             modelName = null;
             if (assetList == null || assetList.Count == 0)
