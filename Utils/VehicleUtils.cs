@@ -303,9 +303,7 @@ namespace Commons.Utils
             if (isCustomConfig)
             {
                 // COUNT MODE: pick any asset where usedCount < totalCount
-                var candidates = assetList
-                    .Where(a => a.count.ContainsKey(index) && a.count[index].totalCount > a.count[index].usedCount)
-                    .ToList();
+                var candidates = assetList.Where(a => a.count.ContainsKey(index.ToString()) && a.count[index.ToString()].TotalCount > a.count[index.ToString()].UsedCount).ToList();
 
                 if (candidates.Count == 0)
                 {
@@ -319,16 +317,14 @@ namespace Commons.Utils
             else
             {
                 // PERCENT MODE: weighted random draw by spawn_percent
-                var eligible = assetList
-                    .Where(a => a.spawn_percent.ContainsKey(index) && a.spawn_percent[index] > 0)
-                    .ToList();
+                var eligible = assetList.Where(a => a.spawn_percent.ContainsKey(index.ToString()) && a.spawn_percent[index.ToString()].Value > 0).ToList();
 
                 if (eligible.Count == 0)
                 {
                     return null;
                 }
 
-                int totalWeight = eligible.Sum(a => a.spawn_percent[index]);
+                int totalWeight = eligible.Sum(a => a.spawn_percent[index.ToString()].Value);
                 if (totalWeight <= 0)
                 {
                     return null;
@@ -339,7 +335,7 @@ namespace Commons.Utils
                 modelName = null;
                 foreach (var asset in eligible)
                 {
-                    cumulative += asset.spawn_percent[index];
+                    cumulative += asset.spawn_percent[index.ToString()].Value;
                     if (roll < cumulative)
                     {
                         modelName = asset.name;
