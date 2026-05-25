@@ -1,11 +1,11 @@
-﻿using ColossalFramework;
-using System.Reflection;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+using System.Reflection;
+using ColossalFramework;
 using TransportLinesManager.Utils;
+using UnityEngine;
 
 namespace Commons.Utils
 {
@@ -20,7 +20,7 @@ namespace Commons.Utils
                 return null;
             }
 
-            selectedModel = assetList.ElementAt(SimulationManager.instance.m_randomizer.Int32(0, assetList.Count() - 1));
+            selectedModel = assetList.ElementAt(SimulationManager.instance.m_randomizer.Int32(0, assetList.Count()));
 
             VehicleInfo saida = PrefabCollection<VehicleInfo>.FindLoaded(selectedModel ?? "");
             if (saida == null)
@@ -294,8 +294,8 @@ namespace Commons.Utils
                 return null;
             }
 
-            // Determine which budget time slot index to use
-            int index = TransportLinesManager.WorldInfoPanels.Tabs.TLMAssetSelectorTab.GetBudgetSelectedIndex();
+            var budgetData = TLMLineUtils.GetBudgetMultiplierLineWithIndexes(lineId);
+            int index = budgetData.Second; // First.Second = current active slot index
             if (index < 0) index = 0;
 
             bool isCustomConfig = TransportLinesManager.Data.DataContainers.TLMTransportLineExtension.Instance.IsUsingCustomConfig(lineId);
@@ -311,7 +311,7 @@ namespace Commons.Utils
                 }
 
                 // Pick randomly among eligible candidates
-                var chosen = candidates[SimulationManager.instance.m_randomizer.Int32(0, candidates.Count - 1)];
+                var chosen = candidates[SimulationManager.instance.m_randomizer.Int32(0, candidates.Count)];
                 modelName = chosen.name;
             }
             else
@@ -330,7 +330,7 @@ namespace Commons.Utils
                     return null;
                 }
 
-                int roll = SimulationManager.instance.m_randomizer.Int32(0, totalWeight - 1);
+                int roll = SimulationManager.instance.m_randomizer.Int32(0, totalWeight);
                 int cumulative = 0;
                 modelName = null;
                 foreach (var asset in eligible)
