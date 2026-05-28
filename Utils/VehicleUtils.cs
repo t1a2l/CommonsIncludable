@@ -323,7 +323,7 @@ namespace Commons.Utils
                 }
 
                 // Pick randomly among eligible candidates
-                var chosen = candidates[SimulationManager.instance.m_randomizer.Int32(0, candidates.Count)];
+                var chosen = candidates[SimulationManager.instance.m_randomizer.Int32(0, candidates.Count - 1)];
                 modelName = chosen.name;
             }
             else
@@ -342,7 +342,7 @@ namespace Commons.Utils
                     return null;
                 }
 
-                int roll = SimulationManager.instance.m_randomizer.Int32(0, totalWeight);
+                int roll = SimulationManager.instance.m_randomizer.Int32(0, totalWeight - 1);
                 int cumulative = 0;
                 modelName = null;
                 foreach (var asset in eligible)
