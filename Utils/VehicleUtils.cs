@@ -15,20 +15,32 @@ namespace Commons.Utils
         public static VehicleInfo GetRandomModel(IEnumerable<string> assetList, out string selectedModel)
         {
             selectedModel = null;
-            if (assetList.Count() == 0)
+
+            var models = assetList?.Where(x => !string.IsNullOrEmpty(x)).ToList();
+            if (models == null || models.Count == 0)
             {
                 return null;
             }
 
-            selectedModel = assetList.ElementAt(SimulationManager.instance.m_randomizer.Int32(0, assetList.Count()));
+            int idx = Singleton<SimulationManager>.instance.m_randomizer.Int32(0, models.Count - 1);
 
-            VehicleInfo saida = PrefabCollection<VehicleInfo>.FindLoaded(selectedModel ?? "");
-            if (saida == null)
+            LogUtils.DoLog("GetRandomModel count={0}, idx={1}, models=[{2}]", models.Count, idx, string.Join(" | ", [.. models]));
+
+            if (idx < 0 || idx >= models.Count)
+            {
+                LogUtils.DoErrorLog($"GetRandomModel invalid index {idx} for count {models.Count}");
+                return null;
+            }
+
+            selectedModel = models[idx];
+
+            VehicleInfo result = PrefabCollection<VehicleInfo>.FindLoaded(selectedModel ?? "");
+            if (result == null)
             {
                 LogUtils.DoLog("MODEL DOESN'T EXIST!");
                 return null;
             }
-            return saida;
+            return result;
         }
         public static int GetCapacity(VehicleInfo info) => GetCapacity(info, info.m_vehicleAI);
         private static readonly Dictionary<Type, FieldInfo> m_cachedCapacityFieldForAiType = [];
