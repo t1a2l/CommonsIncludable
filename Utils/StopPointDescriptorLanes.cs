@@ -10,13 +10,13 @@ namespace Commons.Utils
         public float width;
         public VehicleInfo.VehicleType vehicleType;
         public uint laneId;
-        public sbyte subbuildingId;
+        public sbyte subBuildingId;
         public Vector3 directionPath;
         public uint platformLaneId;
 
         public readonly long UniquePlatformId => ((platformLaneId & 0x7FFFFFFF) << 31) | (laneId & 0x7FFFFFFF);
 
-        public override string ToString() => $"{platformLine.Position(0.5f)} (w={width} | {vehicleType} | {subbuildingId} | {laneId} | DIR = {directionPath} ({directionPath.GetAngleXZ()}°))";
+        public override string ToString() => $"{platformLine.Position(0.5f)} (w={width} | {vehicleType} | {subBuildingId} | {laneId} | DIR = {directionPath} ({directionPath.GetAngleXZ()}°))";
     }
 
 }

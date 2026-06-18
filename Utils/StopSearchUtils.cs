@@ -134,7 +134,7 @@ namespace Commons.Utils
                         x.platformLine.b = (rotationToApply * x.platformLine.b) + buildingInfo.m_subBuildings[i].m_position;
                         x.platformLine.c = (rotationToApply * x.platformLine.c) + buildingInfo.m_subBuildings[i].m_position;
                         x.platformLine.d = (rotationToApply * x.platformLine.d) + buildingInfo.m_subBuildings[i].m_position;
-                        x.subbuildingId = (sbyte)i;
+                        x.subBuildingId = (sbyte)i;
                         x.directionPath = (rotationToApply * x.directionPath).normalized;
                         return x;
                     }));
@@ -217,7 +217,7 @@ namespace Commons.Utils
                 width = lane.m_width,
                 vehicleType = refLane.m_stopType,
                 laneId = laneId,
-                subbuildingId = -1,
+                subBuildingId = -1,
                 directionPath = directionPath * (path.m_invertSegments == (refLane.m_finalDirection == NetInfo.Direction.AvoidForward || refLane.m_finalDirection == NetInfo.Direction.Backward) ? 1 : -1)
 
             };
