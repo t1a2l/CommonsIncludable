@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using ColossalFramework;
 using TransportLinesManager.Utils;
+using TransportLinesManager.WorldInfoPanels.Tabs;
 using UnityEngine;
 
 namespace Commons.Utils
@@ -306,13 +307,13 @@ namespace Commons.Utils
                 return null;
             }
 
-            var budgetData = TLMLineUtils.GetBudgetMultiplierLineWithIndexes(lineId);
-            int index = budgetData.Second; // First.Second = current active slot index
+            var budgetData = TLMLineUtils.GetEffectiveConfigForLine(lineId).BudgetEntries.GetAtHourExact(SimulationManager.instance.m_currentGameTime.Hour);
+            int index = budgetData.Second; // budgetData.Second = current active slot index
             if (index < 0) index = 0;
 
-            bool isCustomConfig = TransportLinesManager.Data.DataContainers.TLMTransportLineExtension.Instance.IsUsingCustomConfig(lineId);
+            bool isAbsolute = TransportLinesManager.Data.DataContainers.TLMTransportLineExtension.Instance.IsUsingCustomConfig(lineId) && UVMBudgetConfigTab.IsAbsoluteValue();
 
-            if (isCustomConfig)
+            if (isAbsolute)
             {
                 // COUNT MODE: pick any asset where usedCount < totalCount
                 var candidates = assetList.Where(a => a.count.ContainsKey(index.ToString()) && a.count[index.ToString()].TotalCount > a.count[index.ToString()].UsedCount).ToList();
