@@ -11,7 +11,6 @@ namespace Commons.Utils.UtilitiesClasses
 
     public class TimeableList<TValue> : IXmlSerializable, IEnumerable<TValue> where TValue : class, ITimeable<TValue>
     {
-
         #region IXmlSerializable Members
 
         public System.Xml.Schema.XmlSchema GetSchema() => null;
@@ -20,7 +19,6 @@ namespace Commons.Utils.UtilitiesClasses
         private Tuple<TValue, int>[] m_hourTable;
         
         public void ReadXml(System.Xml.XmlReader reader)
-
         {
             m_items = [];
             if (reader.IsEmptyElement)
@@ -51,7 +49,6 @@ namespace Commons.Utils.UtilitiesClasses
         }
 
         public void WriteXml(System.Xml.XmlWriter writer)
-
         {
 
             var valueSerializer = new XmlSerializer(typeof(TValue), "");
@@ -63,6 +60,7 @@ namespace Commons.Utils.UtilitiesClasses
                 valueSerializer.Serialize(writer, value, ns);
             }
         }
+
         public Tuple<Tuple<TValue, int>, Tuple<TValue, int>, float> GetAtHour(float hour)
         {
             if (m_hourTable == null)
@@ -115,6 +113,7 @@ namespace Commons.Utils.UtilitiesClasses
             m_items.Remove(entry);
             entry.OnEntryChanged += CleanCache;
         }
+
         internal void RemoveAtHour(int hour)
         {
             if (hour < 0 || hour > 23)
@@ -131,8 +130,9 @@ namespace Commons.Utils.UtilitiesClasses
 
         private void CleanCache(TValue dirtyObj) => m_hourTable = null;
 
-        private void RebuildHourTable()
+        internal void RebuildHourTable()
         {
+            SortByHour();
             m_hourTable = new Tuple<TValue, int>[24];
             m_hourTable[0] = m_items.Select((x, y) => Tuple.New(x, y)).Where(x => x.First.HourOfDay == 0).FirstOrDefault() ?? m_items.Select((x, y) => Tuple.New(x, y)).Where(x => x.First.HourOfDay == m_items.Max(z => z.HourOfDay)).FirstOrDefault();
             for (int i = 1; i < 24; i++)
@@ -142,6 +142,14 @@ namespace Commons.Utils.UtilitiesClasses
         }
 
         public IEnumerator<TValue> GetEnumerator() => m_items.GetEnumerator();
+
         IEnumerator IEnumerable.GetEnumerator() => m_items.GetEnumerator();
+
+        private void SortByHour()
+        {
+            m_items = [.. m_items.OrderBy(x => x.HourOfDay)];
+            m_hourTable = null; // invalidate cache
+        }
+
     }
 }
