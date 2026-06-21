@@ -132,7 +132,6 @@ namespace Commons.Utils.UtilitiesClasses
 
         internal void RebuildHourTable()
         {
-            SortByHour();
             m_hourTable = new Tuple<TValue, int>[24];
             m_hourTable[0] = m_items.Select((x, y) => Tuple.New(x, y)).Where(x => x.First.HourOfDay == 0).FirstOrDefault() ?? m_items.Select((x, y) => Tuple.New(x, y)).Where(x => x.First.HourOfDay == m_items.Max(z => z.HourOfDay)).FirstOrDefault();
             for (int i = 1; i < 24; i++)
@@ -144,12 +143,5 @@ namespace Commons.Utils.UtilitiesClasses
         public IEnumerator<TValue> GetEnumerator() => m_items.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => m_items.GetEnumerator();
-
-        private void SortByHour()
-        {
-            m_items = [.. m_items.OrderBy(x => x.HourOfDay)];
-            m_hourTable = null; // invalidate cache
-        }
-
     }
 }
