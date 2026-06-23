@@ -307,7 +307,7 @@ namespace Commons.Utils
                 return null;
             }
 
-            var budgetData = TLMLineUtils.GetEffectiveConfigForLine(lineId).BudgetEntries.GetAtHourExact(SimulationManager.instance.m_currentGameTime.Hour);
+            var budgetData = TLMLineUtils.GetEffectiveConfigForLine(lineId).BudgetEntries.GetAtHourExact(TLMLineUtils.ReferenceTimer);
             int index = budgetData.Second; // budgetData.Second = current active slot index
             if (index < 0) index = 0;
 
