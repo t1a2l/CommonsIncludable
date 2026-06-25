@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using ColossalFramework;
 using TransportLinesManager.Utils;
-using TransportLinesManager.WorldInfoPanels.Tabs;
 using UnityEngine;
 
 namespace Commons.Utils
@@ -311,7 +310,9 @@ namespace Commons.Utils
             int index = budgetData.Second; // budgetData.Second = current active slot index
             if (index < 0) index = 0;
 
-            bool isAbsolute = TransportLinesManager.Data.DataContainers.TLMTransportLineExtension.Instance.IsUsingCustomConfig(lineId) && UVMBudgetConfigTab.IsAbsoluteValue();
+            var ext = TransportLinesManager.Data.DataContainers.TLMTransportLineExtension.Instance;
+
+            bool isAbsolute = ext.IsUsingCustomConfig(lineId) && ext.IsDisplayAbsoluteValues(lineId);
 
             if (isAbsolute)
             {
