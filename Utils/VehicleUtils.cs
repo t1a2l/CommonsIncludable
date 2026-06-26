@@ -6,6 +6,7 @@ using System.Reflection;
 using ColossalFramework;
 using TransportLinesManager.Utils;
 using UnityEngine;
+using static ColossalFramework.Packaging.Package;
 
 namespace Commons.Utils
 {
@@ -316,29 +317,45 @@ namespace Commons.Utils
 
             if (isAbsolute)
             {
-                // COUNT MODE: pick any asset where usedCount < totalCount
-                var candidates = assetList.Where(a => a.count.ContainsKey(index.ToString()) && a.count[index.ToString()].TotalCount > a.count[index.ToString()].UsedCount).ToList();
+                // COUNT MODE
+                TLMLineUtils.EnsureUsedCountSlotSynchronized(lineId, index);
 
-                if (candidates.Count == 0)
-                {
-                    return null;
-                }
-
-                // Pick randomly among eligible candidates
-                var chosen = candidates[SimulationManager.instance.m_randomizer.Int32(0, candidates.Count - 1)];
-                modelName = chosen.name;
-            }
-            else
-            {
-                // PERCENT MODE: weighted random draw by spawn_percent
-                var eligible = assetList.Where(a => a.spawn_percent.ContainsKey(index.ToString()) && a.spawn_percent[index.ToString()].Value > 0).ToList();
+                string key = index.ToString();
+                var eligible = assetList.Where(a => a.count.ContainsKey(key)).Select(a => new { Asset = a, Remaining = a.count[key].TotalCount - TLMLineUtils.GetRuntimeUsedCount(lineId, index, a.name) }).Where(x => x.Remaining > 0).ToList();
 
                 if (eligible.Count == 0)
                 {
                     return null;
                 }
 
-                int totalWeight = eligible.Sum(a => a.spawn_percent[index.ToString()].Value);
+                int totalRemaining = eligible.Sum(x => x.Remaining);
+                int roll = SimulationManager.instance.m_randomizer.Int32(0, totalRemaining - 1);
+                int cumulative = 0;
+
+                foreach (var item in eligible)
+                {
+                    cumulative += item.Remaining;
+                    if (roll < cumulative)
+                    {
+                        modelName = item.Asset.name;
+                        break;
+                    }
+                }
+
+                modelName ??= eligible[eligible.Count - 1].Asset.name;
+            }
+            else
+            {
+                // PERCENT MODE
+                string key = index.ToString();
+                var eligible = assetList.Where(a => a.spawn_percent.ContainsKey(key) && a.spawn_percent[key].Value > 0).ToList();
+
+                if (eligible.Count == 0)
+                {
+                    return null;
+                }
+
+                int totalWeight = eligible.Sum(a => a.spawn_percent[key].Value);
                 if (totalWeight <= 0)
                 {
                     return null;
@@ -346,10 +363,10 @@ namespace Commons.Utils
 
                 int roll = SimulationManager.instance.m_randomizer.Int32(0, totalWeight - 1);
                 int cumulative = 0;
-                modelName = null;
+
                 foreach (var asset in eligible)
                 {
-                    cumulative += asset.spawn_percent[index.ToString()].Value;
+                    cumulative += asset.spawn_percent[key].Value;
                     if (roll < cumulative)
                     {
                         modelName = asset.name;
@@ -357,10 +374,7 @@ namespace Commons.Utils
                     }
                 }
 
-                if (modelName == null)
-                {
-                    modelName = eligible[eligible.Count - 1].name;
-                }
+                modelName ??= eligible[eligible.Count - 1].name;
             }
 
             VehicleInfo info = PrefabCollection<VehicleInfo>.FindLoaded(modelName);
@@ -368,6 +382,7 @@ namespace Commons.Utils
             {
                 LogUtils.DoLog($"GetModelByPercentageOrCount: model '{modelName}' not found in PrefabCollection!");
             }
+
             return info;
         }
 
