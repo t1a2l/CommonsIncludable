@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using ColossalFramework;
+using TransportLinesManager.Data.Extensions;
+using TransportLinesManager.Interfaces;
 using TransportLinesManager.Utils;
 using UnityEngine;
 using static ColossalFramework.Packaging.Package;
@@ -307,7 +309,7 @@ namespace Commons.Utils
                 return null;
             }
 
-            var budgetData = TLMLineUtils.GetEffectiveConfigForLine(lineId).BudgetEntries.GetAtHourExact(TLMLineUtils.ReferenceTimer);
+            var budgetData = TLMLineUtils.GetEffectiveExtensionForLine(lineId).GetActiveBudgetEntries(lineId).GetAtHourExact(TLMLineUtils.ReferenceTimer);
             int index = budgetData.Second; // budgetData.Second = current active slot index
             if (index < 0) index = 0;
 
