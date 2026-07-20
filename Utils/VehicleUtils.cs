@@ -303,9 +303,11 @@ namespace Commons.Utils
 
         public static VehicleInfo GetModelByPercentageOrCount(List<TransportAsset> assetList, ushort lineId, out string modelName)
         {
+            LogUtils.DoLog("Inside GetModelByPercentageOrCount - LogUtils");
             modelName = null;
             if (assetList == null || assetList.Count == 0)
             {
+                LogUtils.DoErrorLog($"assetList is null or empty for lineId {lineId}");
                 return null;
             }
 
@@ -327,12 +329,14 @@ namespace Commons.Utils
 
                 if (eligible.Count == 0)
                 {
+                    LogUtils.DoErrorLog($"Count Mode - No eligible assets found for lineId {lineId} at index {index}");
                     return null;
                 }
 
                 int totalRemaining = eligible.Sum(x => x.Remaining);
                 int roll = SimulationManager.instance.m_randomizer.Int32(0, totalRemaining - 1);
                 int cumulative = 0;
+                LogUtils.DoLog($"Count Mode - Total remaining: {totalRemaining}, Roll: {roll}");
 
                 foreach (var item in eligible)
                 {
@@ -340,11 +344,13 @@ namespace Commons.Utils
                     if (roll < cumulative)
                     {
                         modelName = item.Asset.name;
+                        LogUtils.DoLog($"Count Mode - Selected model: {modelName}");
                         break;
                     }
                 }
 
                 modelName ??= eligible[eligible.Count - 1].Asset.name;
+                LogUtils.DoLog($"Count Mode - Fallback model: {modelName}");
             }
             else
             {
@@ -354,17 +360,20 @@ namespace Commons.Utils
 
                 if (eligible.Count == 0)
                 {
+                    LogUtils.DoErrorLog($"PERCENT Mode - No eligible assets found for lineId {lineId} at index {index}");
                     return null;
                 }
 
                 int totalWeight = eligible.Sum(a => a.spawn_percent[key].Value);
                 if (totalWeight <= 0)
                 {
+                    LogUtils.DoErrorLog($"PERCENT Mode - Total weight is zero or negative for lineId {lineId} at index {index}");
                     return null;
                 }
 
                 int roll = SimulationManager.instance.m_randomizer.Int32(0, totalWeight - 1);
                 int cumulative = 0;
+                LogUtils.DoLog($"PERCENT Mode - Total weight: {totalWeight}, Roll: {roll}");
 
                 foreach (var asset in eligible)
                 {
@@ -372,11 +381,13 @@ namespace Commons.Utils
                     if (roll < cumulative)
                     {
                         modelName = asset.name;
+                        LogUtils.DoLog($"PERCENT Mode - Selected model: {modelName}");
                         break;
                     }
                 }
 
                 modelName ??= eligible[eligible.Count - 1].name;
+                LogUtils.DoLog($"PERCENT Mode - Fallback model: {modelName}");
             }
 
             VehicleInfo info = PrefabCollection<VehicleInfo>.FindLoaded(modelName);
