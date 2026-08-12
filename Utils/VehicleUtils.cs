@@ -5,10 +5,8 @@ using System.Linq;
 using System.Reflection;
 using ColossalFramework;
 using TransportLinesManager.Data.Extensions;
-using TransportLinesManager.Interfaces;
 using TransportLinesManager.Utils;
 using UnityEngine;
-using static ColossalFramework.Packaging.Package;
 
 namespace Commons.Utils
 {
@@ -54,7 +52,7 @@ namespace Commons.Utils
             {
                 return -1;
             }
-            System.Reflection.FieldInfo fieldInfo;
+            FieldInfo fieldInfo;
             fieldInfo = GetVehicleCapacityField(ai);
             if (fieldInfo != null)
             {
