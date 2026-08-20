@@ -13,10 +13,7 @@ namespace Commons.Extensions.UI
 {
     public class UIHelperExtension : UIHelperBase
     {
-
-        //
         // Static Fields
-        //
         public const string kButtonTemplate = "OptionsButtonTemplate";
         public const string kGroupTemplate = "OptionsGroupTemplate";
         public const string kDropdownTemplate = "OptionsDropdownTemplate";
@@ -29,23 +26,15 @@ namespace Commons.Extensions.UI
 
         public static string Version => typeof(UIHelperExtension).Assembly.GetName().Version.Major + "." + typeof(UIHelperExtension).Assembly.GetName().Version.Minor + "." + typeof(UIHelperExtension).Assembly.GetName().Version.Build;
 
-
-        //
         // Fields
-        //
-#pragma warning disable IDE0032 // Usar a propriedade auto
         private readonly UIComponent m_root;
-#pragma warning restore IDE0032 // Usar a propriedade auto
 
-        //
         // Properties
-        //
         public UIComponent Self => m_root;
 
-        //
         // Methods
-        //
         public object AddButton(string text, OnButtonClicked eventCallback) => AddButton(m_root, text, eventCallback);
+
         public static UIButton AddButton(UIComponent parent, string text, OnButtonClicked eventCallback)
         {
             if (eventCallback != null && !string.IsNullOrEmpty(text))
@@ -64,6 +53,7 @@ namespace Commons.Extensions.UI
             DebugOutputPanel.AddMessage(PluginManager.MessageType.Warning, "Cannot create button with no name or no event");
             return null;
         }
+
         public object AddCheckbox(string text, bool defaultValue, OnCheckChanged eventCallback) => AddCheckbox(m_root, text, defaultValue, eventCallback);
 
         public static UICheckBox AddCheckbox(UIComponent root, string text, bool defaultValue, OnCheckChanged eventCallback = null)
@@ -91,6 +81,7 @@ namespace Commons.Extensions.UI
         }
 
         public UICheckBox AddCheckboxLocale(string text, bool defaultValue, OnCheckChanged eventCallback = null) => AddCheckboxLocale(m_root, text, defaultValue, eventCallback);
+        
         public static UICheckBox AddCheckboxLocale(UIComponent parent, string text, bool defaultValue, OnCheckChanged eventCallback = null)
         {
             if (!string.IsNullOrEmpty(text))
@@ -113,6 +104,7 @@ namespace Commons.Extensions.UI
             }
             throw new NotSupportedException("Cannot create checkbox with no name");
         }
+        
         public UICheckBox AddCheckboxNoLabel(string name, OnCheckChanged eventCallback = null)
         {
             var uICheckBox = m_root.AttachUIComponent(UITemplateManager.GetAsGameObject(kCheckBoxTemplate)) as UICheckBox;
@@ -145,7 +137,6 @@ namespace Commons.Extensions.UI
                 return null;
             }
         }
-
 
         public UIDropDown AddDropdownLocalized(string text, string[] options, int defaultSelection, OnDropdownSelectionChanged eventCallback, bool limitLabelByPanelWidth = false)
         {
@@ -206,12 +197,13 @@ namespace Commons.Extensions.UI
             label = null;
             return null;
         }
+        
         public static UIDropDown CloneBasicDropDown(string text, string[] options, OnDropdownSelectionChanged eventCallback, UIComponent parent, bool limitLabelByPanelWidth = false) => CloneBasicDropDown(text, options, eventCallback, parent, out _, limitLabelByPanelWidth);
-
 
         private UIDropDown AddDropdownBaseLocalized(string text, string[] options, OnDropdownSelectionChanged eventCallback, int defaultSelection, bool limitLabelByPanelWidth = false) => CloneBasicDropDownLocalized(text, options, eventCallback, defaultSelection, m_root, limitLabelByPanelWidth);
 
         public static UIDropDown CloneBasicDropDownLocalized(string text, string[] options, OnDropdownSelectionChanged eventCallback, int defaultSelection, UIComponent parent, bool limitLabelByPanelWidth = false) => CloneBasicDropDownLocalized(text, options, eventCallback, defaultSelection, parent, out _, out _, limitLabelByPanelWidth);
+        
         public static UIDropDown CloneBasicDropDownLocalized(string text, string[] options, OnDropdownSelectionChanged eventCallback, int defaultSelection, UIComponent parent, out UILabel label, out UIPanel container, bool limitLabelByPanelWidth = false)
         {
             if (eventCallback != null && !string.IsNullOrEmpty(text))
@@ -258,8 +250,11 @@ namespace Commons.Extensions.UI
         }
 
         public object AddSlider(string text, float min, float max, float step, float defaultValue, OnValueChanged eventCallback) => AddSlider(m_root, text, min, max, step, defaultValue, eventCallback);
+        
         public UISlider AddSlider(string text, float min, float max, float step, float defaultValue, OnValueChanged eventCallback, out UILabel label) => AddSlider(m_root, text, min, max, step, defaultValue, eventCallback, out label);
+        
         public static UISlider AddSlider(UIComponent parent, string text, float min, float max, float step, float defaultValue, OnValueChanged eventCallback) => AddSlider(parent, text, min, max, step, defaultValue, eventCallback, out _);
+        
         public static UISlider AddSlider(UIComponent parent, string text, float min, float max, float step, float defaultValue, OnValueChanged eventCallback, out UILabel label)
         {
             if (eventCallback != null)
@@ -293,6 +288,7 @@ namespace Commons.Extensions.UI
         }
 
         public object AddSpace(int height) => AddSpace(m_root, height);
+        
         public static UIPanel AddSpace(UIComponent parent, int height)
         {
             if (height > 0)
@@ -306,6 +302,7 @@ namespace Commons.Extensions.UI
             DebugOutputPanel.AddMessage(PluginManager.MessageType.Warning, "Cannot create space of " + height + " height");
             return null;
         }
+        
         public UISprite AddUiSprite(string spriteName, UITextureAtlas textureAtlas)
         {
             if (textureAtlas != null && !string.IsNullOrEmpty(spriteName))
@@ -318,8 +315,9 @@ namespace Commons.Extensions.UI
             DebugOutputPanel.AddMessage(PluginManager.MessageType.Warning, "Cannot create sprite with no name or no atlas");
             return null;
         }
-
+        
         public UIHelperExtension(UIComponent panel) => m_root = panel;
+        
         public UIHelperExtension(UIComponent panel, LayoutDirection layoutDirection) : this(panel)
         {
             if (layoutDirection == LayoutDirection.Vertical)
@@ -524,6 +522,7 @@ namespace Commons.Extensions.UI
             DebugOutputPanel.AddMessage(PluginManager.MessageType.Warning, "Cannot create dropdown with no name or no event");
             return null;
         }
+        
         public UITextField[] AddVector2Field(string name, Vector2 defaultValue, Action<Vector2> eventSubmittedCallback, bool integerOnly = false)
         {
             if ((eventSubmittedCallback != null) && !string.IsNullOrEmpty(name))
@@ -601,6 +600,7 @@ namespace Commons.Extensions.UI
             DebugOutputPanel.AddMessage(PluginManager.MessageType.Warning, "Cannot create dropdown with no name or no event");
             return null;
         }
+        
         public UITextField AddIntField(string name, float defaultValue, Action<int> eventSubmittedCallback, out UILabel label, bool acceptNegative = true)
         {
             if ((eventSubmittedCallback != null) && !string.IsNullOrEmpty(name))
@@ -650,6 +650,7 @@ namespace Commons.Extensions.UI
         }
 
         public UILabel AddLabel(string name, float width = 700, bool fixedMinSize = false) => AddLabel(m_root, name, width, out _, fixedMinSize);
+        
         public static UILabel AddLabel(UIComponent parent, string name, float width, out UIPanel container, bool fixedMinSize = false)
         {
             MonoUtils.CreateUIElement(out UILabel label, parent.transform, name, new Vector4(0, 0, width, 40));
@@ -674,6 +675,7 @@ namespace Commons.Extensions.UI
         }
 
         public UIColorField AddColorPicker(string name, Color defaultValue, OnColorChanged eventCallback) => AddColorPicker(name, defaultValue, eventCallback, out _, out _);
+        
         public UIColorField AddColorPicker(string name, Color defaultValue, OnColorChanged eventCallback, out UILabel title) => AddColorPicker(name, defaultValue, eventCallback, out title, out _);
 
         public UIColorField AddColorPicker(string name, Color defaultValue, OnColorChanged eventCallback, out UILabel title, out UIPanel container)
@@ -748,7 +750,6 @@ namespace Commons.Extensions.UI
             DebugOutputPanel.AddMessage(PluginManager.MessageType.Warning, "Cannot create colorPicker with no name or no event");
             return null;
         }
-
 
         public TextList<T> AddTextList<T>(string name, Dictionary<T, string> defaultValues, OnButtonSelect<T> eventCallback, int width, int height)
         {
