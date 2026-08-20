@@ -15,6 +15,8 @@ namespace Commons.Interfaces.Warehouse
     {
         public static event Action OnDataLoaded;
 
+        public static bool HasLoadedData { get; private set; }
+
         public Dictionary<Type, IDataExtension> Instances { get; private set; } = [];
 
         #region Serialization
@@ -26,6 +28,7 @@ namespace Commons.Interfaces.Warehouse
 
         public void OnLoadData()
         {
+            HasLoadedData = false;
             LogUtils.DoLog($"LOADING DATA {GetType()}");
             instance.Instances = [];
             List<Type> instancesExt = ReflectionUtils.GetInterfaceImplementations(typeof(IDataExtension), GetType());
@@ -66,6 +69,7 @@ namespace Commons.Interfaces.Warehouse
                 }
             }
 
+            HasLoadedData = true;
             ThreadHelper.dispatcher.Dispatch(() =>
             {
                 OnDataLoaded?.Invoke();
@@ -205,6 +209,7 @@ namespace Commons.Interfaces.Warehouse
 
         public void OnReleased()
         {
+            HasLoadedData = false;
             if (instance?.Instances?.Values is not null)
             {
                 foreach (IDataExtension item in instance.Instances.Values)
