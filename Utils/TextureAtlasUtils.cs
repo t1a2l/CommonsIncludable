@@ -12,9 +12,13 @@ namespace Commons.Utils
     public static class TextureAtlasUtils
     {
         public static string BORDER_FILENAME = "bordersDescriptor.txt";
+
+        public static readonly string NoBorderSuffix = "_NOBORDER";
+
         public static UITextureAtlas DefaultTextureAtlas => UIView.GetAView().defaultAtlas;
 
         public static void LoadPathTexturesIntoInGameTextureAtlas(string path, ref List<SpriteInfo> newFiles) => LoadPathTexturesIntoTextureAtlas(UIView.GetAView().defaultAtlas, path, ref newFiles);
+        
         public static void LoadPathTexturesIntoTextureAtlas(UITextureAtlas textureAtlas, string path, ref List<SpriteInfo> newFiles)
         {
             if (textureAtlas == null)
@@ -83,18 +87,16 @@ namespace Commons.Utils
             }
         }
 
-        public static readonly string NoBorderSuffix = "_NOBORDER";
-
         public static void LoadImagesFromResources(string path, ref List<SpriteInfo> newSprites)
         {
             string[] imagesFiles = FileUtils.GetAllFilesEmbeddedAtFolder("TransportLinesManager." + path, ".png");
-            TextureAtlasUtils.ParseBorderDescriptors(ResourceLoader.LoadResourceStringLines($"{path}.{BORDER_FILENAME}"), out Dictionary<string, Tuple<RectOffset, bool>> borderDescriptor);
+            ParseBorderDescriptors(ResourceLoader.LoadResourceStringLines($"{path}.{BORDER_FILENAME}"), out Dictionary<string, Tuple<RectOffset, bool>> borderDescriptor);
             foreach (string file in imagesFiles)
             {
                 Texture2D tex = ResourceLoader.LoadTexture($"{path}.{file}");
                 if (tex != null)
                 {
-                    newSprites.AddRange(TextureAtlasUtils.CreateSpriteInfo(borderDescriptor, file, tex));
+                    newSprites.AddRange(CreateSpriteInfo(borderDescriptor, file, tex));
                 }
             }
         }
@@ -144,6 +146,7 @@ namespace Commons.Utils
             textureAtlas.RebuildIndexes();
             UIView.RefreshAll(false);
         }
+        
         public static void ParseImageIntoDefaultTextureAtlas(Type enumType, string resourceName, int width, int height, ref List<SpriteInfo> sprites)
         {
             Array spriteValues = Enum.GetValues(enumType);
@@ -159,6 +162,79 @@ namespace Commons.Utils
                 });
             }
         }
+        
         public static void ParseImageIntoDefaultTextureAtlas<E>(string resourceName, int width, int height, ref List<SpriteInfo> sprites) where E : Enum => ParseImageIntoDefaultTextureAtlas(typeof(E), resourceName, width, height, ref sprites);
+
+        public static UITextureAtlas LoadSpriteAtlas(string fileName, string[] spriteNames)
+        {
+            // Create new texture atlas.
+            UITextureAtlas newAtlas = ScriptableObject.CreateInstance<UITextureAtlas>();
+            newAtlas.name = fileName;
+            newAtlas.material = UnityEngine.Object.Instantiate(UIView.GetAView().defaultAtlas.material);
+
+            // Load texture from file.
+            Texture2D newTexture = LoadTexture(fileName + ".png");
+            newAtlas.material.mainTexture = newTexture;
+
+            // Setup sprites.
+            int numSprites = spriteNames.Length;
+            float spriteWidth = 1f / spriteNames.Length;
+
+            // Iterate through each sprite (counter increment is in region setup).
+            for (int i = 0; i < numSprites; ++i)
+            {
+                UITextureAtlas.SpriteInfo sprite = new UITextureAtlas.SpriteInfo
+                {
+                    name = spriteNames[i],
+                    texture = newTexture,
+
+                    // Sprite regions are horizontally arranged, evenly spaced.
+                    region = new Rect(i * spriteWidth, 0f, spriteWidth, 1f),
+                };
+                newAtlas.AddSprite(sprite);
+            }
+
+            return newAtlas;
+        }
+
+        private static Texture2D LoadTexture(string fileName)
+        {
+            try
+            {
+                using (Stream stream = OpenResourceFile(fileName))
+                {
+                    // New texture.
+                    Texture2D texture = new(1, 1, TextureFormat.ARGB32, false)
+                    {
+                        filterMode = FilterMode.Bilinear,
+                        wrapMode = TextureWrapMode.Clamp,
+                    };
+
+                    // Read texture as byte stream from file.
+                    byte[] array = new byte[stream.Length];
+                    stream.Read(array, 0, array.Length);
+                    texture.LoadImage(array);
+                    texture.Apply();
+
+                    return texture;
+                }
+            }
+            catch (Exception e)
+            {
+                LogUtils.DoErrorLog("exception reading texture file "+ e.Message, fileName);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Opens the named resource file for reading.
+        /// </summary>
+        /// <param name="fileName">File to open.</param>
+        /// <returns>Read-only file stream.</returns>
+        private static Stream OpenResourceFile(string fileName)
+        {
+            string path = Path.Combine(AssemblyUtils.AssemblyPath, "Resources");
+            return File.OpenRead(Path.Combine(path, fileName));
+        }
     }
 }

@@ -29,9 +29,11 @@ namespace Commons.UI
             label = m_colorEditor.parent.GetComponentInChildren<UILabel>();
             MonoUtils.LimitWidthAndBox(label, (helper.Self.width / 2) - 10);
         }
+
         public static void AddColorField(UIHelperExtension helper, string text, out UIColorField m_colorEditor, OnColorChanged onSelectedColorChanged) => AddColorField(helper, text, out m_colorEditor, onSelectedColorChanged, out _);
 
         public static void AddIntField(string label, out UITextField field, UIHelperExtension parentHelper, Action<int> onChange, bool acceptNegative) => AddIntField(label, out field, out _, parentHelper, onChange, acceptNegative);
+        
         public static void AddIntField(string label, out UITextField field, out UILabel labelUI, UIHelperExtension parentHelper, Action<int> onChange, bool acceptNegative)
         {
             field = parentHelper.AddIntField(label, 0, onChange, out labelUI, acceptNegative);
@@ -63,6 +65,7 @@ namespace Commons.UI
             MonoUtils.LimitWidthAndBox(labelValue, (parentHelper.Self.width / 2) - slider.width, true);
             labelValue.text = valueLabelFunc(slider.value);
         }
+        
         public static void AddVector2Field(string label, out UITextField[] fieldArray, UIHelperExtension parentHelper, Action<Vector2> onChange, bool addRollEvent = true, bool integerOnly = false, bool allowNegative = true)
         {
             fieldArray = parentHelper.AddVector2Field(label, Vector3.zero, onChange, integerOnly);
@@ -121,8 +124,8 @@ namespace Commons.UI
             fieldArray[3].zOrder = 4;
         }
 
-
         private static readonly MethodInfo m_submitField = typeof(UITextField).GetMethod("OnSubmit", Patcher.allFlags);
+        
         public static void RollFloat(UIComponent component, UIMouseEventParameter eventParam)
         {
             if (component is UITextField tf && tf.numericalOnly && float.TryParse(tf.text, out float currentValue))
@@ -135,6 +138,7 @@ namespace Commons.UI
                 eventParam.Use();
             }
         }
+        
         public static void RollInteger(UIComponent component, UIMouseEventParameter eventParam)
         {
             if (component is UITextField tf && tf.numericalOnly && float.TryParse(tf.text, out float currentValue))
@@ -145,6 +149,7 @@ namespace Commons.UI
                 eventParam.Use();
             }
         }
+        
         public static void AddFloatField(string label, out UITextField field, UIHelperExtension parentHelper, Action<float> onChange, bool acceptNegative)
         {
             field = parentHelper.AddFloatField(label, 0, onChange, acceptNegative);
@@ -152,7 +157,9 @@ namespace Commons.UI
             MonoUtils.LimitWidthAndBox(field.parent.GetComponentInChildren<UILabel>(), (parentHelper.Self.width / 2) - 10, true);
             field.eventMouseWheel += RollFloat;
         }
+        
         public static void AddEmptyDropdown(string title, out UIDropDown dropdown, UIHelperExtension parentHelper, OnDropdownSelectionChanged onChange) => AddEmptyDropdown(title, out dropdown, out _, parentHelper, onChange);
+        
         public static void AddEmptyDropdown(string title, out UIDropDown dropdown, out UILabel label, UIHelperExtension parentHelper, OnDropdownSelectionChanged onChange)
         {
             dropdown = (UIDropDown)parentHelper.AddDropdown(title, [], 0, onChange);
@@ -163,7 +170,9 @@ namespace Commons.UI
             dropdown.GetComponentInParent<UIPanel>().autoLayoutDirection = LayoutDirection.Horizontal;
             dropdown.GetComponentInParent<UIPanel>().autoFitChildrenVertically = true;
         }
+        
         public static void AddDropdown<T>(string title, out UIDropDown dropdown, UIHelperExtension parentHelper, Tuple<string, T>[] options, Action<T> onChange) => AddDropdown(title, out dropdown, out _, parentHelper, options, onChange);
+        
         public static void AddDropdown<T>(string title, out UIDropDown dropdown, out UILabel label, UIHelperExtension parentHelper, Tuple<string, T>[] options, Action<T> onChange)
         {
             UIDropDown thisDD = null;
@@ -373,6 +382,7 @@ namespace Commons.UI
             MonoUtils.LimitWidthAndBox(goToFileButton, parentHelper.Self.width - 20, true);
 
         }
+        
         public static void SetIcon(UIButton copyButton, CommonsSpriteNames spriteName, Color color)
         {
             UISprite icon = copyButton.AddUIComponent<UISprite>();
@@ -395,6 +405,7 @@ namespace Commons.UI
             result.canFocus = false;
             return result;
         }
+        
         public static UISprite AddSpriteInEditorRow(UIComponent component, bool reduceSize = true, float width = 40, float? height = null)
         {
             if (reduceSize)
@@ -409,6 +420,7 @@ namespace Commons.UI
             return sprite;
 
         }
+        
         public static UILabel AddLabelInEditorRow(UIComponent component, bool reduceSize = true, float width = 40, float? height = null)
         {
             if (reduceSize)
@@ -433,13 +445,12 @@ namespace Commons.UI
             checkbox = helper.AddCheckboxLocale(localeId, defaultState, onCheckChanged);
             MonoUtils.LimitWidthAndBox(checkbox.label, helper.Self.width - 50);
         }
+        
         public static void AddCheckbox(string title, out UICheckBox checkbox, UIHelperExtension helper, OnCheckChanged onCheckChanged, bool defaultState = false)
         {
             checkbox = (UICheckBox)helper.AddCheckbox(title, defaultState, onCheckChanged);
             MonoUtils.LimitWidthAndBox(checkbox.label, helper.Self.width - 50);
         }
-
-
 
         public static void AddIconCheckbox(string icon, string localeId, out UICheckBox checkbox, UIHelperExtension helper, OnCheckChanged onCheckChanged, Vector2 size, bool defaultState = false)
         {
@@ -459,6 +470,7 @@ namespace Commons.UI
             InitTabButton(parent.gameObject, out tabTemplate, text, size, onClicked);
             tabTemplate.group = parent;
         }
+        
         public static void InitTabButton(GameObject go, out UIButton tabTemplate, string text, Vector2 size, MouseEventHandler onClicked)
         {
             MonoUtils.CreateUIElement(out tabTemplate, go.transform, text, new UnityEngine.Vector4(0, 0, 40, 40));
@@ -553,6 +565,7 @@ namespace Commons.UI
             result.eventMouseWheel += (x, y) => y.Use();
             return result;
         }
+        
         private static IEnumerator FilterRunner(UITextField textField, UIListBox result, Func<string, Wrapper<string[]>, IEnumerator> FilterFunc, bool selectAll)
         {
             var items = new Wrapper<string[]>();
@@ -576,6 +589,7 @@ namespace Commons.UI
 
         public static void AddFilterableInput(string name, UIHelperExtension helper, out UITextField inputField, out UIListBox listPopup, Func<string, Wrapper<string[]>, IEnumerator> OnFilterChanged, Func<string, int, string[], string> OnValueChanged, float popupHeight = 290)
             => AddFilterableInput(name, helper, out inputField, out _, out listPopup, OnFilterChanged, OnValueChanged, popupHeight);
+        
         public static void AddFilterableInput(string name, UIHelperExtension helper, out UITextField inputField, out UILabel lbl, out UIListBox listPopup, Func<string, Wrapper<string[]>, IEnumerator> OnFilterChanged, Func<string, int, string[], string> OnValueChanged, float popupHeight = 290)
         {
             AddTextField(name, out inputField, out lbl, helper, null);
@@ -589,7 +603,6 @@ namespace Commons.UI
             listPopup.textScale = 0.7f;
             listPopup.itemPadding = new RectOffset(5, 5, 1, 1);
         }
-
 
         public static void AddMultistateButton(string title, UIComponent parent, out UIMultiStateButton multiStateButton, out UILabel label, out UIPanel container, float width, string[] options, PropertyChangedEventHandler<int> OnActiveStateChanged, Vector2? spriteSizeP = null)
         {
