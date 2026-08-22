@@ -3,7 +3,7 @@ using ColossalFramework.UI;
 using Commons.Utils;
 using UnityEngine;
 
-namespace TransportLinesManager.Commons.UI.Components
+namespace Commons.UI.Components
 {
     public static class UIButtons
     {

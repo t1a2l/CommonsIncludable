@@ -27,6 +27,7 @@ namespace Commons.Utils
             return new FileInfo(folderName);
         }
         public static bool IsFileCreated(string fileName) => File.Exists(fileName);
+        
         public static bool TryGetWorkshopId(PrefabInfo info, out long workshopId)
         {
             workshopId = -1L;
@@ -71,6 +72,7 @@ namespace Commons.Utils
         }
 
         public static void DoInPrefabFolder(PrefabInfo targetPrefab, Action<string> actionToPerform) => DoInPrefabFolder(targetPrefab.name, actionToPerform);
+        
         public static void DoInPrefabFolder(string prefabName, Action<string> actionToPerform)
         {
             Package.Asset asset = PackageManager.FindAssetByName(prefabName);
@@ -83,6 +85,7 @@ namespace Commons.Utils
                 }
             }
         }
+        
         public static void ScanPrefabsFoldersDirectory<T>(string directoryToFind, Action<ulong, string, T> action) where T : PrefabInfo
         {
             var list = new List<string>();
@@ -129,6 +132,7 @@ namespace Commons.Utils
                 }
             });
         }
+        
         public static void ScanPrefabsFoldersFileNoLoad(string file, Action<FileStream, Package, Asset> action)
         {
             var list = new List<string>();
@@ -150,6 +154,7 @@ namespace Commons.Utils
                 }
             });
         }
+        
         public static void ForEachNonLoadedPrefab(Action<Package, Asset> action)
         {
             foreach (Package pack in PackageManager.allPackages)
@@ -186,6 +191,13 @@ namespace Commons.Utils
                 .Where(r => r.StartsWith(folderName) && r.EndsWith(extension))
                 .Select(r => r.Substring(folderName.Length + 1))];
         }
+
+        public static Stream OpenResourceFile(string fileName)
+        {
+            string path = "TransportLinesManager.Commons.UI.Images.AtlasImages";
+            return File.OpenRead(Path.Combine(path, fileName));
+        }
+
         #endregion
     }
 }

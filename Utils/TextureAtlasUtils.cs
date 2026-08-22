@@ -165,5 +165,66 @@ namespace Commons.Utils
         
         public static void ParseImageIntoDefaultTextureAtlas<E>(string resourceName, int width, int height, ref List<SpriteInfo> sprites) where E : Enum => ParseImageIntoDefaultTextureAtlas(typeof(E), resourceName, width, height, ref sprites);
 
+        public static UITextureAtlas LoadQuadSpriteAtlas(string fileName) => LoadSpriteAtlas(fileName, ["disabled", "normal", "pressed", "hovered"]);
+
+        public static UITextureAtlas LoadSpriteAtlas(string fileName, string[] spriteNames)
+        {
+            // Create new texture atlas.
+            UITextureAtlas newAtlas = ScriptableObject.CreateInstance<UITextureAtlas>();
+            newAtlas.name = fileName;
+            newAtlas.material = UnityEngine.Object.Instantiate(UIView.GetAView().defaultAtlas.material);
+
+            // Load texture from file.
+            Texture2D newTexture = LoadTexture(fileName + ".png");
+            newAtlas.material.mainTexture = newTexture;
+
+            // Setup sprites.
+            int numSprites = spriteNames.Length;
+            float spriteWidth = 1f / spriteNames.Length;
+
+            // Iterate through each sprite (counter increment is in region setup).
+            for (int i = 0; i < numSprites; ++i)
+            {
+                SpriteInfo sprite = new()
+                {
+                    name = spriteNames[i],
+                    texture = newTexture,
+
+                    // Sprite regions are horizontally arranged, evenly spaced.
+                    region = new Rect(i * spriteWidth, 0f, spriteWidth, 1f),
+                };
+                newAtlas.AddSprite(sprite);
+            }
+
+            return newAtlas;
+        }
+
+        public static Texture2D LoadTexture(string fileName)
+        {
+            try
+            {
+                using Stream stream = FileUtils.OpenResourceFile(fileName);
+                // New texture.
+                Texture2D texture = new(1, 1, TextureFormat.ARGB32, false)
+                {
+                    filterMode = FilterMode.Bilinear,
+                    wrapMode = TextureWrapMode.Clamp,
+                };
+
+                // Read texture as byte stream from file.
+                byte[] array = new byte[stream.Length];
+                stream.Read(array, 0, array.Length);
+                texture.LoadImage(array);
+                texture.Apply();
+
+                return texture;
+            }
+            catch (Exception e)
+            {
+                LogUtils.DoErrorLog("exception reading texture file "+ e.Message, fileName);
+                return null;
+            }
+        }
+
     }
 }
