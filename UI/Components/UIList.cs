@@ -618,7 +618,7 @@ namespace Commons.UI.Components
             _contentPanel.backgroundSprite = "UnlockingPanel";
 
             // Scrollbar.
-            _scrollbar = UIScrollbars.AddScrollbar(this);
+            _scrollbar = AddScrollbar(this);
             _scrollbar.autoHide = false;
             _scrollbar.minValue = 0f;
             _scrollbar.incrementAmount = 1f;
@@ -632,6 +632,44 @@ namespace Commons.UI.Components
 
             // Update scrolled position.
             _scrollbar.eventValueChanged += (c, value) => Scroll(value);
+        }
+
+        public static UIScrollbar AddScrollbar(UIComponent parent)
+        {
+            // Basic setup.
+            UIScrollbar newScrollbar = parent.AddUIComponent<UIScrollbar>();
+            newScrollbar.orientation = UIOrientation.Vertical;
+            newScrollbar.pivot = UIPivotPoint.TopLeft;
+            newScrollbar.minValue = 0;
+            newScrollbar.value = 0;
+            newScrollbar.incrementAmount = 50f;
+            newScrollbar.autoHide = true;
+
+            // Location and size.
+            newScrollbar.width = 10f;
+
+            // Tracking sprite.
+            UISlicedSprite trackSprite = newScrollbar.AddUIComponent<UISlicedSprite>();
+            trackSprite.relativePosition = Vector2.zero;
+            trackSprite.autoSize = true;
+            trackSprite.anchor = UIAnchorStyle.All;
+            trackSprite.size = trackSprite.parent.size;
+            trackSprite.fillDirection = UIFillDirection.Vertical;
+            trackSprite.atlas = TextureAtlasUtils.DefaultTextureAtlas;
+            trackSprite.spriteName = "ScrollbarTrack";
+            newScrollbar.trackObject = trackSprite;
+
+            // Thumb sprite.
+            UISlicedSprite thumbSprite = trackSprite.AddUIComponent<UISlicedSprite>();
+            thumbSprite.relativePosition = Vector2.zero;
+            thumbSprite.fillDirection = UIFillDirection.Vertical;
+            thumbSprite.autoSize = true;
+            thumbSprite.width = thumbSprite.parent.width;
+            thumbSprite.atlas = TextureAtlasUtils.DefaultTextureAtlas;
+            thumbSprite.spriteName = "ScrollbarThumb";
+            newScrollbar.thumbObject = thumbSprite;
+
+            return newScrollbar;
         }
     }
 }
