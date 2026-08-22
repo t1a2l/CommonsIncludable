@@ -194,7 +194,7 @@ namespace Commons.Utils
 
         public static Stream OpenResourceFile(string fileName)
         {
-            string path = "TransportLinesManager.Commons.UI.Images.AtlasImages";
+            string path = "Commons.UI.Images.AtlasImages";
             return File.OpenRead(Path.Combine(path, fileName));
         }
 
