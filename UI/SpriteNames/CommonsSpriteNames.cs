@@ -40,6 +40,7 @@
         Export,
         Steam,
         Dropper,
-        PaintBucket
+        PaintBucket,
+        VehicleManagement
     }
 }

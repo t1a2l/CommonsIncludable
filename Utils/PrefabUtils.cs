@@ -1,4 +1,4 @@
-﻿namespace TransportLinesManager.Commons.Utils
+﻿namespace Commons.Utils
 {
     public static class PrefabUtils
     {
