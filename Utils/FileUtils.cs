@@ -183,7 +183,6 @@ namespace Commons.Utils
 
         public static string[] GetAllFilesEmbeddedAtFolder(string packageDirectory, string extension)
         {
-
             var executingAssembly = Assembly.GetExecutingAssembly();
             string folderName = $"{packageDirectory}";
             return [.. executingAssembly
@@ -194,8 +193,18 @@ namespace Commons.Utils
 
         public static Stream OpenResourceFile(string fileName)
         {
-            string path = "Commons.UI.Images.AtlasImages";
-            return File.OpenRead(Path.Combine(path, fileName));
+            string resourceFolder = "TransportLinesManager.Commons.UI.AtlasImages." + fileName;
+
+            var assembly = Assembly.GetExecutingAssembly();
+
+            string resourceName = assembly.GetManifestResourceNames().FirstOrDefault(name => name.StartsWith(resourceFolder));
+
+            if (resourceName == null)
+            {
+                throw new FileNotFoundException($"Embedded resource was not found under '{resourceFolder}'.");
+            }
+
+            return assembly.GetManifestResourceStream(resourceName);
         }
 
         #endregion
