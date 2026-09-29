@@ -1,4 +1,6 @@
-﻿namespace Commons.Utils
+﻿using System;
+
+namespace Commons.Utils
 {
     public static class PrefabUtils
     {
@@ -29,9 +31,42 @@
         /// <returns>Cleaned display name.</returns>
         public static string GetDisplayName(string prefabName)
         {
-            // Omit any package number, and trim off any trailing _Data.
-            int index = prefabName.IndexOf('.');
-            return prefabName.Substring(index + 1).Replace("_Data", string.Empty);
+            if (prefabName == null)
+            {
+                return "null";
+            }
+
+            // Workshop prefab names can start with a numeric package ID followed by a dot.
+            // A dot elsewhere (for example, PR100.2) is part of the asset name.
+            int dotIndex = prefabName.IndexOf('.');
+
+            if (dotIndex > 0)
+            {
+                bool numericPrefix = true;
+
+                for (int i = 0; i < dotIndex; i++)
+                {
+                    if (prefabName[i] < '0' || prefabName[i] > '9')
+                    {
+                        numericPrefix = false;
+                        break;
+                    }
+                }
+
+                if (numericPrefix)
+                {
+                    prefabName = prefabName.Substring(dotIndex + 1);
+                }
+            }
+
+            // Remove only the prefab suffix, not an occurrence inside the name.
+            const string dataSuffix = "_Data";
+            if (prefabName.EndsWith(dataSuffix, StringComparison.Ordinal))
+            {
+                prefabName = prefabName.Substring(0, prefabName.Length - dataSuffix.Length);
+            }
+
+            return prefabName;
         }
 
         /// <summary>
@@ -41,14 +76,28 @@
         /// <returns>True if this is a workshop asset, false otherwise.</returns>
         public static bool IsWorkshopAsset(PrefabInfo prefab)
         {
-            // Null check.
-            if (!prefab || prefab.name == null)
+            if (!prefab || string.IsNullOrEmpty(prefab.name))
             {
                 return false;
             }
 
-            // Check for a package number (name contains period).
-            return prefab.name.IndexOf('.') >= 0;
+            string name = prefab.name;
+            int dotIndex = name.IndexOf('.');
+
+            if (dotIndex <= 0 || dotIndex == name.Length - 1)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < dotIndex; i++)
+            {
+                if (name[i] < '0' || name[i] > '9')
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }
